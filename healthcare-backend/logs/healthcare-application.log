@@ -1,0 +1,274 @@
+2025-12-20 21:20:31.250 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> Démarrage de l'application Healthcare System (Step 1) <<<
+2025-12-20 21:20:31.252 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - 1. Initialisation du PropertyManager...
+2025-12-20 21:20:31.253 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-20 21:20:31.258 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-20 21:20:31.259 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main -    Mode: DEVELOPMENT
+2025-12-20 21:20:31.259 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - 2. Initialisation du Pool HikariCP...
+2025-12-20 21:20:32.313 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertag
+2025-12-20 21:20:32.313 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - 3. Test de connexion à Oracle Database...
+2025-12-20 21:20:32.318 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-20 21:20:32.334 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> INITIALISATION RÉUSSIE : Le Backend est prêt ! <<<
+2025-12-20 21:23:02.184 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> Démarrage du Test DAO (Step 2) <<<
+2025-12-20 21:23:02.192 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-20 21:23:02.200 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-20 21:23:03.406 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertag
+2025-12-20 21:23:03.409 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - Création d'un nouveau patient...
+2025-12-20 21:23:03.682 ERROR [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - ERREUR lors du test DAO
+java.lang.RuntimeException: Erreur SQL
+	at ma.ensa.healthcare.dao.impl.PatientDAOImpl.save(PatientDAOImpl.java:52)
+	at ma.ensa.healthcare.Main.main(Main.java:43)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: java.sql.SQLSyntaxErrorException: ORA-04043: object PATIENT does not exist
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:629)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:558)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:553)
+	at oracle.jdbc.driver.T4CTTIfun.processError(T4CTTIfun.java:1376)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:771)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:298)
+	at oracle.jdbc.driver.T4C8Odsy.doODSY(T4C8Odsy.java:209)
+	at oracle.jdbc.driver.T4C8Odsy.doODSYTable(T4C8Odsy.java:154)
+	at oracle.jdbc.driver.T4CConnection.getColumnMetaData(T4CConnection.java:7398)
+	at oracle.jdbc.driver.T4CConnection.doDescribeTable(T4CConnection.java:7393)
+	at oracle.jdbc.driver.AutoKeyInfo.initialize(AutoKeyInfo.java:328)
+	at oracle.jdbc.driver.OraclePreparedStatement.initializeAutoKeyInfo(OraclePreparedStatement.java:11855)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3748)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4061)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4036)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:995)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at ma.ensa.healthcare.dao.impl.PatientDAOImpl.save(PatientDAOImpl.java:38)
+	... 8 common frames omitted
+2025-12-20 21:26:38.354 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> Démarrage du Test DAO (Step 2) <<<
+2025-12-20 21:26:38.359 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-20 21:26:38.361 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-20 21:26:38.927 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertag
+2025-12-20 21:26:38.930 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - Création d'un nouveau patient...
+2025-12-20 21:26:39.047 ERROR [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - ERREUR lors du test DAO
+java.lang.RuntimeException: Erreur SQL
+	at ma.ensa.healthcare.dao.impl.PatientDAOImpl.save(PatientDAOImpl.java:52)
+	at ma.ensa.healthcare.Main.main(Main.java:43)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: java.sql.SQLSyntaxErrorException: ORA-04043: object PATIENT does not exist
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:629)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:558)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:553)
+	at oracle.jdbc.driver.T4CTTIfun.processError(T4CTTIfun.java:1376)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:771)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:298)
+	at oracle.jdbc.driver.T4C8Odsy.doODSY(T4C8Odsy.java:209)
+	at oracle.jdbc.driver.T4C8Odsy.doODSYTable(T4C8Odsy.java:154)
+	at oracle.jdbc.driver.T4CConnection.getColumnMetaData(T4CConnection.java:7398)
+	at oracle.jdbc.driver.T4CConnection.doDescribeTable(T4CConnection.java:7393)
+	at oracle.jdbc.driver.AutoKeyInfo.initialize(AutoKeyInfo.java:328)
+	at oracle.jdbc.driver.OraclePreparedStatement.initializeAutoKeyInfo(OraclePreparedStatement.java:11855)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3748)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4061)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4036)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:995)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at ma.ensa.healthcare.dao.impl.PatientDAOImpl.save(PatientDAOImpl.java:38)
+	... 8 common frames omitted
+2025-12-20 21:27:10.927 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> Démarrage du Test DAO (Step 2) <<<
+2025-12-20 21:27:10.931 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-20 21:27:10.936 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-20 21:27:11.482 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertag
+2025-12-20 21:27:11.483 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - Création d'un nouveau patient...
+2025-12-20 21:27:11.577 ERROR [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - ERREUR lors du test DAO
+java.lang.RuntimeException: Erreur SQL
+	at ma.ensa.healthcare.dao.impl.PatientDAOImpl.save(PatientDAOImpl.java:52)
+	at ma.ensa.healthcare.Main.main(Main.java:43)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: java.sql.SQLSyntaxErrorException: ORA-04043: object PATIENT does not exist
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:629)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:558)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:553)
+	at oracle.jdbc.driver.T4CTTIfun.processError(T4CTTIfun.java:1376)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:771)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:298)
+	at oracle.jdbc.driver.T4C8Odsy.doODSY(T4C8Odsy.java:209)
+	at oracle.jdbc.driver.T4C8Odsy.doODSYTable(T4C8Odsy.java:154)
+	at oracle.jdbc.driver.T4CConnection.getColumnMetaData(T4CConnection.java:7398)
+	at oracle.jdbc.driver.T4CConnection.doDescribeTable(T4CConnection.java:7393)
+	at oracle.jdbc.driver.AutoKeyInfo.initialize(AutoKeyInfo.java:328)
+	at oracle.jdbc.driver.OraclePreparedStatement.initializeAutoKeyInfo(OraclePreparedStatement.java:11855)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3748)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4061)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4036)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:995)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at ma.ensa.healthcare.dao.impl.PatientDAOImpl.save(PatientDAOImpl.java:38)
+	... 8 common frames omitted
+2025-12-20 21:31:06.988 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> Démarrage du Test DAO (Step 2) <<<
+2025-12-20 21:31:06.993 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-20 21:31:06.998 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-20 21:31:07.545 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-20 21:31:07.547 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - Création d'un nouveau patient...
+2025-12-20 21:31:07.873 ERROR [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.DatabaseConfig - Erreur lors du commit
+java.sql.SQLException: Could not commit with auto-commit set on
+	at oracle.jdbc.driver.PhysicalConnection.commit(PhysicalConnection.java:2697)
+	at oracle.jdbc.driver.PhysicalConnection.commit(PhysicalConnection.java:2766)
+	at com.zaxxer.hikari.pool.ProxyConnection.commit(ProxyConnection.java:377)
+	at com.zaxxer.hikari.pool.HikariProxyConnection.commit(HikariProxyConnection.java)
+	at ma.ensa.healthcare.config.DatabaseConfig.commit(DatabaseConfig.java:49)
+	at ma.ensa.healthcare.dao.impl.PatientDAOImpl.save(PatientDAOImpl.java:46)
+	at ma.ensa.healthcare.Main.main(Main.java:43)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+2025-12-20 21:31:07.880 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - Patient enregistré avec succès ! ID attribué : 1
+2025-12-20 21:31:07.924 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - Lecture depuis la DB : EL ALAMI Ahmed
+2025-12-21 12:33:18.382 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> Démarrage du Test DAO (Step 2) <<<
+2025-12-21 12:33:18.389 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 12:33:18.393 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 12:33:19.363 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 12:33:19.366 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - Création d'un nouveau patient...
+2025-12-21 12:33:19.820 ERROR [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - ERREUR lors du test DAO
+java.lang.RuntimeException: Erreur SQL
+	at ma.ensa.healthcare.dao.impl.PatientDAOImpl.save(PatientDAOImpl.java:52)
+	at ma.ensa.healthcare.Main.main(Main.java:43)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: java.sql.SQLIntegrityConstraintViolationException: ORA-00001: unique constraint (HEALTHCARE_ADMIN.SYS_C008283) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:629)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:563)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1230)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:771)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:298)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:511)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:162)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1240)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:1819)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1471)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3760)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4061)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4036)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:995)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at ma.ensa.healthcare.dao.impl.PatientDAOImpl.save(PatientDAOImpl.java:38)
+	... 8 common frames omitted
+Caused by: oracle.jdbc.OracleDatabaseException: ORA-00001: unique constraint (HEALTHCARE_ADMIN.SYS_C008283) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:636)
+	... 24 common frames omitted
+2025-12-21 12:50:11.568 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> Démarrage du Test DAO (Step 2) <<<
+2025-12-21 12:50:11.572 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 12:50:11.597 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 12:50:12.358 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 12:50:12.359 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - Création d'un nouveau patient...
+2025-12-21 12:50:12.626 ERROR [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - ERREUR lors du test DAO
+java.lang.RuntimeException: Erreur SQL
+	at ma.ensa.healthcare.dao.impl.PatientDAOImpl.save(PatientDAOImpl.java:52)
+	at ma.ensa.healthcare.Main.main(Main.java:43)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: java.sql.SQLIntegrityConstraintViolationException: ORA-00001: unique constraint (HEALTHCARE_ADMIN.SYS_C008283) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:629)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:563)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1230)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:771)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:298)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:511)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:162)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1240)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:1819)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1471)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3760)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4061)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4036)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:995)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at ma.ensa.healthcare.dao.impl.PatientDAOImpl.save(PatientDAOImpl.java:38)
+	... 8 common frames omitted
+Caused by: oracle.jdbc.OracleDatabaseException: ORA-00001: unique constraint (HEALTHCARE_ADMIN.SYS_C008283) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:636)
+	... 24 common frames omitted
+2025-12-21 14:34:43.038 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 14:34:43.045 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 14:34:44.066 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 14:34:44.070 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-21 14:40:07.635 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 14:40:07.638 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 14:40:08.141 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 14:40:08.144 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-21 14:57:44.226 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 14:57:44.231 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 14:57:45.203 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 14:57:45.206 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-21 15:02:37.584 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 15:02:37.589 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 15:02:38.160 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 15:02:38.164 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-21 15:16:55.839 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 15:16:55.842 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 15:16:56.484 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 15:16:56.489 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-21 15:23:39.714 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 15:23:39.717 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 15:23:40.230 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 15:23:40.233 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-21 15:45:55.772 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 15:45:55.779 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 15:45:56.491 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 15:45:56.494 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-21 15:51:09.429 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 15:51:09.433 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 15:51:09.960 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 15:51:09.965 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-21 15:56:54.721 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 15:56:54.725 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 15:56:55.267 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 15:56:55.272 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-21 16:01:15.835 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 16:01:15.838 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 16:01:16.434 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 16:01:16.437 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-21 16:03:36.493 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 16:03:36.494 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 16:03:37.044 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb
+2025-12-21 16:03:37.048 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test Successful ! DataBase accessible.
+2025-12-21 16:08:38.573 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-21 16:08:38.580 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-21 16:08:39.092 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertagpdb

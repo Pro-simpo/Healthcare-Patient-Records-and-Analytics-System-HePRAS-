@@ -1,0 +1,279 @@
+2025-12-20 19:10:07.136 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> Démarrage de l'application Healthcare System (Step 1) <<<
+2025-12-20 19:10:07.139 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - 1. Initialisation du PropertyManager...
+2025-12-20 19:10:07.144 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-20 19:10:07.152 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-20 19:10:07.152 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main -    Mode: DEVELOPMENT
+2025-12-20 19:10:07.154 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - 2. Initialisation du Pool HikariCP...
+2025-12-20 19:10:07.415 INFO  [ma.ensa.healthcare.Main.main()] com.zaxxer.hikari.HikariDataSource - Healthcare-HikariPool - Starting...
+2025-12-20 19:10:08.627 ERROR [ma.ensa.healthcare.Main.main()] com.zaxxer.hikari.pool.HikariPool - Healthcare-HikariPool - Exception during pool initialization.
+java.sql.SQLException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=4Ao3k9cQSISrxofyfY3Y+A==)
+	at oracle.jdbc.driver.T4CConnection.handleLogonNetException(T4CConnection.java:902)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:707)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:1094)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:89)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:732)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:648)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81)
+	at ma.ensa.healthcare.config.HikariCPConfig.createDataSource(HikariCPConfig.java:67)
+	at ma.ensa.healthcare.config.HikariCPConfig.getDataSource(HikariCPConfig.java:29)
+	at ma.ensa.healthcare.Main.main(Main.java:29)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: oracle.net.ns.NetException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=4Ao3k9cQSISrxofyfY3Y+A==)
+	at oracle.net.ns.NSProtocolNIO.createRefusePacketException(NSProtocolNIO.java:824)
+	at oracle.net.ns.NSProtocolNIO.handleConnectPacketResponse(NSProtocolNIO.java:396)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:207)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:354)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:2627)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:666)
+	... 21 common frames omitted
+2025-12-20 19:10:08.636 ERROR [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Erreur critique lors de l'initialisation de HikariCP
+com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=4Ao3k9cQSISrxofyfY3Y+A==)
+	at com.zaxxer.hikari.pool.HikariPool.throwPoolInitializationException(HikariPool.java:596)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:582)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81)
+	at ma.ensa.healthcare.config.HikariCPConfig.createDataSource(HikariCPConfig.java:67)
+	at ma.ensa.healthcare.config.HikariCPConfig.getDataSource(HikariCPConfig.java:29)
+	at ma.ensa.healthcare.Main.main(Main.java:29)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: java.sql.SQLException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=4Ao3k9cQSISrxofyfY3Y+A==)
+	at oracle.jdbc.driver.T4CConnection.handleLogonNetException(T4CConnection.java:902)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:707)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:1094)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:89)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:732)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:648)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	... 12 common frames omitted
+Caused by: oracle.net.ns.NetException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=4Ao3k9cQSISrxofyfY3Y+A==)
+	at oracle.net.ns.NSProtocolNIO.createRefusePacketException(NSProtocolNIO.java:824)
+	at oracle.net.ns.NSProtocolNIO.handleConnectPacketResponse(NSProtocolNIO.java:396)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:207)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:354)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:2627)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:666)
+	... 21 common frames omitted
+2025-12-20 19:10:08.638 ERROR [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> ERREUR FATALE : L'application n'a pas pu démarrer <<<
+java.lang.RuntimeException: Impossible d'initialiser le pool de connexions
+	at ma.ensa.healthcare.config.HikariCPConfig.createDataSource(HikariCPConfig.java:71)
+	at ma.ensa.healthcare.config.HikariCPConfig.getDataSource(HikariCPConfig.java:29)
+	at ma.ensa.healthcare.Main.main(Main.java:29)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=4Ao3k9cQSISrxofyfY3Y+A==)
+	at com.zaxxer.hikari.pool.HikariPool.throwPoolInitializationException(HikariPool.java:596)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:582)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81)
+	at ma.ensa.healthcare.config.HikariCPConfig.createDataSource(HikariCPConfig.java:67)
+	... 9 common frames omitted
+Caused by: java.sql.SQLException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=4Ao3k9cQSISrxofyfY3Y+A==)
+	at oracle.jdbc.driver.T4CConnection.handleLogonNetException(T4CConnection.java:902)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:707)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:1094)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:89)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:732)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:648)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	... 12 common frames omitted
+Caused by: oracle.net.ns.NetException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=4Ao3k9cQSISrxofyfY3Y+A==)
+	at oracle.net.ns.NSProtocolNIO.createRefusePacketException(NSProtocolNIO.java:824)
+	at oracle.net.ns.NSProtocolNIO.handleConnectPacketResponse(NSProtocolNIO.java:396)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:207)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:354)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:2627)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:666)
+	... 21 common frames omitted
+2025-12-20 19:15:23.339 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> Démarrage de l'application Healthcare System (Step 1) <<<
+2025-12-20 19:15:23.340 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - 1. Initialisation du PropertyManager...
+2025-12-20 19:15:23.342 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-20 19:15:23.346 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-20 19:15:23.346 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main -    Mode: DEVELOPMENT
+2025-12-20 19:15:23.346 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - 2. Initialisation du Pool HikariCP...
+2025-12-20 19:15:23.561 INFO  [ma.ensa.healthcare.Main.main()] com.zaxxer.hikari.HikariDataSource - Healthcare-HikariPool - Starting...
+2025-12-20 19:15:24.748 ERROR [ma.ensa.healthcare.Main.main()] com.zaxxer.hikari.pool.HikariPool - Healthcare-HikariPool - Exception during pool initialization.
+java.sql.SQLException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=UIolqb/WRdC2US2tODxQCg==)
+	at oracle.jdbc.driver.T4CConnection.handleLogonNetException(T4CConnection.java:902)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:707)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:1094)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:89)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:732)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:648)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81)
+	at ma.ensa.healthcare.config.HikariCPConfig.createDataSource(HikariCPConfig.java:67)
+	at ma.ensa.healthcare.config.HikariCPConfig.getDataSource(HikariCPConfig.java:29)
+	at ma.ensa.healthcare.Main.main(Main.java:29)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: oracle.net.ns.NetException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=UIolqb/WRdC2US2tODxQCg==)
+	at oracle.net.ns.NSProtocolNIO.createRefusePacketException(NSProtocolNIO.java:824)
+	at oracle.net.ns.NSProtocolNIO.handleConnectPacketResponse(NSProtocolNIO.java:396)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:207)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:354)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:2627)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:666)
+	... 21 common frames omitted
+2025-12-20 19:15:24.754 ERROR [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Erreur critique lors de l'initialisation de HikariCP
+com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=UIolqb/WRdC2US2tODxQCg==)
+	at com.zaxxer.hikari.pool.HikariPool.throwPoolInitializationException(HikariPool.java:596)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:582)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81)
+	at ma.ensa.healthcare.config.HikariCPConfig.createDataSource(HikariCPConfig.java:67)
+	at ma.ensa.healthcare.config.HikariCPConfig.getDataSource(HikariCPConfig.java:29)
+	at ma.ensa.healthcare.Main.main(Main.java:29)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: java.sql.SQLException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=UIolqb/WRdC2US2tODxQCg==)
+	at oracle.jdbc.driver.T4CConnection.handleLogonNetException(T4CConnection.java:902)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:707)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:1094)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:89)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:732)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:648)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	... 12 common frames omitted
+Caused by: oracle.net.ns.NetException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=UIolqb/WRdC2US2tODxQCg==)
+	at oracle.net.ns.NSProtocolNIO.createRefusePacketException(NSProtocolNIO.java:824)
+	at oracle.net.ns.NSProtocolNIO.handleConnectPacketResponse(NSProtocolNIO.java:396)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:207)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:354)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:2627)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:666)
+	... 21 common frames omitted
+2025-12-20 19:15:24.757 ERROR [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> ERREUR FATALE : L'application n'a pas pu démarrer <<<
+java.lang.RuntimeException: Impossible d'initialiser le pool de connexions
+	at ma.ensa.healthcare.config.HikariCPConfig.createDataSource(HikariCPConfig.java:71)
+	at ma.ensa.healthcare.config.HikariCPConfig.getDataSource(HikariCPConfig.java:29)
+	at ma.ensa.healthcare.Main.main(Main.java:29)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.executeMainMethod(AbstractExecJavaBase.java:402)
+	at org.codehaus.mojo.exec.ExecJavaMojo.executeMainMethod(ExecJavaMojo.java:142)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.doExecClassLoader(AbstractExecJavaBase.java:377)
+	at org.codehaus.mojo.exec.AbstractExecJavaBase.lambda$execute$0(AbstractExecJavaBase.java:287)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=UIolqb/WRdC2US2tODxQCg==)
+	at com.zaxxer.hikari.pool.HikariPool.throwPoolInitializationException(HikariPool.java:596)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:582)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81)
+	at ma.ensa.healthcare.config.HikariCPConfig.createDataSource(HikariCPConfig.java:67)
+	... 9 common frames omitted
+Caused by: java.sql.SQLException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=UIolqb/WRdC2US2tODxQCg==)
+	at oracle.jdbc.driver.T4CConnection.handleLogonNetException(T4CConnection.java:902)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:707)
+	at oracle.jdbc.driver.PhysicalConnection.connect(PhysicalConnection.java:1094)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:89)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:732)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:648)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	... 12 common frames omitted
+Caused by: oracle.net.ns.NetException: Listener refused the connection with the following error:
+ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
+  (CONNECTION_ID=UIolqb/WRdC2US2tODxQCg==)
+	at oracle.net.ns.NSProtocolNIO.createRefusePacketException(NSProtocolNIO.java:824)
+	at oracle.net.ns.NSProtocolNIO.handleConnectPacketResponse(NSProtocolNIO.java:396)
+	at oracle.net.ns.NSProtocolNIO.negotiateConnection(NSProtocolNIO.java:207)
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:354)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:2627)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:666)
+	... 21 common frames omitted
+2025-12-20 19:20:51.964 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> Démarrage de l'application Healthcare System (Step 1) <<<
+2025-12-20 19:20:51.966 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - 1. Initialisation du PropertyManager...
+2025-12-20 19:20:51.968 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Environment détecté : dev
+2025-12-20 19:20:51.972 INFO  [ma.ensa.healthcare.Main.main()] m.e.h.config.PropertyManager - Configuration chargée avec succès depuis : application-dev.properties
+2025-12-20 19:20:51.973 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main -    Mode: DEVELOPMENT
+2025-12-20 19:20:51.973 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - 2. Initialisation du Pool HikariCP...
+2025-12-20 19:20:52.152 INFO  [ma.ensa.healthcare.Main.main()] com.zaxxer.hikari.HikariDataSource - Healthcare-HikariPool - Starting...
+2025-12-20 19:20:52.590 INFO  [ma.ensa.healthcare.Main.main()] com.zaxxer.hikari.pool.HikariPool - Healthcare-HikariPool - Added connection oracle.jdbc.driver.T4CConnection@421c3bbb
+2025-12-20 19:20:52.593 INFO  [ma.ensa.healthcare.Main.main()] com.zaxxer.hikari.HikariDataSource - Healthcare-HikariPool - Start completed.
+2025-12-20 19:20:52.594 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - HikariCP Connection Pool démarré avec succès. URL: jdbc:oracle:thin:@localhost:1521/cybertag
+2025-12-20 19:20:52.595 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - 3. Test de connexion à Oracle Database...
+2025-12-20 19:20:52.604 INFO  [ma.ensa.healthcare.Main.main()] m.e.healthcare.config.HikariCPConfig - Test de connexion réussi ! Base de données accessible.
+2025-12-20 19:20:52.624 INFO  [ma.ensa.healthcare.Main.main()] ma.ensa.healthcare.Main - >>> INITIALISATION RÉUSSIE : Le Backend est prêt ! <<<
