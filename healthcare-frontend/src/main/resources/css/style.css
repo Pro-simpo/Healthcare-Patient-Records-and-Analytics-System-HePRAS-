@@ -71,17 +71,20 @@
     -fx-background-color: white;
 }
 
-/* Champs de texte JFoenix */
-.custom-text-field {
+/* TextField moderne (remplace JFXTextField) */
+.modern-text-field {
     -fx-background-color: transparent;
     -fx-text-fill: #333333;
     -fx-font-size: 14px;
     -fx-prompt-text-fill: #999999;
+    -fx-border-color: transparent;
+    -fx-padding: 8 0;
 }
 
-.custom-text-field:focused {
-    -jfx-unfocus-color: transparent;
-    -jfx-focus-color: #2196F3;
+.modern-text-field:focused {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-effect: none;
 }
 
 /* Bouton de connexion */
@@ -91,6 +94,7 @@
     -fx-background-radius: 8px;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-border-color: transparent;
 }
 
 .login-button:hover {
@@ -104,12 +108,18 @@
     -fx-translate-y: 1px;
 }
 
+.login-button:disabled {
+    -fx-opacity: 0.6;
+    -fx-cursor: default;
+}
+
 /* Label d'erreur */
 .error-label {
     -fx-text-fill: #F44336;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-padding: 5 0;
+    -fx-min-height: 20px;
 }
 
 /* Liens */

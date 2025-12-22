@@ -16,7 +16,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
         <javafx.version>23.0.1</javafx.version>
-        <jfoenix.version>9.0.10</jfoenix.version>
         <controlsfx.version>11.2.0</controlsfx.version>
     </properties>
 
@@ -38,13 +37,6 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>${javafx.version}</version>
-        </dependency>
-
-        <!-- ========== MATERIAL DESIGN (JFoenix) ========== -->
-        <dependency>
-            <groupId>com.jfoenix</groupId>
-            <artifactId>jfoenix</artifactId>
-            <version>${jfoenix.version}</version>
         </dependency>
 
         <!-- ========== COMPOSANTS AVANCÉS (ControlsFX) ========== -->

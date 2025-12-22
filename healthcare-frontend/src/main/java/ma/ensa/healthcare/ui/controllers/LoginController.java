@@ -1,11 +1,7 @@
 package ma.ensa.healthcare.ui.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import ma.ensa.healthcare.model.Utilisateur;
 import ma.ensa.healthcare.service.UtilisateurService;
@@ -21,9 +17,9 @@ public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @FXML private JFXTextField usernameField;
-    @FXML private JFXPasswordField passwordField;
-    @FXML private JFXButton loginButton;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Button loginButton;
     @FXML private Label errorLabel;
 
     private final UtilisateurService utilisateurService = new UtilisateurService();

@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXPasswordField?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
+<BorderPane xmlns="http://javafx.com/javafx/23"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ma.ensa.healthcare.ui.controllers.LoginController"
             styleClass="root">
 
-    <!-- Panneau gauche avec image/branding -->
+    <!-- Panneau gauche avec branding -->
     <left>
         <VBox styleClass="left-panel" alignment="CENTER" prefWidth="500">
             <padding>
@@ -63,7 +60,7 @@
         </VBox>
     </left>
 
-    <!-- Panneau droit avec formulaire de connexion -->
+    <!-- Panneau droit avec formulaire -->
     <center>
         <VBox styleClass="login-panel" alignment="CENTER" spacing="30">
             <padding>
@@ -88,44 +85,44 @@
             <!-- Formulaire -->
             <VBox spacing="20" prefWidth="350">
                 
-                <!-- Champ Username -->
+                <!-- Champ Username (REMPLACÉ) -->
                 <VBox spacing="5">
                     <Label text="Nom d'utilisateur" styleClass="field-label"/>
                     <HBox spacing="10" alignment="CENTER_LEFT" styleClass="input-container">
                         <FontAwesomeIconView glyphName="USER" size="18" fill="#666"/>
-                        <JFXTextField fx:id="usernameField"
-                                     promptText="Entrez votre nom d'utilisateur"
-                                     styleClass="custom-text-field"
-                                     HBox.hgrow="ALWAYS"/>
+                        <TextField fx:id="usernameField"
+                                  promptText="Entrez votre nom d'utilisateur"
+                                  styleClass="modern-text-field"
+                                  HBox.hgrow="ALWAYS"/>
                     </HBox>
                 </VBox>
 
-                <!-- Champ Password -->
+                <!-- Champ Password (REMPLACÉ) -->
                 <VBox spacing="5">
                     <Label text="Mot de passe" styleClass="field-label"/>
                     <HBox spacing="10" alignment="CENTER_LEFT" styleClass="input-container">
                         <FontAwesomeIconView glyphName="LOCK" size="18" fill="#666"/>
-                        <JFXPasswordField fx:id="passwordField"
-                                         promptText="Entrez votre mot de passe"
-                                         styleClass="custom-text-field"
-                                         HBox.hgrow="ALWAYS"/>
+                        <PasswordField fx:id="passwordField"
+                                      promptText="Entrez votre mot de passe"
+                                      styleClass="modern-text-field"
+                                      HBox.hgrow="ALWAYS"/>
                     </HBox>
                 </VBox>
 
                 <!-- Message d'erreur -->
                 <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"/>
 
-                <!-- Bouton de connexion -->
-                <JFXButton fx:id="loginButton"
-                          text="SE CONNECTER"
-                          onAction="#handleLogin"
-                          styleClass="login-button"
-                          prefWidth="350"
-                          prefHeight="45">
+                <!-- Bouton de connexion (REMPLACÉ) -->
+                <Button fx:id="loginButton"
+                       text="SE CONNECTER"
+                       onAction="#handleLogin"
+                       styleClass="login-button"
+                       prefWidth="350"
+                       prefHeight="45">
                     <font>
                         <Font name="System Bold" size="14"/>
                     </font>
-                </JFXButton>
+                </Button>
 
                 <!-- Lien mot de passe oublié -->
                 <HBox alignment="CENTER" spacing="5">
