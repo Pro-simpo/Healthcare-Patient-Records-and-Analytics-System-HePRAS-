@@ -1,0 +1,106 @@
+package ma.ensa.healthcare.ui.controllers;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import ma.ensa.healthcare.model.Utilisateur;
+import ma.ensa.healthcare.service.UtilisateurService;
+import ma.ensa.healthcare.ui.MainApp;
+import ma.ensa.healthcare.ui.utils.SessionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Contrôleur pour l'écran de connexion
+ */
+public class LoginController {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
+    @FXML private JFXTextField usernameField;
+    @FXML private JFXPasswordField passwordField;
+    @FXML private JFXButton loginButton;
+    @FXML private Label errorLabel;
+
+    private final UtilisateurService utilisateurService = new UtilisateurService();
+
+    @FXML
+    public void initialize() {
+        // Permettre la connexion avec la touche Entrée
+        passwordField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                handleLogin();
+            }
+        });
+
+        // Focus automatique sur le champ username
+        usernameField.requestFocus();
+    }
+
+    @FXML
+    private void handleLogin() {
+        // Réinitialiser le message d'erreur
+        errorLabel.setText("");
+
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText();
+
+        // Validation des champs
+        if (username.isEmpty() || password.isEmpty()) {
+            showError("Veuillez remplir tous les champs");
+            return;
+        }
+
+        try {
+            // Désactiver le bouton pendant la connexion
+            loginButton.setDisable(true);
+            
+            // Tentative de connexion
+            Utilisateur utilisateur = utilisateurService.login(username, password);
+            
+            // Sauvegarder la session
+            SessionManager.setCurrentUser(utilisateur);
+            
+            logger.info("Connexion réussie pour l'utilisateur : {}", username);
+            
+            // Rediriger vers le dashboard
+            MainApp.showDashboard();
+            
+        } catch (Exception e) {
+            logger.error("Échec de connexion pour : {}", username, e);
+            showError("Nom d'utilisateur ou mot de passe incorrect");
+            loginButton.setDisable(false);
+            passwordField.clear();
+            passwordField.requestFocus();
+        }
+    }
+
+    @FXML
+    private void handleCancel() {
+        System.exit(0);
+    }
+
+    /**
+     * Affiche un message d'erreur
+     */
+    private void showError(String message) {
+        errorLabel.setText(message);
+        errorLabel.setStyle("-fx-text-fill: red;");
+    }
+
+    /**
+     * Affiche une alerte d'information
+     */
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initOwner(MainApp.getPrimaryStage());
+        alert.showAndWait();
+    }
+}

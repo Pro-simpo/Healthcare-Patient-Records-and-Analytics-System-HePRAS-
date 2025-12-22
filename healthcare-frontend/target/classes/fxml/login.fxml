@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ma.ensa.healthcare.ui.controllers.LoginController"
+            styleClass="root">
+
+    <!-- Panneau gauche avec image/branding -->
+    <left>
+        <VBox styleClass="left-panel" alignment="CENTER" prefWidth="500">
+            <padding>
+                <Insets top="50" right="50" bottom="50" left="50"/>
+            </padding>
+
+            <FontAwesomeIconView glyphName="HEARTBEAT" size="120" fill="WHITE"/>
+            
+            <Label text="Healthcare System" styleClass="title-label">
+                <font>
+                    <Font name="System Bold" size="36"/>
+                </font>
+            </Label>
+            
+            <Label text="Gestion Hospitalière Moderne" styleClass="subtitle-label">
+                <font>
+                    <Font size="18"/>
+                </font>
+            </Label>
+
+            <VBox spacing="15" styleClass="features-box">
+                <padding>
+                    <Insets top="40"/>
+                </padding>
+                
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <FontAwesomeIconView glyphName="CHECK_CIRCLE" size="20" fill="WHITE"/>
+                    <Label text="Gestion des patients" styleClass="feature-label"/>
+                </HBox>
+                
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <FontAwesomeIconView glyphName="CHECK_CIRCLE" size="20" fill="WHITE"/>
+                    <Label text="Rendez-vous en ligne" styleClass="feature-label"/>
+                </HBox>
+                
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <FontAwesomeIconView glyphName="CHECK_CIRCLE" size="20" fill="WHITE"/>
+                    <Label text="Facturation automatisée" styleClass="feature-label"/>
+                </HBox>
+                
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <FontAwesomeIconView glyphName="CHECK_CIRCLE" size="20" fill="WHITE"/>
+                    <Label text="Statistiques en temps réel" styleClass="feature-label"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Panneau droit avec formulaire de connexion -->
+    <center>
+        <VBox styleClass="login-panel" alignment="CENTER" spacing="30">
+            <padding>
+                <Insets top="100" right="80" bottom="100" left="80"/>
+            </padding>
+
+            <!-- En-tête -->
+            <VBox alignment="CENTER" spacing="10">
+                <Label text="Connexion" styleClass="login-title">
+                    <font>
+                        <Font name="System Bold" size="32"/>
+                    </font>
+                </Label>
+                
+                <Label text="Accédez à votre espace" styleClass="login-subtitle">
+                    <font>
+                        <Font size="14"/>
+                    </font>
+                </Label>
+            </VBox>
+
+            <!-- Formulaire -->
+            <VBox spacing="20" prefWidth="350">
+                
+                <!-- Champ Username -->
+                <VBox spacing="5">
+                    <Label text="Nom d'utilisateur" styleClass="field-label"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="input-container">
+                        <FontAwesomeIconView glyphName="USER" size="18" fill="#666"/>
+                        <JFXTextField fx:id="usernameField"
+                                     promptText="Entrez votre nom d'utilisateur"
+                                     styleClass="custom-text-field"
+                                     HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Champ Password -->
+                <VBox spacing="5">
+                    <Label text="Mot de passe" styleClass="field-label"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="input-container">
+                        <FontAwesomeIconView glyphName="LOCK" size="18" fill="#666"/>
+                        <JFXPasswordField fx:id="passwordField"
+                                         promptText="Entrez votre mot de passe"
+                                         styleClass="custom-text-field"
+                                         HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Message d'erreur -->
+                <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"/>
+
+                <!-- Bouton de connexion -->
+                <JFXButton fx:id="loginButton"
+                          text="SE CONNECTER"
+                          onAction="#handleLogin"
+                          styleClass="login-button"
+                          prefWidth="350"
+                          prefHeight="45">
+                    <font>
+                        <Font name="System Bold" size="14"/>
+                    </font>
+                </JFXButton>
+
+                <!-- Lien mot de passe oublié -->
+                <HBox alignment="CENTER" spacing="5">
+                    <Label text="Mot de passe oublié ?" styleClass="link-label"/>
+                    <Label text="Contactez l'administrateur" styleClass="link-text"/>
+                </HBox>
+            </VBox>
+
+            <!-- Footer -->
+            <VBox alignment="CENTER" spacing="10">
+                <padding>
+                    <Insets top="40"/>
+                </padding>
+                
+                <Label text="Healthcare System v1.0" styleClass="footer-label"/>
+                <Label text="© 2025 ENSA Tétouan" styleClass="footer-label"/>
+            </VBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>
