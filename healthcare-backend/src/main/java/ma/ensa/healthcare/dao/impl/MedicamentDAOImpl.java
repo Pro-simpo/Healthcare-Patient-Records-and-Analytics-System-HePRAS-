@@ -69,7 +69,47 @@ public class MedicamentDAOImpl implements IMedicamentDAO {
         return null;
     }
 
-    @Override public void update(Medicament m) { /* Implementation UPDATE SQL */ }
-    @Override public void delete(Long id) { /* Implementation DELETE SQL */ }
-    @Override public List<Medicament> findByNom(String nom) { return new ArrayList<>(); }
+    @Override 
+    public void update(Medicament m) {
+        String sql = "UPDATE MEDICAMENT SET NOM=?, DOSAGE=?, INSTRUCTIONS=? WHERE ID=?";
+        try (Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, m.getNom());
+            ps.setString(2, m.getDosage());
+            ps.setString(3, m.getInstructions());
+            ps.setLong(4, m.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Erreur update Medicament", e);
+        }
+    }
+    @Override 
+    public void delete(Long id) {
+        String sql = "DELETE FROM MEDICAMENT WHERE ID=?";
+        try (Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Erreur delete Medicament", e);
+        }
+    }
+    /*@Override public List<Medicament> findByNom(String nom) { return new ArrayList<>(); }*/
+    @Override
+    public List findByNom(String nom) {
+        List list = new ArrayList<>();
+        String sql = "SELECT * FROM MEDICAMENT WHERE NOM LIKE ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + nom + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Medicament(rs.getLong("ID"), rs.getString("NOM"), 
+                                    rs.getString("DOSAGE"), rs.getString("INSTRUCTIONS")));
+            }
+        } catch (SQLException e) {
+            logger.error("Erreur findByNom Medicament", e);
+        }
+        return list;
+    }
 }

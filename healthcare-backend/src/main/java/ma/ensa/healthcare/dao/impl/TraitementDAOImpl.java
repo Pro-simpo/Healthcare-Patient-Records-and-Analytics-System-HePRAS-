@@ -48,5 +48,15 @@ public class TraitementDAOImpl implements ITraitementDAO {
         return list;
     }
 
-    @Override public void delete(Long id) { /* SQL DELETE */ }
+    @Override 
+    public void delete(Long id) {
+        String sql = "DELETE FROM TRAITEMENT WHERE ID=?";
+        try (Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Erreur delete Traitement", e);
+        }
+    }
 }

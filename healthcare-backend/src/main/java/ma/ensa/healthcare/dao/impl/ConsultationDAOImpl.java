@@ -62,10 +62,30 @@ public class ConsultationDAOImpl implements IConsultationDAO {
     }
 
     @Override
-    public void update(Consultation c) { /* Implementation similaire à save avec SQL UPDATE */ }
-
+    public void update(Consultation c) {
+        String sql = "UPDATE CONSULTATION SET DIAGNOSTIC=?, TRAITEMENT_PRESCRIT=?, NOTES_MEDECIN=? WHERE ID=?";
+        try (Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, c.getDiagnostic());
+            ps.setString(2, c.getTraitementPrescrit());
+            ps.setString(3, c.getNotesMedecin());
+            ps.setLong(4, c.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Erreur update Consultation", e);
+        }
+    }
     @Override
-    public void delete(Long id) { /* Implementation SQL DELETE */ }
+    public void delete(Long id) {
+        String sql = "DELETE FROM CONSULTATION WHERE ID=?";
+        try (Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Erreur delete Consultation", e);
+        }
+    }
 
     @Override
     public Consultation findByRendezVousId(Long rdvId) {

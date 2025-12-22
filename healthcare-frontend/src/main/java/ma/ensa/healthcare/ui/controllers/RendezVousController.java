@@ -1,0 +1,357 @@
+package ma.ensa.healthcare.ui.controllers;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import ma.ensa.healthcare.model.RendezVous;
+import ma.ensa.healthcare.model.enums.StatutRendezVous;
+import ma.ensa.healthcare.service.RendezVousService;
+import ma.ensa.healthcare.ui.dialogs.RendezVousDialog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
+
+public class RendezVousController {
+
+    private static final Logger logger = LoggerFactory.getLogger(RendezVousController.class);
+
+    @FXML private DatePicker dpFilterDate;
+    @FXML private ComboBox<String> cmbFilterStatut;
+    
+    @FXML private Label lblToday;
+    @FXML private Label lblWeek;
+    @FXML private Label lblEnAttente;
+    @FXML private Label lblAnnules;
+    
+    @FXML private TableView<RendezVous> tableRendezVous;
+    @FXML private TableColumn<RendezVous, Long> colId;
+    @FXML private TableColumn<RendezVous, String> colDateTime;
+    @FXML private TableColumn<RendezVous, String> colPatient;
+    @FXML private TableColumn<RendezVous, String> colCin;
+    @FXML private TableColumn<RendezVous, String> colMedecin;
+    @FXML private TableColumn<RendezVous, String> colSpecialite;
+    @FXML private TableColumn<RendezVous, String> colMotif;
+    @FXML private TableColumn<RendezVous, String> colStatut;
+    @FXML private TableColumn<RendezVous, Void> colActions;
+    @FXML private Label lblTotal;
+
+    private final RendezVousService rdvService = new RendezVousService();
+    private ObservableList<RendezVous> rdvList = FXCollections.observableArrayList();
+    
+    private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    @FXML
+    public void initialize() {
+        setupComboBox();
+        setupTableColumns();
+        loadRendezVous();
+        updateStatistics();
+    }
+
+    /**
+     * Configure le ComboBox des statuts
+     */
+    private void setupComboBox() {
+        cmbFilterStatut.getItems().addAll(
+            "Tous",
+            "PLANIFIE",
+            "CONFIRME",
+            "EN_ATTENTE",
+            "TERMINE",
+            "ANNULE"
+        );
+        cmbFilterStatut.setValue("Tous");
+    }
+
+    /**
+     * Configure les colonnes du TableView
+     */
+    private void setupTableColumns() {
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        
+        colDateTime.setCellValueFactory(cellData -> 
+            new javafx.beans.property.SimpleStringProperty(
+                cellData.getValue().getDateHeure().format(DATETIME_FORMATTER)));
+        
+        colPatient.setCellValueFactory(cellData -> 
+            new javafx.beans.property.SimpleStringProperty(
+                cellData.getValue().getPatient().getNom() + " " + 
+                cellData.getValue().getPatient().getPrenom()));
+        
+        colCin.setCellValueFactory(cellData -> 
+            new javafx.beans.property.SimpleStringProperty(
+                cellData.getValue().getPatient().getCin()));
+        
+        colMedecin.setCellValueFactory(cellData -> 
+            new javafx.beans.property.SimpleStringProperty(
+                "Dr. " + cellData.getValue().getMedecin().getNom()));
+        
+        colSpecialite.setCellValueFactory(cellData -> 
+            new javafx.beans.property.SimpleStringProperty(
+                cellData.getValue().getMedecin().getSpecialite()));
+        
+        colMotif.setCellValueFactory(new PropertyValueFactory<>("motif"));
+        
+        colStatut.setCellValueFactory(cellData -> 
+            new javafx.beans.property.SimpleStringProperty(
+                cellData.getValue().getStatut().name()));
+
+        // Style pour la colonne Statut
+        colStatut.setCellFactory(column -> new TableCell<RendezVous, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    switch (item) {
+                        case "CONFIRME" -> setStyle("-fx-text-fill: #4CAF50; -fx-font-weight: bold;");
+                        case "EN_ATTENTE" -> setStyle("-fx-text-fill: #FF9800; -fx-font-weight: bold;");
+                        case "ANNULE" -> setStyle("-fx-text-fill: #F44336; -fx-font-weight: bold;");
+                        case "TERMINE" -> setStyle("-fx-text-fill: #2196F3; -fx-font-weight: bold;");
+                        default -> setStyle("-fx-text-fill: #757575;");
+                    }
+                }
+            }
+        });
+
+        setupActionsColumn();
+    }
+
+    /**
+     * Configure la colonne Actions
+     */
+    private void setupActionsColumn() {
+        colActions.setCellFactory(param -> new TableCell<>() {
+            private final Button btnConfirmer = new Button("Confirmer");
+            private final Button btnAnnuler = new Button("Annuler");
+            private final Button btnModifier = new Button("Modifier");
+            private final HBox hbox = new HBox(5, btnConfirmer, btnAnnuler, btnModifier);
+
+            {
+                btnConfirmer.getStyleClass().add("action-button-success");
+                btnConfirmer.setStyle("-fx-font-size: 10px; -fx-padding: 3 8;");
+                btnConfirmer.setOnAction(event -> {
+                    RendezVous rdv = getTableView().getItems().get(getIndex());
+                    handleConfirmer(rdv);
+                });
+
+                btnAnnuler.getStyleClass().add("action-button-danger");
+                btnAnnuler.setStyle("-fx-font-size: 10px; -fx-padding: 3 8;");
+                btnAnnuler.setOnAction(event -> {
+                    RendezVous rdv = getTableView().getItems().get(getIndex());
+                    handleAnnuler(rdv);
+                });
+
+                btnModifier.getStyleClass().add("action-button");
+                btnModifier.setStyle("-fx-font-size: 10px; -fx-padding: 3 8;");
+                btnModifier.setOnAction(event -> {
+                    RendezVous rdv = getTableView().getItems().get(getIndex());
+                    handleModifier(rdv);
+                });
+
+                hbox.setAlignment(Pos.CENTER);
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    RendezVous rdv = getTableView().getItems().get(getIndex());
+                    // Masquer bouton Confirmer si déjà confirmé
+                    btnConfirmer.setVisible(rdv.getStatut() != StatutRendezVous.CONFIRME && 
+                                           rdv.getStatut() != StatutRendezVous.TERMINE);
+                    btnAnnuler.setVisible(rdv.getStatut() != StatutRendezVous.ANNULE);
+                    setGraphic(hbox);
+                }
+            }
+        });
+    }
+
+    /**
+     * Charge tous les rendez-vous
+     */
+    private void loadRendezVous() {
+        try {
+            List<RendezVous> rdvs = rdvService.obtenirToutLesRendezVous();
+            rdvList.setAll(rdvs);
+            tableRendezVous.setItems(rdvList);
+            lblTotal.setText(String.valueOf(rdvs.size()));
+            
+            logger.info("Chargement de {} rendez-vous", rdvs.size());
+            
+        } catch (Exception e) {
+            logger.error("Erreur lors du chargement des rendez-vous", e);
+            showError("Erreur", "Impossible de charger les rendez-vous");
+        }
+    }
+
+    /**
+     * Met à jour les statistiques
+     */
+    private void updateStatistics() {
+        try {
+            List<RendezVous> allRdv = rdvService.obtenirToutLesRendezVous();
+            LocalDate today = LocalDate.now();
+            LocalDate weekStart = today.minusDays(today.getDayOfWeek().getValue() - 1);
+            LocalDate weekEnd = weekStart.plusDays(6);
+
+            long countToday = allRdv.stream()
+                .filter(r -> r.getDateHeure().toLocalDate().equals(today))
+                .count();
+            
+            long countWeek = allRdv.stream()
+                .filter(r -> {
+                    LocalDate date = r.getDateHeure().toLocalDate();
+                    return !date.isBefore(weekStart) && !date.isAfter(weekEnd);
+                })
+                .count();
+            
+            long countEnAttente = allRdv.stream()
+                .filter(r -> r.getStatut() == StatutRendezVous.EN_ATTENTE)
+                .count();
+            
+            long countAnnules = allRdv.stream()
+                .filter(r -> r.getStatut() == StatutRendezVous.ANNULE)
+                .count();
+
+            lblToday.setText(String.valueOf(countToday));
+            lblWeek.setText(String.valueOf(countWeek));
+            lblEnAttente.setText(String.valueOf(countEnAttente));
+            lblAnnules.setText(String.valueOf(countAnnules));
+
+        } catch (Exception e) {
+            logger.error("Erreur lors du calcul des statistiques", e);
+        }
+    }
+
+    @FXML
+    private void handleFilter() {
+        try {
+            List<RendezVous> allRdv = rdvService.obtenirToutLesRendezVous();
+            LocalDate filterDate = dpFilterDate.getValue();
+            String filterStatut = cmbFilterStatut.getValue();
+
+            List<RendezVous> filtered = allRdv.stream()
+                .filter(rdv -> {
+                    boolean dateMatch = filterDate == null || 
+                                      rdv.getDateHeure().toLocalDate().equals(filterDate);
+                    boolean statutMatch = "Tous".equals(filterStatut) || 
+                                        rdv.getStatut().name().equals(filterStatut);
+                    return dateMatch && statutMatch;
+                })
+                .toList();
+
+            rdvList.setAll(filtered);
+            tableRendezVous.setItems(rdvList);
+            lblTotal.setText(String.valueOf(filtered.size()));
+
+        } catch (Exception e) {
+            logger.error("Erreur lors du filtrage", e);
+        }
+    }
+
+    @FXML
+    private void handleReset() {
+        dpFilterDate.setValue(null);
+        cmbFilterStatut.setValue("Tous");
+        loadRendezVous();
+    }
+
+    @FXML
+    private void handleAddRendezVous() {
+        RendezVousDialog dialog = new RendezVousDialog();
+        Optional<RendezVous> result = dialog.showAndWait();
+
+        result.ifPresent(rdv -> {
+            try {
+                rdvService.planifierRendezVous(rdv);
+                showSuccess("Succès", "Rendez-vous créé avec succès !");
+                loadRendezVous();
+                updateStatistics();
+            } catch (Exception e) {
+                logger.error("Erreur lors de la création du RDV", e);
+                showError("Erreur", "Impossible de créer le rendez-vous : " + e.getMessage());
+            }
+        });
+    }
+
+    private void handleConfirmer(RendezVous rdv) {
+        try {
+            rdv.setStatut(StatutRendezVous.CONFIRME);
+            rdvService.updateRendezVous(rdv);
+            showSuccess("Succès", "Rendez-vous confirmé !");
+            loadRendezVous();
+            updateStatistics();
+        } catch (Exception e) {
+            logger.error("Erreur confirmation RDV", e);
+            showError("Erreur", "Impossible de confirmer le RDV");
+        }
+    }
+
+    private void handleAnnuler(RendezVous rdv) {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirmation");
+        confirmation.setHeaderText("Annuler le rendez-vous");
+        confirmation.setContentText("Êtes-vous sûr de vouloir annuler ce rendez-vous ?");
+
+        confirmation.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    rdvService.annulerRendezVous(rdv.getId());
+                    showSuccess("Succès", "Rendez-vous annulé");
+                    loadRendezVous();
+                    updateStatistics();
+                } catch (Exception e) {
+                    logger.error("Erreur annulation RDV", e);
+                    showError("Erreur", "Impossible d'annuler le RDV");
+                }
+            }
+        });
+    }
+
+    private void handleModifier(RendezVous rdv) {
+        RendezVousDialog dialog = new RendezVousDialog(rdv);
+        Optional<RendezVous> result = dialog.showAndWait();
+
+        result.ifPresent(updatedRdv -> {
+            try {
+                rdvService.updateRendezVous(updatedRdv);
+                showSuccess("Succès", "Rendez-vous modifié !");
+                loadRendezVous();
+            } catch (Exception e) {
+                logger.error("Erreur modification RDV", e);
+                showError("Erreur", "Impossible de modifier le RDV");
+            }
+        });
+    }
+
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showSuccess(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+}

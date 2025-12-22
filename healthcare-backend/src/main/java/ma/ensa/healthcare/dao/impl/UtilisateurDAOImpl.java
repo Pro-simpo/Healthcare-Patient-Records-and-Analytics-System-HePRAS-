@@ -43,9 +43,44 @@ public class UtilisateurDAOImpl implements IUtilisateurDAO {
         return null;
     }
 
-    @Override public Utilisateur findById(Long id) { return null; }
-    @Override public void updatePassword(Long id, String newPassword) { /* SQL UPDATE */ }
-    @Override public void delete(Long id) { /* SQL DELETE */ }
+    @Override 
+    public Utilisateur findById(Long id) {
+        String sql = "SELECT * FROM UTILISATEUR WHERE ID = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return mapResultSetToUser(rs);
+            }
+        } catch (SQLException e) {
+            logger.error("Erreur findById Utilisateur", e);
+        }
+        return null;
+    }
+    @Override 
+    public void updatePassword(Long id, String newPassword) {
+        String sql = "UPDATE UTILISATEUR SET PASSWORD=? WHERE ID=?";
+        try (Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newPassword); // En production: hash avec BCrypt
+            ps.setLong(2, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Erreur updatePassword", e);
+        }
+    }
+    @Override 
+    public void delete(Long id) {
+        String sql = "DELETE FROM UTILISATEUR WHERE ID=?";
+        try (Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Erreur delete Utilisateur", e);
+        }
+    }
 
     private Utilisateur mapResultSetToUser(ResultSet rs) throws SQLException {
         return Utilisateur.builder()

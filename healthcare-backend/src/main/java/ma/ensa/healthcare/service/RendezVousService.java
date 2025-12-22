@@ -25,4 +25,8 @@ public class RendezVousService {
             rdvDAO.update(rdv);
         }
     }
+    public void updateRendezVous(RendezVous rdv) {
+        RendezVousValidator.validate(rdv);
+        rdvDAO.update(rdv);
+    }
 }

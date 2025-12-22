@@ -2,6 +2,7 @@ package ma.ensa.healthcare.service;
 
 import ma.ensa.healthcare.dao.impl.PatientDAOImpl;
 import ma.ensa.healthcare.dao.interfaces.IPatientDAO;
+import ma.ensa.healthcare.exception.PatientException;
 import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.validation.PatientValidator;
 import org.slf4j.Logger;
@@ -42,5 +43,17 @@ public class PatientService {
     
     public Patient getPatientById(Long id) {
         return patientDAO.findById(id);
+    }
+
+    public void updatePatient(Patient patient) {
+        PatientValidator.validate(patient);
+        patientDAO.update(patient);
+    }
+
+    public void deletePatient(Long id) {
+        if (id == null) {
+            throw new PatientException("ID invalide");
+        }
+        patientDAO.delete(id);
     }
 }

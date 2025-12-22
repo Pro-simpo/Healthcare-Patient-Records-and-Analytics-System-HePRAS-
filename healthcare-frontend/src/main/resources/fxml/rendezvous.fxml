@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
+<VBox xmlns="http://javafx.com/javafx/23"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ma.ensa.healthcare.ui.controllers.RendezVousController"
+      spacing="20">
+
+    <!-- BARRE D'ACTIONS -->
+    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="card">
+        <DatePicker fx:id="dpFilterDate" promptText="Filtrer par date" prefWidth="200"/>
+        
+        <ComboBox fx:id="cmbFilterStatut" promptText="Tous les statuts" prefWidth="180"/>
+        
+        <Button text="Filtrer" onAction="#handleFilter" styleClass="action-button" prefHeight="40">
+            <graphic>
+                <FontAwesomeIconView glyphName="FILTER" size="14" fill="WHITE"/>
+            </graphic>
+        </Button>
+        
+        <Button text="Réinitialiser" onAction="#handleReset" prefHeight="40">
+            <graphic>
+                <FontAwesomeIconView glyphName="REFRESH" size="14"/>
+            </graphic>
+        </Button>
+        
+        <Region HBox.hgrow="ALWAYS"/>
+        
+        <Button text="Nouveau RDV" onAction="#handleAddRendezVous" styleClass="action-button-success" prefHeight="40">
+            <graphic>
+                <FontAwesomeIconView glyphName="CALENDAR_PLUS_ALT" size="14" fill="WHITE"/>
+            </graphic>
+        </Button>
+    </HBox>
+
+    <!-- STATISTIQUES RAPIDES -->
+    <HBox spacing="15">
+        <VBox styleClass="card" spacing="5" prefWidth="200">
+            <Label text="Aujourd'hui" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+            <Label fx:id="lblToday" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+        </VBox>
+        
+        <VBox styleClass="card" spacing="5" prefWidth="200">
+            <Label text="Cette Semaine" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+            <Label fx:id="lblWeek" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #4CAF50;"/>
+        </VBox>
+        
+        <VBox styleClass="card" spacing="5" prefWidth="200">
+            <Label text="En Attente" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+            <Label fx:id="lblEnAttente" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #FF9800;"/>
+        </VBox>
+        
+        <VBox styleClass="card" spacing="5" prefWidth="200">
+            <Label text="Annulés (mois)" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+            <Label fx:id="lblAnnules" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #F44336;"/>
+        </VBox>
+    </HBox>
+
+    <!-- TABLE DES RENDEZ-VOUS -->
+    <VBox styleClass="card" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tableRendezVous" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn text="ID" prefWidth="60" fx:id="colId"/>
+                <TableColumn text="Date/Heure" prefWidth="150" fx:id="colDateTime"/>
+                <TableColumn text="Patient" prefWidth="200" fx:id="colPatient"/>
+                <TableColumn text="CIN" prefWidth="100" fx:id="colCin"/>
+                <TableColumn text="Médecin" prefWidth="200" fx:id="colMedecin"/>
+                <TableColumn text="Spécialité" prefWidth="150" fx:id="colSpecialite"/>
+                <TableColumn text="Motif" prefWidth="250" fx:id="colMotif"/>
+                <TableColumn text="Statut" prefWidth="120" fx:id="colStatut"/>
+                <TableColumn text="Actions" prefWidth="200" fx:id="colActions"/>
+            </columns>
+        </TableView>
+        
+        <!-- PAGINATION -->
+        <HBox alignment="CENTER" spacing="10" style="-fx-padding: 15;">
+            <Label text="Total: " style="-fx-font-weight: bold;"/>
+            <Label fx:id="lblTotal" text="0" style="-fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+            <Label text="rendez-vous"/>
+        </HBox>
+    </VBox>
+
+</VBox>
