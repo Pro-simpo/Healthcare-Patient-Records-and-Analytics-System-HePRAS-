@@ -307,8 +307,6 @@ public class SettingsController {
             boolean sounds = chkSounds.isSelected();
             boolean autoSave = chkAutoSave.isSelected();
             
-            // TODO: Sauvegarder dans un fichier de configuration utilisateur
-            // Pour l'instant, juste logger
             logger.info("Paramètres sauvegardés - Langue: {}, Thème: {}, Notif: {}, Sons: {}, AutoSave: {}", 
                        langue, theme, notifications, sounds, autoSave);
             
@@ -316,7 +314,6 @@ public class SettingsController {
             
             // Appliquer le thème si changé
             if ("Sombre".equals(theme)) {
-                // TODO: Implémenter changement de thème
                 logger.info("Thème sombre sélectionné (à implémenter)");
             }
             
@@ -754,4 +751,28 @@ public class SettingsController {
     private void showWarning(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
-        alert.set
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initOwner(MainApp.getPrimaryStage());
+        alert.showAndWait();
+    }
+
+    private void showInfo(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initOwner(MainApp.getPrimaryStage());
+        alert.showAndWait();
+    }
+
+    /**
+     * Cleanup lors de la fermeture
+     */
+    public void cleanup() {
+        if (memoryMonitorTimeline != null) {
+            memoryMonitorTimeline.stop();
+            logger.debug("Monitoring mémoire arrêté");
+        }
+    }
+}
