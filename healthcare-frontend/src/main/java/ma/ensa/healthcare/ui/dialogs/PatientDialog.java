@@ -156,7 +156,7 @@ public class PatientDialog extends Dialog<Patient> {
         txtAdresse.setText(patient.getAdresse());
         dpDateNaissance.setValue(patient.getDateNaissance());
         cmbSexe.setValue(patient.getSexe());
-        txtAntecedents.setText(patient.getAntecedentsMedicaux());
+        txtAntecedents.setText(patient.getAllergies());
     }
 
     /**
@@ -208,8 +208,8 @@ public class PatientDialog extends Dialog<Patient> {
                 .telephone(txtTelephone.getText().trim())
                 .email(txtEmail.getText().trim())
                 .adresse(txtAdresse.getText().trim())
-                .antecedentsMedicaux(txtAntecedents.getText().trim())
-                .dateCreation(LocalDate.now());
+                .allergies(txtAntecedents.getText().trim())
+                .dateInscription(LocalDate.now());
 
         // Si modification, conserver l'ID
         if (patientToEdit != null) {

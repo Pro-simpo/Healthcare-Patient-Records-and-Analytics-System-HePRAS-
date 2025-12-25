@@ -87,4 +87,11 @@ public class HikariCPConfig {
             logger.error("Failed to connect!", e);
         }
     }
+
+    public static void shutdown() {
+        if (dataSource != null && !dataSource.isClosed()) {
+            dataSource.close();
+            logger.info("Pool de connexions HikariCP fermé");
+        }
+    }
 }

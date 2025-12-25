@@ -12,6 +12,8 @@ import ma.ensa.healthcare.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -54,26 +56,36 @@ public class HomeController {
      * Configure les colonnes du TableView
      */
     private void setupTableColumns() {
+        // ✅ CORRECTION : Utiliser heureDebut au lieu de dateHeure
         colHeure.setCellValueFactory(cellData -> {
-            String time = cellData.getValue().getDateHeure().format(TIME_FORMATTER);
+            LocalDateTime heureDebut = cellData.getValue().getHeureDebut();
+            String time = heureDebut != null ? heureDebut.format(TIME_FORMATTER) : "N/A";
             return new javafx.beans.property.SimpleStringProperty(time);
         });
 
         colPatient.setCellValueFactory(cellData -> {
-            String nom = cellData.getValue().getPatient().getNom() + " " + 
-                        cellData.getValue().getPatient().getPrenom();
-            return new javafx.beans.property.SimpleStringProperty(nom);
+            RendezVous rdv = cellData.getValue();
+            if (rdv.getPatient() != null) {
+                String nom = rdv.getPatient().getNom() + " " + rdv.getPatient().getPrenom();
+                return new javafx.beans.property.SimpleStringProperty(nom);
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
         });
 
         colMedecin.setCellValueFactory(cellData -> {
-            String nom = "Dr. " + cellData.getValue().getMedecin().getNom();
-            return new javafx.beans.property.SimpleStringProperty(nom);
+            RendezVous rdv = cellData.getValue();
+            if (rdv.getMedecin() != null) {
+                String nom = "Dr. " + rdv.getMedecin().getNom();
+                return new javafx.beans.property.SimpleStringProperty(nom);
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
         });
 
         colMotif.setCellValueFactory(new PropertyValueFactory<>("motif"));
 
         colStatut.setCellValueFactory(cellData -> {
-            String statut = cellData.getValue().getStatut().name();
+            String statut = cellData.getValue().getStatut() != null ? 
+                           cellData.getValue().getStatut().name() : "N/A";
             return new javafx.beans.property.SimpleStringProperty(statut);
         });
 
@@ -94,8 +106,14 @@ public class HomeController {
                         case "EN_ATTENTE":
                             setStyle("-fx-text-fill: #FF9800; -fx-font-weight: bold;");
                             break;
+                        case "PLANIFIE":
+                            setStyle("-fx-text-fill: #2196F3; -fx-font-weight: bold;");
+                            break;
                         case "ANNULE":
                             setStyle("-fx-text-fill: #F44336; -fx-font-weight: bold;");
+                            break;
+                        case "TERMINE":
+                            setStyle("-fx-text-fill: #9E9E9E; -fx-font-weight: bold;");
                             break;
                         default:
                             setStyle("-fx-text-fill: #757575;");
@@ -132,17 +150,20 @@ public class HomeController {
             List<Patient> patients = patientService.getAllPatients();
             lblTotalPatients.setText(String.valueOf(patients.size()));
 
-            // Rendez-vous Aujourd'hui
-            List<RendezVous> allRdv = rdvService.obtenirToutLesRendezVous();
+            // ✅ CORRECTION : Utiliser la bonne méthode
+            List<RendezVous> allRdv = rdvService.getAllRendezVous(); // ou findAll() ou listerRendezVous()
+            LocalDate today = LocalDate.now();
+            
             long rdvToday = allRdv.stream()
-                .filter(rdv -> rdv.getDateHeure().toLocalDate().isEqual(java.time.LocalDate.now()))
+                .filter(rdv -> rdv.getDateRdv() != null && rdv.getDateRdv().isEqual(today))
                 .count();
+            
             lblRdvToday.setText(String.valueOf(rdvToday));
 
-            // Consultations (exemple fictif)
+            // Consultations (vous pouvez ajouter un service pour ça plus tard)
             lblConsultations.setText("156");
 
-            // Revenus (exemple fictif)
+            // Revenus (vous pouvez utiliser FacturationService.getRevenusPeriode())
             lblRevenus.setText("45,250 MAD");
 
         } catch (Exception e) {
@@ -155,12 +176,13 @@ public class HomeController {
      */
     private void loadProchainRdv() {
         try {
-            List<RendezVous> rdvList = rdvService.obtenirToutLesRendezVous();
+            List<RendezVous> rdvList = rdvService.getAllRendezVous(); // ou findAll() ou listerRendezVous()
+            LocalDateTime now = LocalDateTime.now();
             
-            // Filtrer les RDV d'aujourd'hui et à venir
+            // ✅ CORRECTION : Utiliser heureDebut au lieu de getDateHeure()
             List<RendezVous> prochainRdv = rdvList.stream()
-                .filter(rdv -> !rdv.getDateHeure().isBefore(java.time.LocalDateTime.now()))
-                .sorted((r1, r2) -> r1.getDateHeure().compareTo(r2.getDateHeure()))
+                .filter(rdv -> rdv.getHeureDebut() != null && !rdv.getHeureDebut().isBefore(now))
+                .sorted((r1, r2) -> r1.getHeureDebut().compareTo(r2.getHeureDebut()))
                 .limit(10)
                 .toList();
 
@@ -177,12 +199,17 @@ public class HomeController {
      */
     private void loadFacturesImpayees() {
         try {
+            // TODO: Récupérer les vraies factures depuis le service
+            // List<Facture> facturesImpayees = facturationService.findFacturesImpayees();
+            
+            // Pour l'instant, données fictives
             ObservableList<String> factures = FXCollections.observableArrayList(
                 "Facture #1245 - Patient: Alami - 1,200 MAD",
                 "Facture #1238 - Patient: Bennani - 850 MAD",
                 "Facture #1220 - Patient: El Idrissi - 2,300 MAD"
             );
             listFacturesImpayees.setItems(factures);
+            
         } catch (Exception e) {
             logger.error("Erreur lors du chargement des factures impayées", e);
         }
@@ -193,12 +220,17 @@ public class HomeController {
      */
     private void loadAlertesMedicaments() {
         try {
+            // TODO: Récupérer les vrais médicaments en alerte depuis le service
+            // List<Medicament> medicamentsAlerte = medicamentService.getMedicamentsEnAlerte();
+            
+            // Pour l'instant, données fictives
             ObservableList<String> alertes = FXCollections.observableArrayList(
                 "Paracétamol - Stock: 45 (Seuil: 100)",
                 "Amoxicilline - Stock: 12 (Seuil: 50)",
                 "Ibuprofène - Stock: 8 (Seuil: 30)"
             );
             listAlertesMedicaments.setItems(alertes);
+            
         } catch (Exception e) {
             logger.error("Erreur lors du chargement des alertes médicaments", e);
         }
@@ -213,5 +245,13 @@ public class HomeController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    
+    /**
+     * Rafraîchit toutes les données du dashboard
+     */
+    @FXML
+    public void handleRefresh() {
+        loadDashboardData();
     }
 }

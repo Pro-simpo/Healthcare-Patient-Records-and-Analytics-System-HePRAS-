@@ -17,7 +17,9 @@ public class RendezVousDialog extends Dialog<RendezVous> {
     private DatePicker dpDate;
     private Spinner<Integer> spinnerHeure;
     private Spinner<Integer> spinnerMinute;
+    private Spinner<Integer> spinnerDuree; // Durée en minutes
     private TextArea txtMotif;
+    private TextField txtSalle;
     private ComboBox<StatutRendezVous> cmbStatut;
 
     private final PatientService patientService = new PatientService();
@@ -107,6 +109,20 @@ public class RendezVousDialog extends Dialog<RendezVous> {
             spinnerHeure, new Label(":"), spinnerMinute);
         grid.add(hboxTime, 1, row++);
 
+        // ✅ AJOUT : Durée du rendez-vous
+        grid.add(new Label("Durée (minutes) *:"), 0, row);
+        spinnerDuree = new Spinner<>(15, 120, 30, 15);
+        spinnerDuree.setEditable(true);
+        spinnerDuree.setPrefWidth(100);
+        grid.add(spinnerDuree, 1, row++);
+
+        // ✅ AJOUT : Salle
+        grid.add(new Label("Salle:"), 0, row);
+        txtSalle = new TextField();
+        txtSalle.setPromptText("Ex: C-101");
+        txtSalle.setPrefWidth(150);
+        grid.add(txtSalle, 1, row++);
+
         // Motif
         grid.add(new Label("Motif:"), 0, row);
         txtMotif = new TextArea();
@@ -177,10 +193,29 @@ public class RendezVousDialog extends Dialog<RendezVous> {
     private void fillForm(RendezVous rdv) {
         cmbPatient.setValue(rdv.getPatient());
         cmbMedecin.setValue(rdv.getMedecin());
-        dpDate.setValue(rdv.getDateHeure().toLocalDate());
-        spinnerHeure.getValueFactory().setValue(rdv.getDateHeure().getHour());
-        spinnerMinute.getValueFactory().setValue(rdv.getDateHeure().getMinute());
+        
+        // ✅ CORRECTION : Utiliser dateRdv et heureDebut
+        if (rdv.getDateRdv() != null) {
+            dpDate.setValue(rdv.getDateRdv());
+        }
+        
+        if (rdv.getHeureDebut() != null) {
+            spinnerHeure.getValueFactory().setValue(rdv.getHeureDebut().getHour());
+            spinnerMinute.getValueFactory().setValue(rdv.getHeureDebut().getMinute());
+            
+            // ✅ Calculer la durée si heureFin est disponible
+            if (rdv.getHeureFin() != null) {
+                long dureeMinutes = java.time.Duration.between(
+                    rdv.getHeureDebut(), rdv.getHeureFin()
+                ).toMinutes();
+                spinnerDuree.getValueFactory().setValue((int) dureeMinutes);
+            }
+        }
+        
         txtMotif.setText(rdv.getMotif());
+        if (rdv.getSalle() != null) {
+            txtSalle.setText(rdv.getSalle());
+        }
         cmbStatut.setValue(rdv.getStatut());
     }
 
@@ -195,7 +230,7 @@ public class RendezVousDialog extends Dialog<RendezVous> {
         }
         if (dpDate.getValue() == null) {
             errors.append("• Veuillez sélectionner une date\n");
-        } else if (dpDate.getValue().isBefore(LocalDate.now())) {
+        } else if (dpDate.getValue().isBefore(LocalDate.now()) && rdvToEdit == null) {
             errors.append("• La date ne peut pas être dans le passé\n");
         }
 
@@ -212,20 +247,31 @@ public class RendezVousDialog extends Dialog<RendezVous> {
     }
 
     private RendezVous createRendezVousFromForm() {
-        LocalDateTime dateTime = LocalDateTime.of(
+        // ✅ CORRECTION : Créer heureDebut et heureFin
+        LocalDateTime heureDebut = LocalDateTime.of(
             dpDate.getValue(),
             LocalTime.of(spinnerHeure.getValue(), spinnerMinute.getValue())
         );
+        
+        LocalDateTime heureFin = heureDebut.plusMinutes(spinnerDuree.getValue());
 
         RendezVous.RendezVousBuilder builder = RendezVous.builder()
                 .patient(cmbPatient.getValue())
                 .medecin(cmbMedecin.getValue())
-                .dateHeure(dateTime)
+                .dateRdv(dpDate.getValue())          // ✅ LocalDate
+                .heureDebut(heureDebut)              // ✅ LocalDateTime
+                .heureFin(heureFin)                  // ✅ LocalDateTime
                 .motif(txtMotif.getText().trim())
-                .statut(cmbStatut.getValue());
+                .salle(txtSalle.getText().trim())
+                .statut(cmbStatut.getValue())
+                .dateCreation(LocalDate.now());      // ✅ Date de création
 
         if (rdvToEdit != null) {
             builder.id(rdvToEdit.getId());
+            // Garder la date de création originale si c'est une modification
+            if (rdvToEdit.getDateCreation() != null) {
+                builder.dateCreation(rdvToEdit.getDateCreation());
+            }
         }
 
         return builder.build();

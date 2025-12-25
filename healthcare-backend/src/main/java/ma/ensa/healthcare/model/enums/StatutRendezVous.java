@@ -4,6 +4,5 @@ public enum StatutRendezVous {
     PLANIFIE,
     CONFIRME,
     ANNULE,
-    TERMINE,
-    EN_ATTENTE
+    TERMINE
 }

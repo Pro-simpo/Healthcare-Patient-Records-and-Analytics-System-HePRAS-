@@ -26,10 +26,14 @@ C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-S
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\dao\interfaces\ITraitementDAO.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\dto\PageResult.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\facade\PatientFacade.java
+C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\model\enums\ModePaiement.java
+C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\exception\UtilisateurException.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\exception\RendezVousException.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\util\ExportUtils.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\util\PaginationHelper.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\service\AnalyticsService.java
+C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\dto\TraitementDTO.java
+C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\validation\MedecinValidator.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\model\Departement.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\service\FacturationService.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\exception\FacturationException.java
@@ -38,6 +42,7 @@ C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-S
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\model\enums\Role.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\config\DatabaseConfig.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\dao\impl\ConsultationDAOImpl.java
+C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\service\TraitementService.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\dao\interfaces\IMedecinDAO.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\validation\RendezVousValidator.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\config\PropertyManager.java
@@ -67,6 +72,7 @@ C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-S
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\dao\impl\PatientDAOImpl.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\dao\interfaces\IRendezVousDAO.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\model\Consultation.java
+C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\util\TestDataCleaner.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\config\HikariCPConfig.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\util\CacheManager.java
 C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-backend\src\main\java\ma\ensa\healthcare\dao\interfaces\IUtilisateurDAO.java

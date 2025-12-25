@@ -324,7 +324,7 @@ VALUES (seq_utilisateur.NEXTVAL, 'receptionniste',
 INSERT INTO UTILISATEUR (id_utilisateur, username, password_hash, email, role, statut, date_creation)
 VALUES (seq_utilisateur.NEXTVAL, 'admin', 
         'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', -- Hash de 'Admin2024#'
-        'admin@hospital.ma', 'ADMIN', 'ACTIF', SYSDATE);
+        'admin@hospital.ma', 'ADMIN', 'ACTIF', SYSDATE); 
 
 -- Utilisateur patient (Patient Hassani)
 INSERT INTO UTILISATEUR (id_utilisateur, username, password_hash, email, role, statut, id_patient, date_creation)

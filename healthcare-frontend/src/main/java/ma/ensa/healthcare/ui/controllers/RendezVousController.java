@@ -65,7 +65,6 @@ public class RendezVousController {
             "Tous",
             "PLANIFIE",
             "CONFIRME",
-            "EN_ATTENTE",
             "TERMINE",
             "ANNULE"
         );
@@ -78,32 +77,53 @@ public class RendezVousController {
     private void setupTableColumns() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         
-        colDateTime.setCellValueFactory(cellData -> 
-            new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getDateHeure().format(DATETIME_FORMATTER)));
+        // ✅ CORRECTION : Utiliser heureDebut au lieu de getDateHeure()
+        colDateTime.setCellValueFactory(cellData -> {
+            LocalDateTime heureDebut = cellData.getValue().getHeureDebut();
+            String formatted = heureDebut != null ? heureDebut.format(DATETIME_FORMATTER) : "N/A";
+            return new javafx.beans.property.SimpleStringProperty(formatted);
+        });
         
-        colPatient.setCellValueFactory(cellData -> 
-            new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getPatient().getNom() + " " + 
-                cellData.getValue().getPatient().getPrenom()));
+        colPatient.setCellValueFactory(cellData -> {
+            RendezVous rdv = cellData.getValue();
+            if (rdv.getPatient() != null) {
+                return new javafx.beans.property.SimpleStringProperty(
+                    rdv.getPatient().getNom() + " " + rdv.getPatient().getPrenom());
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
+        });
         
-        colCin.setCellValueFactory(cellData -> 
-            new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getPatient().getCin()));
+        colCin.setCellValueFactory(cellData -> {
+            RendezVous rdv = cellData.getValue();
+            if (rdv.getPatient() != null) {
+                return new javafx.beans.property.SimpleStringProperty(rdv.getPatient().getCin());
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
+        });
         
-        colMedecin.setCellValueFactory(cellData -> 
-            new javafx.beans.property.SimpleStringProperty(
-                "Dr. " + cellData.getValue().getMedecin().getNom()));
+        colMedecin.setCellValueFactory(cellData -> {
+            RendezVous rdv = cellData.getValue();
+            if (rdv.getMedecin() != null) {
+                return new javafx.beans.property.SimpleStringProperty("Dr. " + rdv.getMedecin().getNom());
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
+        });
         
-        colSpecialite.setCellValueFactory(cellData -> 
-            new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getMedecin().getSpecialite()));
+        colSpecialite.setCellValueFactory(cellData -> {
+            RendezVous rdv = cellData.getValue();
+            if (rdv.getMedecin() != null) {
+                return new javafx.beans.property.SimpleStringProperty(rdv.getMedecin().getSpecialite());
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
+        });
         
         colMotif.setCellValueFactory(new PropertyValueFactory<>("motif"));
         
-        colStatut.setCellValueFactory(cellData -> 
-            new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getStatut().name()));
+        colStatut.setCellValueFactory(cellData -> {
+            String statut = cellData.getValue().getStatut() != null ? 
+                           cellData.getValue().getStatut().name() : "N/A";
+            return new javafx.beans.property.SimpleStringProperty(statut);
+        });
 
         // Style pour la colonne Statut
         colStatut.setCellFactory(column -> new TableCell<RendezVous, String>() {
@@ -117,9 +137,9 @@ public class RendezVousController {
                     setText(item);
                     switch (item) {
                         case "CONFIRME" -> setStyle("-fx-text-fill: #4CAF50; -fx-font-weight: bold;");
-                        case "EN_ATTENTE" -> setStyle("-fx-text-fill: #FF9800; -fx-font-weight: bold;");
+                        case "PLANIFIE" -> setStyle("-fx-text-fill: #2196F3; -fx-font-weight: bold;");
                         case "ANNULE" -> setStyle("-fx-text-fill: #F44336; -fx-font-weight: bold;");
-                        case "TERMINE" -> setStyle("-fx-text-fill: #2196F3; -fx-font-weight: bold;");
+                        case "TERMINE" -> setStyle("-fx-text-fill: #9E9E9E; -fx-font-weight: bold;");
                         default -> setStyle("-fx-text-fill: #757575;");
                     }
                 }
@@ -186,7 +206,8 @@ public class RendezVousController {
      */
     private void loadRendezVous() {
         try {
-            List<RendezVous> rdvs = rdvService.obtenirToutLesRendezVous();
+            // ✅ CORRECTION : Utiliser obtenirTousLesRendezVous() ou getAllRendezVous()
+            List<RendezVous> rdvs = rdvService.obtenirTousLesRendezVous();
             rdvList.setAll(rdvs);
             tableRendezVous.setItems(rdvList);
             lblTotal.setText(String.valueOf(rdvs.size()));
@@ -204,24 +225,25 @@ public class RendezVousController {
      */
     private void updateStatistics() {
         try {
-            List<RendezVous> allRdv = rdvService.obtenirToutLesRendezVous();
+            List<RendezVous> allRdv = rdvService.obtenirTousLesRendezVous();
             LocalDate today = LocalDate.now();
             LocalDate weekStart = today.minusDays(today.getDayOfWeek().getValue() - 1);
             LocalDate weekEnd = weekStart.plusDays(6);
 
+            // ✅ CORRECTION : Utiliser dateRdv au lieu de getDateHeure()
             long countToday = allRdv.stream()
-                .filter(r -> r.getDateHeure().toLocalDate().equals(today))
+                .filter(r -> r.getDateRdv() != null && r.getDateRdv().equals(today))
                 .count();
             
             long countWeek = allRdv.stream()
                 .filter(r -> {
-                    LocalDate date = r.getDateHeure().toLocalDate();
-                    return !date.isBefore(weekStart) && !date.isAfter(weekEnd);
+                    LocalDate date = r.getDateRdv();
+                    return date != null && !date.isBefore(weekStart) && !date.isAfter(weekEnd);
                 })
                 .count();
             
             long countEnAttente = allRdv.stream()
-                .filter(r -> r.getStatut() == StatutRendezVous.EN_ATTENTE)
+                .filter(r -> r.getStatut() == StatutRendezVous.PLANIFIE)
                 .count();
             
             long countAnnules = allRdv.stream()
@@ -241,16 +263,17 @@ public class RendezVousController {
     @FXML
     private void handleFilter() {
         try {
-            List<RendezVous> allRdv = rdvService.obtenirToutLesRendezVous();
+            List<RendezVous> allRdv = rdvService.obtenirTousLesRendezVous();
             LocalDate filterDate = dpFilterDate.getValue();
             String filterStatut = cmbFilterStatut.getValue();
 
+            // ✅ CORRECTION : Utiliser dateRdv au lieu de getDateHeure()
             List<RendezVous> filtered = allRdv.stream()
                 .filter(rdv -> {
                     boolean dateMatch = filterDate == null || 
-                                      rdv.getDateHeure().toLocalDate().equals(filterDate);
+                                      (rdv.getDateRdv() != null && rdv.getDateRdv().equals(filterDate));
                     boolean statutMatch = "Tous".equals(filterStatut) || 
-                                        rdv.getStatut().name().equals(filterStatut);
+                                        (rdv.getStatut() != null && rdv.getStatut().name().equals(filterStatut));
                     return dateMatch && statutMatch;
                 })
                 .toList();
@@ -311,7 +334,8 @@ public class RendezVousController {
         confirmation.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    rdvService.annulerRendezVous(rdv.getId());
+                    // ✅ CORRECTION : Ajouter le motif d'annulation
+                    rdvService.annulerRendezVous(rdv.getId(), "Annulé par l'utilisateur");
                     showSuccess("Succès", "Rendez-vous annulé");
                     loadRendezVous();
                     updateStatistics();
@@ -332,6 +356,7 @@ public class RendezVousController {
                 rdvService.updateRendezVous(updatedRdv);
                 showSuccess("Succès", "Rendez-vous modifié !");
                 loadRendezVous();
+                updateStatistics();
             } catch (Exception e) {
                 logger.error("Erreur modification RDV", e);
                 showError("Erreur", "Impossible de modifier le RDV");

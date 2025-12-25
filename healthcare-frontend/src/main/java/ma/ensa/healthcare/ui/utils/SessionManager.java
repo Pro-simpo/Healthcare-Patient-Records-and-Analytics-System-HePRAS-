@@ -63,7 +63,7 @@ public class SessionManager {
      * Vérifie si l'utilisateur est un réceptionniste
      */
     public static boolean isReceptionniste() {
-        return hasRole(Role.SECRETAIRE);
+        return hasRole(Role.RECEPTIONNISTE);
     }
 
     /**
