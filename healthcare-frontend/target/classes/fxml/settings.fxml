@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/23"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ma.ensa.healthcare.ui.controllers.SettingsController"
+            fitToWidth="true" style="-fx-background-color: transparent;">
+
+    <VBox spacing="20">
+        
+        <!-- SECTION: Profil Utilisateur -->
+        <VBox styleClass="card" spacing="15">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <FontAwesomeIconView glyphName="USER" size="20" fill="#2196F3"/>
+                <Label text="Profil Utilisateur" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            </HBox>
+            
+            <Separator/>
+            
+            <GridPane hgap="15" vgap="15">
+                <padding>
+                    <Insets left="20"/>
+                </padding>
+                
+                <!-- Nom d'utilisateur -->
+                <Label text="Nom d'utilisateur:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                       style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblUsername" text="admin" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                
+                <!-- Email -->
+                <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                       style="-fx-font-weight: bold;"/>
+                <TextField fx:id="txtEmail" promptText="email@example.com" 
+                          GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="300"/>
+                
+                <!-- Rôle -->
+                <Label text="Rôle:" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                       style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblRole" text="Administrateur" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                       style="-fx-text-fill: #2196F3;"/>
+                
+                <!-- Dernière connexion -->
+                <Label text="Dernière connexion:" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                       style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblLastLogin" text="25/12/2024 14:30" 
+                       GridPane.columnIndex="1" GridPane.rowIndex="3"
+                       style="-fx-text-fill: #757575;"/>
+            </GridPane>
+            
+            <HBox spacing="10">
+                <padding>
+                    <Insets left="20" top="10"/>
+                </padding>
+                <Button text="Modifier le Profil" styleClass="action-button" prefHeight="35"
+                        onAction="#handleEditProfile">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="EDIT" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
+                
+                <Button text="Changer le Mot de Passe" styleClass="action-button" prefHeight="35"
+                        onAction="#handleChangePassword">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="LOCK" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <!-- SECTION: Paramètres de l'Application -->
+        <VBox styleClass="card" spacing="15">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <FontAwesomeIconView glyphName="COG" size="20" fill="#4CAF50"/>
+                <Label text="Paramètres de l'Application" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            </HBox>
+            
+            <Separator/>
+            
+            <VBox spacing="15">
+                <padding>
+                    <Insets left="20"/>
+                </padding>
+                
+                <!-- Langue -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Langue:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
+                    <ComboBox fx:id="cmbLanguage" prefWidth="200">
+                        <items>
+                            <javafx.collections.FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Français"/>
+                                <String fx:value="العربية"/>
+                                <String fx:value="English"/>
+                            </javafx.collections.FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                
+                <!-- Thème -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Thème:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
+                    <ComboBox fx:id="cmbTheme" prefWidth="200">
+                        <items>
+                            <javafx.collections.FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Clair"/>
+                                <String fx:value="Sombre"/>
+                                <String fx:value="Automatique"/>
+                            </javafx.collections.FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                
+                <!-- Notifications -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Notifications:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
+                    <CheckBox fx:id="chkNotifications" text="Activer les notifications"/>
+                </HBox>
+                
+                <!-- Sons -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Sons:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
+                    <CheckBox fx:id="chkSounds" text="Activer les sons"/>
+                </HBox>
+                
+                <!-- Auto-save -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Sauvegarde auto:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
+                    <CheckBox fx:id="chkAutoSave" text="Sauvegarder automatiquement"/>
+                </HBox>
+            </VBox>
+            
+            <HBox spacing="10">
+                <padding>
+                    <Insets left="20" top="10"/>
+                </padding>
+                <Button text="Sauvegarder les Paramètres" styleClass="action-button-success" 
+                        prefHeight="35" onAction="#handleSaveSettings">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="SAVE" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <!-- SECTION: Base de Données -->
+        <VBox styleClass="card" spacing="15">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <FontAwesomeIconView glyphName="DATABASE" size="20" fill="#FF9800"/>
+                <Label text="Base de Données" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            </HBox>
+            
+            <Separator/>
+            
+            <VBox spacing="15">
+                <padding>
+                    <Insets left="20"/>
+                </padding>
+                
+                <!-- Statut connexion -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Statut:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
+                    <Label fx:id="lblDbStatus" text="● Connecté" 
+                           style="-fx-text-fill: #4CAF50; -fx-font-weight: bold;"/>
+                </HBox>
+                
+                <!-- URL -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="URL:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
+                    <Label fx:id="lblDbUrl" text="jdbc:oracle:thin:@localhost:1521/XEPDB1"
+                           style="-fx-text-fill: #757575; -fx-font-size: 12px;"/>
+                </HBox>
+                
+                <!-- Pool de connexions -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Pool de connexions:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
+                    <Label fx:id="lblPoolInfo" text="5/20 actives"
+                           style="-fx-text-fill: #757575;"/>
+                </HBox>
+            </VBox>
+            
+            <HBox spacing="10">
+                <padding>
+                    <Insets left="20" top="10"/>
+                </padding>
+                <Button text="Tester la Connexion" styleClass="action-button" prefHeight="35"
+                        onAction="#handleTestConnection">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="PLUG" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
+                
+                <Button text="Exporter la Base" styleClass="action-button" prefHeight="35"
+                        onAction="#handleExportDatabase">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="DOWNLOAD" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
+                
+                <Button text="Sauvegarder" styleClass="action-button-success" prefHeight="35"
+                        onAction="#handleBackupDatabase">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="SAVE" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <!-- SECTION: Système -->
+        <VBox styleClass="card" spacing="15">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <FontAwesomeIconView glyphName="INFO_CIRCLE" size="20" fill="#9C27B0"/>
+                <Label text="Informations Système" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            </HBox>
+            
+            <Separator/>
+            
+            <GridPane hgap="15" vgap="15">
+                <padding>
+                    <Insets left="20"/>
+                </padding>
+                
+                <!-- Version -->
+                <Label text="Version:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                       style="-fx-font-weight: bold; -fx-min-width: 150;"/>
+                <Label text="1.0.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                
+                <!-- Java Version -->
+                <Label text="Java Version:" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                       style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblJavaVersion" text="17.0.9" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                
+                <!-- JavaFX Version -->
+                <Label text="JavaFX Version:" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                       style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblJavaFxVersion" text="21.0.1" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                
+                <!-- OS -->
+                <Label text="Système:" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                       style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblOs" text="Windows 11" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                
+                <!-- Mémoire -->
+                <Label text="Mémoire utilisée:" GridPane.columnIndex="0" GridPane.rowIndex="4"
+                       style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblMemory" text="256 MB / 1024 MB" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            </GridPane>
+            
+            <HBox spacing="10">
+                <padding>
+                    <Insets left="20" top="10"/>
+                </padding>
+                <Button text="Vérifier les Mises à Jour" styleClass="action-button" prefHeight="35"
+                        onAction="#handleCheckUpdates">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="REFRESH" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
+                
+                <Button text="Afficher les Logs" styleClass="action-button" prefHeight="35"
+                        onAction="#handleShowLogs">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="FILE_TEXT" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <!-- SECTION: Actions Système -->
+        <VBox styleClass="card" spacing="15">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <FontAwesomeIconView glyphName="EXCLAMATION_TRIANGLE" size="20" fill="#F44336"/>
+                <Label text="Actions Système" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            </HBox>
+            
+            <Separator/>
+            
+            <VBox spacing="10">
+                <padding>
+                    <Insets left="20"/>
+                </padding>
+                
+                <Label text="⚠️ Attention: Ces actions peuvent affecter le système"
+                       style="-fx-text-fill: #F44336; -fx-font-weight: bold;"/>
+            </VBox>
+            
+            <HBox spacing="10">
+                <padding>
+                    <Insets left="20" top="10"/>
+                </padding>
+                <Button text="Vider le Cache" styleClass="action-button" prefHeight="35"
+                        onAction="#handleClearCache">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="TRASH" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
+                
+                <Button text="Réinitialiser les Paramètres" styleClass="action-button" prefHeight="35"
+                        onAction="#handleResetSettings">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="UNDO" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
+                
+                <Button text="Nettoyer les Logs" styleClass="action-button-danger" prefHeight="35"
+                        onAction="#handleCleanLogs">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="ERASER" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <!-- SECTION: À Propos -->
+        <VBox styleClass="card" spacing="15" alignment="CENTER">
+            <FontAwesomeIconView glyphName="HEARTBEAT" size="60" fill="#2196F3"/>
+            
+            <Label text="Healthcare System" 
+                   style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            
+            <Label text="Version 1.0.0" 
+                   style="-fx-font-size: 14px; -fx-text-fill: #757575;"/>
+            
+            <Label text="© 2025 ENSA Tétouan" 
+                   style="-fx-font-size: 12px; -fx-text-fill: #BDBDBD;"/>
+            
+            <HBox spacing="15" alignment="CENTER">
+                <padding>
+                    <Insets top="15"/>
+                </padding>
+                <Hyperlink text="Documentation" 
+                          style="-fx-text-fill: #2196F3;"
+                          onAction="#handleOpenDocumentation"/>
+                <Label text="|" style="-fx-text-fill: #BDBDBD;"/>
+                <Hyperlink text="Support" 
+                          style="-fx-text-fill: #2196F3;"
+                          onAction="#handleOpenSupport"/>
+                <Label text="|" style="-fx-text-fill: #BDBDBD;"/>
+                <Hyperlink text="Licence" 
+                          style="-fx-text-fill: #2196F3;"
+                          onAction="#handleOpenLicense"/>
+            </HBox>
+        </VBox>
+
+    </VBox>
+</ScrollPane>

@@ -1,13 +1,15 @@
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\PatientsController.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\ConsultationsController.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\FacturesController.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\MedecinsController.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\RendezVousController.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\SettingsController.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\LoginController.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\MainApp.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\utils\SessionManager.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\HomeController.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\dialogs\PatientDialog.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\DashboardController.java
-C:\Users\hp\OneDrive\Documents\Github\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\dialogs\RendezVousDialog.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\MedecinsController.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\RendezVousController.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\ConsultationsController.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\LoginController.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\DashboardController.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\dialogs\PatientDialog.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\dialogs\PaiementDialog.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\SettingsController.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\HomeController.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\PatientsController.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\utils\SessionManager.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\controllers\FacturesController.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\dialogs\ConsultationDetailsDialog.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\dialogs\RendezVousDialog.java
+C:\Users\hp\OneDrive\Documents\GCSE\GCSE_2\S3\Bases de données\Projet healthcare\Healthcare-Patient-Records-and-Analytics-System-HePRAS-\healthcare-frontend\src\main\java\ma\ensa\healthcare\ui\MainApp.java
