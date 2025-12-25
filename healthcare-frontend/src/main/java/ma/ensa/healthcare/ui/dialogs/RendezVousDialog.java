@@ -97,7 +97,7 @@ public class RendezVousDialog extends Dialog<RendezVous> {
         // Heure
         grid.add(new Label("Heure *:"), 0, row);
         
-        spinnerHeure = new Spinner<>(8, 18, 9);
+        spinnerHeure = new Spinner<>(8, 22, 9);
         spinnerHeure.setEditable(true);
         spinnerHeure.setPrefWidth(80);
         
