@@ -26,24 +26,20 @@
                     <Insets left="20"/>
                 </padding>
                 
-                <!-- Nom d'utilisateur -->
                 <Label text="Nom d'utilisateur:" GridPane.columnIndex="0" GridPane.rowIndex="0"
                        style="-fx-font-weight: bold;"/>
                 <Label fx:id="lblUsername" text="admin" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                 
-                <!-- Email -->
                 <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="1"
                        style="-fx-font-weight: bold;"/>
                 <TextField fx:id="txtEmail" promptText="email@example.com" 
                           GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="300"/>
                 
-                <!-- Rôle -->
                 <Label text="Rôle:" GridPane.columnIndex="0" GridPane.rowIndex="2"
                        style="-fx-font-weight: bold;"/>
                 <Label fx:id="lblRole" text="Administrateur" GridPane.columnIndex="1" GridPane.rowIndex="2"
                        style="-fx-text-fill: #2196F3;"/>
                 
-                <!-- Dernière connexion -->
                 <Label text="Dernière connexion:" GridPane.columnIndex="0" GridPane.rowIndex="3"
                        style="-fx-font-weight: bold;"/>
                 <Label fx:id="lblLastLogin" text="25/12/2024 14:30" 
@@ -85,47 +81,27 @@
                     <Insets left="20"/>
                 </padding>
                 
-                <!-- Langue -->
+                <!-- ✅ CORRECTION: Syntaxe correcte pour ComboBox -->
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <Label text="Langue:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
-                    <ComboBox fx:id="cmbLanguage" prefWidth="200">
-                        <items>
-                            <javafx.collections.FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Français"/>
-                                <String fx:value="العربية"/>
-                                <String fx:value="English"/>
-                            </javafx.collections.FXCollections>
-                        </items>
-                    </ComboBox>
+                    <ComboBox fx:id="cmbLanguage" prefWidth="200"/>
                 </HBox>
                 
-                <!-- Thème -->
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <Label text="Thème:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
-                    <ComboBox fx:id="cmbTheme" prefWidth="200">
-                        <items>
-                            <javafx.collections.FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Clair"/>
-                                <String fx:value="Sombre"/>
-                                <String fx:value="Automatique"/>
-                            </javafx.collections.FXCollections>
-                        </items>
-                    </ComboBox>
+                    <ComboBox fx:id="cmbTheme" prefWidth="200"/>
                 </HBox>
                 
-                <!-- Notifications -->
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <Label text="Notifications:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
                     <CheckBox fx:id="chkNotifications" text="Activer les notifications"/>
                 </HBox>
                 
-                <!-- Sons -->
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <Label text="Sons:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
                     <CheckBox fx:id="chkSounds" text="Activer les sons"/>
                 </HBox>
                 
-                <!-- Auto-save -->
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <Label text="Sauvegarde auto:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
                     <CheckBox fx:id="chkAutoSave" text="Sauvegarder automatiquement"/>
@@ -159,21 +135,18 @@
                     <Insets left="20"/>
                 </padding>
                 
-                <!-- Statut connexion -->
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <Label text="Statut:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
                     <Label fx:id="lblDbStatus" text="● Connecté" 
                            style="-fx-text-fill: #4CAF50; -fx-font-weight: bold;"/>
                 </HBox>
                 
-                <!-- URL -->
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <Label text="URL:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
                     <Label fx:id="lblDbUrl" text="jdbc:oracle:thin:@localhost:1521/XEPDB1"
                            style="-fx-text-fill: #757575; -fx-font-size: 12px;"/>
                 </HBox>
                 
-                <!-- Pool de connexions -->
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <Label text="Pool de connexions:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
                     <Label fx:id="lblPoolInfo" text="5/20 actives"
@@ -222,27 +195,22 @@
                     <Insets left="20"/>
                 </padding>
                 
-                <!-- Version -->
                 <Label text="Version:" GridPane.columnIndex="0" GridPane.rowIndex="0"
                        style="-fx-font-weight: bold; -fx-min-width: 150;"/>
                 <Label text="1.0.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                 
-                <!-- Java Version -->
                 <Label text="Java Version:" GridPane.columnIndex="0" GridPane.rowIndex="1"
                        style="-fx-font-weight: bold;"/>
                 <Label fx:id="lblJavaVersion" text="17.0.9" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                 
-                <!-- JavaFX Version -->
                 <Label text="JavaFX Version:" GridPane.columnIndex="0" GridPane.rowIndex="2"
                        style="-fx-font-weight: bold;"/>
                 <Label fx:id="lblJavaFxVersion" text="21.0.1" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                 
-                <!-- OS -->
                 <Label text="Système:" GridPane.columnIndex="0" GridPane.rowIndex="3"
                        style="-fx-font-weight: bold;"/>
                 <Label fx:id="lblOs" text="Windows 11" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
                 
-                <!-- Mémoire -->
                 <Label text="Mémoire utilisée:" GridPane.columnIndex="0" GridPane.rowIndex="4"
                        style="-fx-font-weight: bold;"/>
                 <Label fx:id="lblMemory" text="256 MB / 1024 MB" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
