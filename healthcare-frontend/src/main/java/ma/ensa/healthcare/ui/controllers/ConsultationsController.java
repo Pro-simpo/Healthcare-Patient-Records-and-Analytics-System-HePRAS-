@@ -1,10 +1,334 @@
 package ma.ensa.healthcare.ui.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import ma.ensa.healthcare.model.Consultation;
+import ma.ensa.healthcare.model.Medecin;
+import ma.ensa.healthcare.service.ConsultationService;
+import ma.ensa.healthcare.service.MedecinService;
+import ma.ensa.healthcare.ui.dialogs.ConsultationDetailsDialog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class ConsultationsController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ConsultationsController.class);
+
+    @FXML private TextField searchField;
+    @FXML private DatePicker dpFilterDate;
+    @FXML private ComboBox<Medecin> cmbFilterMedecin;
+    
+    @FXML private Label lblToday;
+    @FXML private Label lblMonth;
+    @FXML private Label lblRevenuMoyen;
+    @FXML private Label lblDureeMoyenne;
+    
+    @FXML private TableView<Consultation> tableConsultations;
+    @FXML private TableColumn<Consultation, Long> colId;
+    @FXML private TableColumn<Consultation, String> colDate;
+    @FXML private TableColumn<Consultation, String> colPatient;
+    @FXML private TableColumn<Consultation, String> colCin;
+    @FXML private TableColumn<Consultation, String> colMedecin;
+    @FXML private TableColumn<Consultation, String> colSpecialite;
+    @FXML private TableColumn<Consultation, String> colDiagnostic;
+    @FXML private TableColumn<Consultation, String> colTarif;
+    @FXML private TableColumn<Consultation, Void> colActions;
+    @FXML private Label lblTotal;
+
+    private final ConsultationService consultationService = new ConsultationService();
+    private final MedecinService medecinService = new MedecinService();
+    private ObservableList<Consultation> consultationsList = FXCollections.observableArrayList();
+    
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     @FXML
     public void initialize() {
-        // À implémenter
+        setupComboBox();
+        setupTableColumns();
+        loadConsultations();
+        updateStatistics();
+    }
+
+    private void setupComboBox() {
+        try {
+            List<Medecin> medecins = medecinService.getAllMedecins();
+            cmbFilterMedecin.getItems().add(null); // Option "Tous"
+            cmbFilterMedecin.getItems().addAll(medecins);
+            
+            cmbFilterMedecin.setCellFactory(param -> new ListCell<Medecin>() {
+                @Override
+                protected void updateItem(Medecin item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText("Tous les médecins");
+                    } else {
+                        setText("Dr. " + item.getNom() + " - " + item.getSpecialite());
+                    }
+                }
+            });
+            cmbFilterMedecin.setButtonCell(cmbFilterMedecin.getCellFactory().call(null));
+            cmbFilterMedecin.setValue(null);
+            
+        } catch (Exception e) {
+            logger.error("Erreur chargement médecins", e);
+        }
+    }
+
+    private void setupTableColumns() {
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        
+        colDate.setCellValueFactory(cellData -> {
+            LocalDate date = cellData.getValue().getDateConsultation();
+            String formatted = date != null ? date.format(DATE_FORMATTER) : "N/A";
+            return new javafx.beans.property.SimpleStringProperty(formatted);
+        });
+        
+        colPatient.setCellValueFactory(cellData -> {
+            Consultation c = cellData.getValue();
+            if (c.getRendezVous() != null && c.getRendezVous().getPatient() != null) {
+                return new javafx.beans.property.SimpleStringProperty(
+                    c.getRendezVous().getPatient().getNom() + " " + 
+                    c.getRendezVous().getPatient().getPrenom());
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
+        });
+        
+        colCin.setCellValueFactory(cellData -> {
+            Consultation c = cellData.getValue();
+            if (c.getRendezVous() != null && c.getRendezVous().getPatient() != null) {
+                return new javafx.beans.property.SimpleStringProperty(
+                    c.getRendezVous().getPatient().getCin());
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
+        });
+        
+        colMedecin.setCellValueFactory(cellData -> {
+            Consultation c = cellData.getValue();
+            if (c.getRendezVous() != null && c.getRendezVous().getMedecin() != null) {
+                return new javafx.beans.property.SimpleStringProperty(
+                    "Dr. " + c.getRendezVous().getMedecin().getNom());
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
+        });
+        
+        colSpecialite.setCellValueFactory(cellData -> {
+            Consultation c = cellData.getValue();
+            if (c.getRendezVous() != null && c.getRendezVous().getMedecin() != null) {
+                return new javafx.beans.property.SimpleStringProperty(
+                    c.getRendezVous().getMedecin().getSpecialite());
+            }
+            return new javafx.beans.property.SimpleStringProperty("N/A");
+        });
+        
+        colDiagnostic.setCellValueFactory(new PropertyValueFactory<>("diagnostic"));
+        
+        colTarif.setCellValueFactory(cellData -> {
+            BigDecimal tarif = cellData.getValue().getTarifConsultation();
+            String formatted = tarif != null ? tarif + " MAD" : "N/A";
+            return new javafx.beans.property.SimpleStringProperty(formatted);
+        });
+
+        setupActionsColumn();
+    }
+
+    private void setupActionsColumn() {
+        colActions.setCellFactory(param -> new TableCell<>() {
+            private final Button btnDetails = new Button("Détails");
+            private final Button btnModifier = new Button("Modifier");
+            private final Button btnOrdonnance = new Button("Ordonnance");
+            private final HBox hbox = new HBox(5, btnDetails, btnModifier, btnOrdonnance);
+
+            {
+                btnDetails.setStyle("-fx-font-size: 10px; -fx-padding: 3 8;");
+                btnDetails.setOnAction(event -> {
+                    Consultation c = getTableView().getItems().get(getIndex());
+                    handleViewDetails(c);
+                });
+
+                btnModifier.getStyleClass().add("action-button");
+                btnModifier.setStyle("-fx-font-size: 10px; -fx-padding: 3 8;");
+                btnModifier.setOnAction(event -> {
+                    Consultation c = getTableView().getItems().get(getIndex());
+                    handleModifier(c);
+                });
+
+                btnOrdonnance.getStyleClass().add("action-button-success");
+                btnOrdonnance.setStyle("-fx-font-size: 10px; -fx-padding: 3 8;");
+                btnOrdonnance.setOnAction(event -> {
+                    Consultation c = getTableView().getItems().get(getIndex());
+                    handleGenerateOrdonnance(c);
+                });
+
+                hbox.setAlignment(Pos.CENTER);
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : hbox);
+            }
+        });
+    }
+
+    private void loadConsultations() {
+        try {
+            List<Consultation> consultations = consultationService.listerToutesConsultations();
+            consultationsList.setAll(consultations);
+            tableConsultations.setItems(consultationsList);
+            lblTotal.setText(String.valueOf(consultations.size()));
+            
+            logger.info("Chargement de {} consultations", consultations.size());
+            
+        } catch (Exception e) {
+            logger.error("Erreur chargement consultations", e);
+            showError("Erreur", "Impossible de charger les consultations");
+        }
+    }
+
+    private void updateStatistics() {
+        try {
+            List<Consultation> all = consultationService.listerToutesConsultations();
+            LocalDate today = LocalDate.now();
+            LocalDate startOfMonth = today.withDayOfMonth(1);
+
+            long countToday = all.stream()
+                .filter(c -> c.getDateConsultation().equals(today))
+                .count();
+            
+            long countMonth = all.stream()
+                .filter(c -> !c.getDateConsultation().isBefore(startOfMonth))
+                .count();
+
+            BigDecimal totalRevenu = all.stream()
+                .filter(c -> c.getTarifConsultation() != null)
+                .map(Consultation::getTarifConsultation)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+            
+            BigDecimal revenuMoyen = all.isEmpty() ? BigDecimal.ZERO : 
+                totalRevenu.divide(BigDecimal.valueOf(all.size()), 2, BigDecimal.ROUND_HALF_UP);
+
+            lblToday.setText(String.valueOf(countToday));
+            lblMonth.setText(String.valueOf(countMonth));
+            lblRevenuMoyen.setText(revenuMoyen + " MAD");
+
+        } catch (Exception e) {
+            logger.error("Erreur calcul statistiques", e);
+        }
+    }
+
+    @FXML
+    private void handleSearch() {
+        String searchText = searchField.getText().trim().toLowerCase();
+        
+        if (searchText.isEmpty()) {
+            loadConsultations();
+            return;
+        }
+
+        try {
+            List<Consultation> all = consultationService.listerToutesConsultations();
+            
+            List<Consultation> filtered = all.stream()
+                .filter(c -> {
+                    String diagnostic = c.getDiagnostic() != null ? c.getDiagnostic().toLowerCase() : "";
+                    String patientNom = "";
+                    String medecinNom = "";
+                    
+                    if (c.getRendezVous() != null) {
+                        if (c.getRendezVous().getPatient() != null) {
+                            patientNom = (c.getRendezVous().getPatient().getNom() + " " + 
+                                         c.getRendezVous().getPatient().getPrenom()).toLowerCase();
+                        }
+                        if (c.getRendezVous().getMedecin() != null) {
+                            medecinNom = c.getRendezVous().getMedecin().getNom().toLowerCase();
+                        }
+                    }
+                    
+                    return diagnostic.contains(searchText) || 
+                           patientNom.contains(searchText) || 
+                           medecinNom.contains(searchText);
+                })
+                .toList();
+
+            consultationsList.setAll(filtered);
+            lblTotal.setText(String.valueOf(filtered.size()));
+
+        } catch (Exception e) {
+            logger.error("Erreur recherche", e);
+        }
+    }
+
+    @FXML
+    private void handleFilter() {
+        try {
+            List<Consultation> all = consultationService.listerToutesConsultations();
+            LocalDate filterDate = dpFilterDate.getValue();
+            Medecin filterMedecin = cmbFilterMedecin.getValue();
+
+            List<Consultation> filtered = all.stream()
+                .filter(c -> {
+                    boolean dateMatch = filterDate == null || 
+                        (c.getDateConsultation() != null && c.getDateConsultation().equals(filterDate));
+                    
+                    boolean medecinMatch = filterMedecin == null || 
+                        (c.getRendezVous() != null && c.getRendezVous().getMedecin() != null &&
+                         c.getRendezVous().getMedecin().getId().equals(filterMedecin.getId()));
+                    
+                    return dateMatch && medecinMatch;
+                })
+                .toList();
+
+            consultationsList.setAll(filtered);
+            lblTotal.setText(String.valueOf(filtered.size()));
+
+        } catch (Exception e) {
+            logger.error("Erreur filtrage", e);
+        }
+    }
+
+    @FXML
+    private void handleAddConsultation() {
+        showInfo("Nouvelle Consultation", 
+                "Pour créer une consultation, veuillez d'abord créer un rendez-vous,\n" +
+                "puis marquez-le comme terminé pour générer la consultation.");
+    }
+
+    private void handleViewDetails(Consultation c) {
+        ConsultationDetailsDialog dialog = new ConsultationDetailsDialog(c);
+        dialog.showAndWait();
+    }
+
+    private void handleModifier(Consultation c) {
+        showInfo("Modification", "Fonctionnalité en cours de développement");
+    }
+
+    private void handleGenerateOrdonnance(Consultation c) {
+        showInfo("Ordonnance", "Génération d'ordonnance en cours de développement");
+    }
+
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showInfo(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

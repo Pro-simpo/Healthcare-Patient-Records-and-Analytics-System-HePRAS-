@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
+<VBox xmlns="http://javafx.com/javafx/23"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ma.ensa.healthcare.ui.controllers.FacturesController"
+      spacing="20">
+
+    <!-- BARRE D'ACTIONS -->
+    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="card">
+        <TextField fx:id="searchField" promptText="Rechercher par numéro, patient, CIN..." 
+                   prefWidth="350" styleClass="modern-text-field"
+                   style="-fx-background-color: #F5F5F5; -fx-background-radius: 8; -fx-padding: 10;">
+            <HBox.margin>
+                <Insets right="10"/>
+            </HBox.margin>
+        </TextField>
+        
+        <Button text="Rechercher" onAction="#handleSearch" styleClass="action-button" prefHeight="40">
+            <graphic>
+                <FontAwesomeIconView glyphName="SEARCH" size="14" fill="WHITE"/>
+            </graphic>
+        </Button>
+        
+        <ComboBox fx:id="cmbFilterStatut" promptText="Tous les statuts" prefWidth="180"/>
+        
+        <DatePicker fx:id="dpDateDebut" promptText="Date début" prefWidth="150"/>
+        <DatePicker fx:id="dpDateFin" promptText="Date fin" prefWidth="150"/>
+        
+        <Button text="Filtrer" onAction="#handleFilter" styleClass="action-button" prefHeight="40">
+            <graphic>
+                <FontAwesomeIconView glyphName="FILTER" size="14" fill="WHITE"/>
+            </graphic>
+        </Button>
+        
+        <Region HBox.hgrow="ALWAYS"/>
+        
+        <Button text="Exporter" styleClass="action-button" prefHeight="40">
+            <graphic>
+                <FontAwesomeIconView glyphName="FILE_EXCEL" size="14" fill="WHITE"/>
+            </graphic>
+        </Button>
+    </HBox>
+
+    <!-- STATISTIQUES FINANCIÈRES -->
+    <HBox spacing="15">
+        <VBox styleClass="card" spacing="5" prefWidth="280">
+            <Label text="Total Facturé (Mois)" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+            <Label fx:id="lblTotalFacture" text="0 MAD" 
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+        </VBox>
+        
+        <VBox styleClass="card" spacing="5" prefWidth="280">
+            <Label text="Total Encaissé" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+            <Label fx:id="lblTotalPaye" text="0 MAD" 
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #4CAF50;"/>
+        </VBox>
+        
+        <VBox styleClass="card" spacing="5" prefWidth="280">
+            <Label text="Impayés" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+            <Label fx:id="lblTotalImpaye" text="0 MAD" 
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #F44336;"/>
+        </VBox>
+        
+        <VBox styleClass="card" spacing="5" prefWidth="280">
+            <Label text="Taux de Recouvrement" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+            <Label fx:id="lblTauxRecouvrement" text="0%" 
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #9C27B0;"/>
+        </VBox>
+    </HBox>
+
+    <!-- TABLE DES FACTURES -->
+    <VBox styleClass="card" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tableFactures" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn text="ID" prefWidth="60" fx:id="colId"/>
+                <TableColumn text="N° Facture" prefWidth="130" fx:id="colNumero"/>
+                <TableColumn text="Date" prefWidth="110" fx:id="colDate"/>
+                <TableColumn text="Patient" prefWidth="200" fx:id="colPatient"/>
+                <TableColumn text="CIN" prefWidth="100" fx:id="colCin"/>
+                <TableColumn text="Consultation" prefWidth="110" fx:id="colMontantConsultation"/>
+                <TableColumn text="Médicaments" prefWidth="110" fx:id="colMontantMedicaments"/>
+                <TableColumn text="Total" prefWidth="110" fx:id="colMontantTotal"/>
+                <TableColumn text="Payé" prefWidth="110" fx:id="colMontantPaye"/>
+                <TableColumn text="Reste" prefWidth="110" fx:id="colMontantRestant"/>
+                <TableColumn text="Statut" prefWidth="120" fx:id="colStatut"/>
+                <TableColumn text="Actions" prefWidth="250" fx:id="colActions"/>
+            </columns>
+        </TableView>
+        
+        <!-- PAGINATION -->
+        <HBox alignment="CENTER" spacing="10" style="-fx-padding: 15;">
+            <Label text="Total: " style="-fx-font-weight: bold;"/>
+            <Label fx:id="lblTotal" text="0" style="-fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+            <Label text="factures"/>
+        </HBox>
+    </VBox>
+
+</VBox>
