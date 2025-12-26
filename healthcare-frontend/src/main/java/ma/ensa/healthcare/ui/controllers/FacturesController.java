@@ -8,10 +8,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import ma.ensa.healthcare.model.Facture;
+import ma.ensa.healthcare.model.RendezVous;
 import ma.ensa.healthcare.model.enums.ModePaiement;
 import ma.ensa.healthcare.model.enums.StatutPaiement;
 import ma.ensa.healthcare.service.FacturationService;
 import ma.ensa.healthcare.ui.dialogs.PaiementDialog;
+import ma.ensa.healthcare.ui.dialogs.RendezVousDialog;
+import ma.ensa.healthcare.ui.dialogs.FactureDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -341,6 +344,25 @@ public class FacturesController {
     private String formatMontant(BigDecimal montant) {
         return montant != null ? String.format("%.2f", montant) : "0.00";
     }
+
+    @FXML
+    private void handleAddFacture() {
+        FactureDialog dialog = new FactureDialog(null);
+        Optional<Facture> result = dialog.showAndWait();
+
+        result.ifPresent(facture -> {
+            try {
+                facturationService.genererFacture(facture.getConsultation(), facture.getMontantMedicaments());
+                showSuccess("Succès", "Facture créée avec succès !");
+                loadFactures();
+                updateStatistics();
+            } catch (Exception e) {
+                logger.error("Erreur lors de la création de la facture", e);
+                showError("Erreur", "Impossible de créer la facture : " + e.getMessage());
+            }
+        });
+    }
+
 
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -13,7 +13,7 @@
     <!-- BARRE D'ACTIONS -->
     <HBox spacing="15" alignment="CENTER_LEFT" styleClass="card">
         <TextField fx:id="searchField" promptText="Rechercher par numéro, patient, CIN..." 
-                   prefWidth="350" styleClass="modern-text-field"
+                   prefWidth="250" styleClass="modern-text-field"
                    style="-fx-background-color: #F5F5F5; -fx-background-radius: 8; -fx-padding: 10;">
             <HBox.margin>
                 <Insets right="10"/>
@@ -26,7 +26,7 @@
             </graphic>
         </Button>
         
-        <ComboBox fx:id="cmbFilterStatut" promptText="Tous les statuts" prefWidth="180"/>
+        <ComboBox fx:id="cmbFilterStatut" promptText="Tous les statuts" prefWidth="120"/>
         
         
         <Button text="Filtrer" onAction="#handleFilter" styleClass="action-button" prefHeight="40">
@@ -36,6 +36,12 @@
         </Button>
         
         <Region HBox.hgrow="ALWAYS"/>
+
+        <Button text="Nouvelle Facture" onAction="#handleAddFacture" styleClass="action-button-success" prefHeight="40">
+            <graphic>
+                <FontAwesomeIconView glyphName="FILE_ALT" size="14" fill="WHITE"/>
+            </graphic>
+        </Button>
         
         <Button text="Exporter" styleClass="action-button" prefHeight="40">
             <graphic>
