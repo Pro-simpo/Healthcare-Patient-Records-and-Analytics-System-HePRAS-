@@ -1,9 +1,12 @@
 ma\ensa\healthcare\ui\controllers\RendezVousController$2.class
 ma\ensa\healthcare\ui\controllers\ConsultationsController.class
+ma\ensa\healthcare\ui\dialogs\FactureDialog$1.class
 ma\ensa\healthcare\ui\controllers\FacturesController.class
+ma\ensa\healthcare\ui\dialogs\FactureDialog.class
 ma\ensa\healthcare\ui\MainApp.class
 ma\ensa\healthcare\ui\controllers\LoginController.class
 ma\ensa\healthcare\ui\controllers\RendezVousController.class
+ma\ensa\healthcare\ui\dialogs\ConsultationDialog$1.class
 ma\ensa\healthcare\ui\controllers\FacturesController$1.class
 ma\ensa\healthcare\ui\dialogs\RendezVousDialog$1.class
 ma\ensa\healthcare\ui\controllers\ConsultationsController$1.class
@@ -16,10 +19,13 @@ ma\ensa\healthcare\ui\dialogs\PaiementDialog$PaiementData.class
 ma\ensa\healthcare\ui\dialogs\RendezVousDialog.class
 ma\ensa\healthcare\ui\controllers\MedecinsController.class
 ma\ensa\healthcare\ui\dialogs\ConsultationDetailsDialog.class
+ma\ensa\healthcare\ui\dialogs\MedecinDialog.class
 ma\ensa\healthcare\ui\dialogs\PatientDialog.class
 ma\ensa\healthcare\ui\dialogs\RendezVousDialog$2.class
 ma\ensa\healthcare\ui\dialogs\PaiementDialog.class
+ma\ensa\healthcare\ui\dialogs\MedecinDialog$1.class
 ma\ensa\healthcare\ui\controllers\PatientsController.class
+ma\ensa\healthcare\ui\dialogs\ConsultationDialog.class
 ma\ensa\healthcare\ui\controllers\DashboardController.class
 ma\ensa\healthcare\ui\utils\SessionManager.class
 ma\ensa\healthcare\ui\controllers\ConsultationsController$2.class

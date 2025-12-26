@@ -8,12 +8,17 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import ma.ensa.healthcare.model.Medecin;
+import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.service.MedecinService;
+import ma.ensa.healthcare.ui.dialogs.MedecinDialog;
+import ma.ensa.healthcare.ui.dialogs.PatientDialog;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -245,13 +250,42 @@ public class MedecinsController {
         }
     }
 
+    /**
+     * Ajouter un nouveau médecin
+     */
     @FXML
     private void handleAddMedecin() {
-        showInfo("Nouveau Médecin", "Fonctionnalité en cours de développement");
+        MedecinDialog dialog = new MedecinDialog(null);
+        Optional<Medecin> result = dialog.showAndWait();
+
+        result.ifPresent(medecin -> {
+            try {
+                medecinService.createMedecin(medecin);
+                showSuccess("Succès", "Médecin ajouté avec succès !");
+                loadMedecins();
+            } catch (Exception e) {
+                logger.error("Erreur lors de l'ajout du médecin", e);
+                showError("Erreur", "Impossible d'ajouter le médecin : " + e.getMessage());
+            }
+        });
     }
 
-    private void handleEditMedecin(Medecin m) {
-        showInfo("Modification", "Fonctionnalité en cours de développement");
+    /**
+     * Modifier un médecin existant
+     */
+    private void handleEditMedecin(Medecin medecin) {
+        MedecinDialog dialog = new MedecinDialog(null, medecin);
+        Optional<Medecin> result = dialog.showAndWait();
+        result.ifPresent(updatedMedecin -> {
+            try {
+                medecinService.updateMedecin(updatedMedecin);
+                showSuccess("Succès", "Médecin modifié avec succès !");
+                loadMedecins();
+            } catch (Exception e) {
+                logger.error("Erreur lors de la modification du médecin", e);
+                showError("Erreur", "Impossible de modifier le médecin : " + e.getMessage());
+            }
+        });
     }
 
     private void handleDeleteMedecin(Medecin m) {

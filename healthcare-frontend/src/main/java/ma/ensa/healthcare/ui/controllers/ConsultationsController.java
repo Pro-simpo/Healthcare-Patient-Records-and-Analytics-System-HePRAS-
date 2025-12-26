@@ -9,9 +9,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import ma.ensa.healthcare.model.Consultation;
 import ma.ensa.healthcare.model.Medecin;
+import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.service.ConsultationService;
 import ma.ensa.healthcare.service.MedecinService;
 import ma.ensa.healthcare.ui.dialogs.ConsultationDetailsDialog;
+import ma.ensa.healthcare.ui.dialogs.ConsultationDialog;
+import ma.ensa.healthcare.ui.dialogs.PatientDialog;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +23,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 public class ConsultationsController {
 
@@ -296,11 +301,42 @@ public class ConsultationsController {
         }
     }
 
+    /**
+     * Ajouter une nouvelle consultation
+     */
     @FXML
     private void handleAddConsultation() {
-        showInfo("Nouvelle Consultation", 
-                "Pour créer une consultation, veuillez d'abord créer un rendez-vous,\n" +
-                "puis marquez-le comme terminé pour générer la consultation.");
+        ConsultationDialog dialog = new ConsultationDialog(null);
+        Optional<Consultation> result = dialog.showAndWait();
+
+        result.ifPresent(consultation -> {
+            try {
+                consultationService.enregistrerConsultation(consultation);
+                showInfo("Succès", "Consultation ajoutée avec succès !");
+                loadConsultations();
+            } catch (Exception e) {
+                logger.error("Erreur lors de l'ajout de la consultation", e);
+                showError("Erreur", "Impossible d'ajouter la consultation : " + e.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Modifier une consultation existante
+     */
+    private void handleModifier(Consultation consultation) {
+        ConsultationDialog dialog = new ConsultationDialog(null, consultation);
+        Optional<Consultation> result = dialog.showAndWait();
+        result.ifPresent(updatedConsultation -> {
+            try {
+                consultationService.modifierConsultation(updatedConsultation);
+                showInfo("Succès", "Consultation modifiée avec succès !");
+                loadConsultations();
+            } catch (Exception e) {
+                logger.error("Erreur lors de la modification de la consultation", e);
+                showError("Erreur", "Impossible de modifier la consultation : " + e.getMessage());
+            }
+        });
     }
 
     private void handleViewDetails(Consultation c) {
@@ -308,9 +344,6 @@ public class ConsultationsController {
         dialog.showAndWait();
     }
 
-    private void handleModifier(Consultation c) {
-        showInfo("Modification", "Fonctionnalité en cours de développement");
-    }
 
     private void handleGenerateOrdonnance(Consultation c) {
         showInfo("Ordonnance", "Génération d'ordonnance en cours de développement");
