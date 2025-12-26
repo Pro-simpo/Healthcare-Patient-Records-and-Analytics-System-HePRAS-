@@ -13,24 +13,24 @@
     <!-- BARRE D'ACTIONS -->
     <HBox spacing="15" alignment="CENTER_LEFT" styleClass="card">
         <TextField fx:id="searchField" promptText="Rechercher par patient, médecin, diagnostic..." 
-                   prefWidth="400" styleClass="modern-text-field"
+                   prefWidth="200" styleClass="modern-text-field"
                    style="-fx-background-color: #F5F5F5; -fx-background-radius: 8; -fx-padding: 10;">
             <HBox.margin>
                 <Insets right="10"/>
             </HBox.margin>
         </TextField>
         
-        <Button text="Rechercher" onAction="#handleSearch" styleClass="action-button" prefHeight="40">
+        <Button text="" onAction="#handleSearch" styleClass="action-button" prefHeight="40">
             <graphic>
                 <FontAwesomeIconView glyphName="SEARCH" size="14" fill="WHITE"/>
             </graphic>
         </Button>
         
-        <DatePicker fx:id="dpFilterDate" promptText="Filtrer par date" prefWidth="180"/>
+        <DatePicker fx:id="dpFilterDate" promptText="Filtrer par date" prefWidth="150"/>
         
-        <ComboBox fx:id="cmbFilterMedecin" promptText="Tous les médecins" prefWidth="200"/>
+        <ComboBox fx:id="cmbFilterMedecin" promptText="Tous les médecins" prefWidth="180"/>
         
-        <Button text="Filtrer" onAction="#handleFilter" styleClass="action-button" prefHeight="40">
+        <Button text="" onAction="#handleFilter" styleClass="action-button" prefHeight="40">
             <graphic>
                 <FontAwesomeIconView glyphName="FILTER" size="14" fill="WHITE"/>
             </graphic>

@@ -118,14 +118,18 @@ public class FactureDialog extends Dialog<Facture> {
                 if (empty || c == null) {
                     setText(null);
                 } else {
-                    String text = String.format("Consultation du %s - %s %s",
-                        c.getDateConsultation(),
-                        c.getRendezVous().getPatient().getNom(),
-                        c.getRendezVous().getPatient().getPrenom()
-                    );
-                    setText(text);
-                }
-            }
+                    // Sécurisation contre les valeurs nulles
+                    String dateStr = (c.getDateConsultation() != null) ? c.getDateConsultation().toString() : "Date inconnue";
+                    String patientStr = "Patient inconnu";
+                    
+                    if (c.getRendezVous() != null && c.getRendezVous().getPatient() != null) {
+                        patientStr = c.getRendezVous().getPatient().getNom() + " " + 
+                                    c.getRendezVous().getPatient().getPrenom();
+                    }
+                    
+                    setText(String.format("Consultation du %s - %s", dateStr, patientStr));
+                        }
+                    }
         });
         consultationComboBox.setButtonCell(consultationComboBox.getCellFactory().call(null));
         

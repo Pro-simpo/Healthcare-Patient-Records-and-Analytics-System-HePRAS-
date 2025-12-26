@@ -7,6 +7,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.model.RendezVous;
+import ma.ensa.healthcare.model.enums.StatutRendezVous;
+import ma.ensa.healthcare.model.Consultation;
 import ma.ensa.healthcare.model.Facture;
 import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.ui.dialogs.PatientDialog;
@@ -15,6 +17,7 @@ import ma.ensa.healthcare.ui.dialogs.RendezVousDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,8 +31,11 @@ public class HomeController {
     // KPI Labels
     @FXML private Label lblTotalPatients;
     @FXML private Label lblRdvToday;
+    @FXML private Label lblRdvTodayDetails;
     @FXML private Label lblConsultations;
+    @FXML private Label lblConsultationsDetails;
     @FXML private Label lblRevenus;
+    @FXML private Label lblRevenusDetails;
 
     // Table Prochains RDV
     @FXML private TableView<RendezVous> tableProchainRdv;
@@ -46,6 +52,7 @@ public class HomeController {
     // Services
     private final PatientService patientService = new PatientService();
     private final RendezVousService rdvService = new RendezVousService();
+    private final ConsultationService consultationService = new ConsultationService();
     private final FacturationService facturationService = new FacturationService();
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
@@ -161,14 +168,39 @@ public class HomeController {
             long rdvToday = allRdv.stream()
                 .filter(rdv -> rdv.getDateRdv() != null && rdv.getDateRdv().isEqual(today))
                 .count();
+            long countPlanifies = allRdv.stream()
+                .filter(r -> r.getStatut() == StatutRendezVous.PLANIFIE && r.getDateRdv().isEqual(today))
+                .count();
             
+            long countConfirmes = allRdv.stream()
+                .filter(r -> r.getStatut() == StatutRendezVous.CONFIRME && r.getDateRdv().isEqual(today))
+                .count();
+            
+            lblRdvTodayDetails.setText(countConfirmes + " confirmés, " + countPlanifies + " planifiés");
             lblRdvToday.setText(String.valueOf(rdvToday));
 
             // Consultations (vous pouvez ajouter un service pour ça plus tard)
-            lblConsultations.setText("156");
+            List<Consultation> allConsultations = consultationService.listerToutesConsultations();
+            LocalDate startOfMonth = today.withDayOfMonth(1);
+            long countToday = allConsultations.stream()
+                .filter(c -> c.getDateConsultation().equals(today))
+                .count();
+            
+            long countMonth = allConsultations.stream()
+                .filter(c -> !c.getDateConsultation().isBefore(startOfMonth))
+                .count();
+            lblConsultations.setText(String.valueOf(countMonth));
+            lblConsultationsDetails.setText(countToday + " aujourd'hui, " + countMonth + " ce mois");
 
             // Revenus (vous pouvez utiliser FacturationService.getRevenusPeriode())
-            lblRevenus.setText("45,250 MAD");
+            LocalDate RevenusStartOfMonth = LocalDate.now().withDayOfMonth(1);
+            LocalDate endOfMonth = LocalDate.now().withDayOfMonth(
+                LocalDate.now().lengthOfMonth());
+            
+            BigDecimal revenusMois = facturationService.getRevenusPeriode(RevenusStartOfMonth, endOfMonth);
+            BigDecimal totalImpaye = facturationService.getTotalImpaye();
+            lblRevenus.setText(revenusMois.toString() + " MAD");
+            lblRevenusDetails.setText("Factures à encaisser: " + totalImpaye.toString() + " MAD");
 
         } catch (Exception e) {
             logger.error("Erreur lors du chargement des KPIs", e);
@@ -207,11 +239,19 @@ public class HomeController {
             // List<Facture> facturesImpayees = facturationService.findFacturesImpayees();
             
             // Pour l'instant, données fictives
-            ObservableList<String> factures = FXCollections.observableArrayList(
-                "Facture #1245 - Patient: Alami - 1,200 MAD",
-                "Facture #1238 - Patient: Bennani - 850 MAD",
-                "Facture #1220 - Patient: El Idrissi - 2,300 MAD"
-            );
+            ObservableList<String> factures = FXCollections.observableArrayList();
+            List<Facture> facturesList = facturationService.getToutesLesFactures();
+            List<Facture> filtered = facturesList.stream()
+                .filter(f -> {
+                    boolean statutMatch = "Tous".equals("EN_ATTENTE") || 
+                        (f.getStatutPaiement() != null && f.getStatutPaiement().name().equals("EN_ATTENTE"));
+                    
+                    return statutMatch;
+                })
+                .toList();
+            factures.setAll(filtered.stream()
+                .map(f -> "Facture " + f.getNumeroFacture() + " - Patient: " + f.getPatient().getNom() + " " + f.getPatient().getPrenom() + " - Montant: " + f.getMontantTotal() + " MAD")
+                .toList());
             listFacturesImpayees.setItems(factures);
             
         } catch (Exception e) {

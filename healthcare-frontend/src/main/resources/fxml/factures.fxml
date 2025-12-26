@@ -20,7 +20,7 @@
             </HBox.margin>
         </TextField>
         
-        <Button text="Rechercher" onAction="#handleSearch" styleClass="action-button" prefHeight="40">
+        <Button text="" onAction="#handleSearch" styleClass="action-button" prefHeight="40">
             <graphic>
                 <FontAwesomeIconView glyphName="SEARCH" size="14" fill="WHITE"/>
             </graphic>
@@ -29,7 +29,7 @@
         <ComboBox fx:id="cmbFilterStatut" promptText="Tous les statuts" prefWidth="120"/>
         
         
-        <Button text="Filtrer" onAction="#handleFilter" styleClass="action-button" prefHeight="40">
+        <Button text="" onAction="#handleFilter" styleClass="action-button" prefHeight="40">
             <graphic>
                 <FontAwesomeIconView glyphName="FILTER" size="14" fill="WHITE"/>
             </graphic>

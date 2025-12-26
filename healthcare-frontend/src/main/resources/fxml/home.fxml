@@ -27,7 +27,7 @@
                         <Label fx:id="lblTotalPatients" text="0" styleClass="card-value"/>
                     </VBox>
                 </HBox>
-                <Label text="↑ 12% ce mois" style="-fx-text-fill: #4CAF50; -fx-font-size: 12px;"/>
+                <Label text="↑15% objectif de ce mois" style="-fx-text-fill: #4CAF50; -fx-font-size: 12px;"/>
             </VBox>
 
             <!-- Card 2: Rendez-vous Aujourd'hui -->
@@ -41,7 +41,7 @@
                         <Label fx:id="lblRdvToday" text="0" styleClass="card-value"/>
                     </VBox>
                 </HBox>
-                <Label text="5 confirmés, 2 en attente" style="-fx-text-fill: #757575; -fx-font-size: 12px;"/>
+                <Label fx:id="lblRdvTodayDetails" text="5 confirmés, 2 en attente" style="-fx-text-fill: #757575; -fx-font-size: 12px;"/>
             </VBox>
 
             <!-- Card 3: Consultations ce Mois -->
@@ -55,7 +55,7 @@
                         <Label fx:id="lblConsultations" text="0" styleClass="card-value"/>
                     </VBox>
                 </HBox>
-                <Label text="Ce mois" style="-fx-text-fill: #757575; -fx-font-size: 12px;"/>
+                <Label fx:id="lblConsultationsDetails" text="Ce mois" style="-fx-text-fill: #757575; -fx-font-size: 12px;"/>
             </VBox>
 
             <!-- Card 4: Revenus du Mois -->
@@ -66,10 +66,10 @@
                     </StackPane>
                     <VBox spacing="5">
                         <Label text="Revenus" styleClass="card-title"/>
-                        <Label fx:id="lblRevenus" text="0 MAD" styleClass="card-value" style="-fx-font-size: 24px;"/>
+                        <Label fx:id="lblRevenus" text="0 MAD" styleClass="card-value" style="-fx-font-size: 18px;"/>
                     </VBox>
                 </HBox>
-                <Label text="↑ 8% vs mois dernier" style="-fx-text-fill: #4CAF50; -fx-font-size: 12px;"/>
+                <Label fx:id="lblRevenusDetails" text="↑10% objectif de ce mois" style="-fx-text-fill: #4CAF50; -fx-font-size: 12px;"/>
             </VBox>
         </GridPane>
 

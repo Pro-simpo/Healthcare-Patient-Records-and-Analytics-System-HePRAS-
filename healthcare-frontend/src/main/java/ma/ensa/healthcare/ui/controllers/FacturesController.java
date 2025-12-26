@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import ma.ensa.healthcare.model.Facture;
 import ma.ensa.healthcare.model.RendezVous;
 import ma.ensa.healthcare.model.enums.ModePaiement;
@@ -347,20 +348,25 @@ public class FacturesController {
 
     @FXML
     private void handleAddFacture() {
-        FactureDialog dialog = new FactureDialog(null);
-        Optional<Facture> result = dialog.showAndWait();
+        try {
+            FactureDialog dialog = new FactureDialog(null);
+            Optional<Facture> result = dialog.showAndWait();
 
-        result.ifPresent(facture -> {
-            try {
-                facturationService.genererFacture(facture.getConsultation(), facture.getMontantMedicaments());
-                showSuccess("Succès", "Facture créée avec succès !");
-                loadFactures();
-                updateStatistics();
-            } catch (Exception e) {
-                logger.error("Erreur lors de la création de la facture", e);
-                showError("Erreur", "Impossible de créer la facture : " + e.getMessage());
-            }
-        });
+            result.ifPresent(facture -> {
+                try {
+                    facturationService.genererFacture(facture.getConsultation(), facture.getMontantMedicaments());
+                    showSuccess("Succès", "Facture créée avec succès !");
+                    loadFactures();
+                    updateStatistics();
+                } catch (Exception e) {
+                    logger.error("Erreur lors de la création de la facture", e);
+                    showError("Erreur", "Impossible de créer la facture : " + e.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            // Ceci affichera l'erreur précise (ex: NullPointerException, NoClassDefFoundError)
+            e.printStackTrace(); 
+        }
     }
 
 

@@ -227,18 +227,18 @@ public class MedecinsController {
         try {
             List<Medecin> all = medecinService.getAllMedecins();
             String filterSpecialite = cmbFilterSpecialite.getValue();
-            String filterDepartement = cmbFilterDepartement.getValue();
+           // String filterDepartement = cmbFilterDepartement.getValue();
 
             List<Medecin> filtered = all.stream()
                 .filter(m -> {
                     boolean specialiteMatch = "Toutes les spécialités".equals(filterSpecialite) || 
                         (m.getSpecialite() != null && m.getSpecialite().equals(filterSpecialite));
                     
-                    boolean departementMatch = "Tous les départements".equals(filterDepartement) || 
-                        (m.getDepartement() != null && 
-                         m.getDepartement().getNomDepartement().equals(filterDepartement));
+                  //  boolean departementMatch = "Tous les départements".equals(filterDepartement) || 
+                  //      (m.getDepartement() != null && 
+                  //       m.getDepartement().getNomDepartement().equals(filterDepartement));
                     
-                    return specialiteMatch && departementMatch;
+                    return specialiteMatch; // && departementMatch;
                 })
                 .toList();
 

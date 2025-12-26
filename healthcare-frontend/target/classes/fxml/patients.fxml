@@ -13,14 +13,14 @@
     <!-- BARRE D'ACTIONS -->
     <HBox spacing="15" alignment="CENTER_LEFT" styleClass="card">
         <TextField fx:id="searchField" promptText="Rechercher un patient (nom, CIN, téléphone...)" 
-                   prefWidth="400" styleClass="modern-text-field"
+                   prefWidth="300" styleClass="modern-text-field"
                    style="-fx-background-color: #F5F5F5; -fx-background-radius: 8; -fx-padding: 10;">
             <HBox.margin>
                 <Insets right="10"/>
             </HBox.margin>
         </TextField>
         
-        <Button text="Rechercher" onAction="#handleSearch" styleClass="action-button" prefHeight="40">
+        <Button text="" onAction="#handleSearch" styleClass="action-button" prefHeight="40">
             <graphic>
                 <FontAwesomeIconView glyphName="SEARCH" size="14" fill="WHITE"/>
             </graphic>
