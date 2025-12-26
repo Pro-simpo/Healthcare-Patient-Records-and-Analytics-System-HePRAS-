@@ -9,6 +9,9 @@ import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.model.RendezVous;
 import ma.ensa.healthcare.model.Facture;
 import ma.ensa.healthcare.service.*;
+import ma.ensa.healthcare.ui.dialogs.PatientDialog;
+import ma.ensa.healthcare.ui.dialogs.RendezVousDialog;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 public class HomeController {
 
@@ -241,6 +245,50 @@ public class HomeController {
      */
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void handleAddPatient() {
+        PatientDialog dialog = new PatientDialog();
+        Optional<Patient> result = dialog.showAndWait();
+
+        result.ifPresent(patient -> {
+            try {
+                patientService.createPatient(patient);
+                showSuccess("Succès", "Patient ajouté avec succès !");
+            } catch (Exception e) {
+                logger.error("Erreur lors de l'ajout du patient", e);
+                showError("Erreur", "Impossible d'ajouter le patient : " + e.getMessage());
+            }
+        });
+    }
+
+    @FXML
+    private void handleAddRendezVous() {
+        RendezVousDialog dialog = new RendezVousDialog();
+        Optional<RendezVous> result = dialog.showAndWait();
+
+        result.ifPresent(rdv -> {
+            try {
+                rdvService.planifierRendezVous(rdv);
+                showSuccess("Succès", "Rendez-vous créé avec succès !");
+            } catch (Exception e) {
+                logger.error("Erreur lors de la création du RDV", e);
+                showError("Erreur", "Impossible de créer le rendez-vous : " + e.getMessage());
+            }
+        });
+    }
+
+
+    /**
+     * Afficher un message de succès
+     */
+    private void showSuccess(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

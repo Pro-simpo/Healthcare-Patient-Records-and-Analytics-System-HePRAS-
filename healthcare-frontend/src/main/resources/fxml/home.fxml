@@ -123,13 +123,13 @@
 
         <!-- Quick Actions -->
         <HBox spacing="15" alignment="CENTER">
-            <Button text="Nouveau Patient" styleClass="action-button-success" prefHeight="45" prefWidth="200">
+            <Button text="Nouveau Patient" styleClass="action-button-success" onAction="#handleAddPatient" prefHeight="45" prefWidth="200">
                 <graphic>
                     <FontAwesomeIconView glyphName="USER_PLUS" size="16" fill="WHITE"/>
                 </graphic>
             </Button>
             
-            <Button text="Nouveau RDV" styleClass="action-button" prefHeight="45" prefWidth="200">
+            <Button text="Nouveau RDV" styleClass="action-button" onAction="#handleAddRendezVous" prefHeight="45" prefWidth="200">
                 <graphic>
                     <FontAwesomeIconView glyphName="CALENDAR_PLUS_ALT" size="16" fill="WHITE"/>
                 </graphic>

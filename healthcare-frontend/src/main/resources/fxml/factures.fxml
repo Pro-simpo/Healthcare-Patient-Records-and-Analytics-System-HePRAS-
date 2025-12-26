@@ -28,8 +28,6 @@
         
         <ComboBox fx:id="cmbFilterStatut" promptText="Tous les statuts" prefWidth="180"/>
         
-        <DatePicker fx:id="dpDateDebut" promptText="Date début" prefWidth="150"/>
-        <DatePicker fx:id="dpDateFin" promptText="Date fin" prefWidth="150"/>
         
         <Button text="Filtrer" onAction="#handleFilter" styleClass="action-button" prefHeight="40">
             <graphic>

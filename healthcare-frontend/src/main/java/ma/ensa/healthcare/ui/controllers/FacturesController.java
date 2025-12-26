@@ -284,23 +284,13 @@ public class FacturesController {
         try {
             List<Facture> all = facturationService.getToutesLesFactures();
             String filterStatut = cmbFilterStatut.getValue();
-            LocalDate dateDebut = dpDateDebut.getValue();
-            LocalDate dateFin = dpDateFin.getValue();
 
             List<Facture> filtered = all.stream()
                 .filter(f -> {
                     boolean statutMatch = "Tous".equals(filterStatut) || 
                         (f.getStatutPaiement() != null && f.getStatutPaiement().name().equals(filterStatut));
                     
-                    boolean dateMatch = true;
-                    if (dateDebut != null && f.getDateFacture() != null) {
-                        dateMatch = !f.getDateFacture().isBefore(dateDebut);
-                    }
-                    if (dateFin != null && f.getDateFacture() != null) {
-                        dateMatch = dateMatch && !f.getDateFacture().isAfter(dateFin);
-                    }
-                    
-                    return statutMatch && dateMatch;
+                    return statutMatch;
                 })
                 .toList();
 
