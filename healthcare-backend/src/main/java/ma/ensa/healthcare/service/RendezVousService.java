@@ -102,8 +102,8 @@ public class RendezVousService {
         }
         
         return rdvDAO.findAll().stream()
-            .filter(rdv -> rdv.getPatient() != null && 
-                          patientId.equals(rdv.getPatient().getId()))
+            .filter(rdv -> rdv.getIdPatient() != null && 
+                          patientId.equals(rdv.getIdPatient()))
             .collect(Collectors.toList());
     }
 
@@ -216,7 +216,7 @@ public class RendezVousService {
         }
         
         // 1. Patient obligatoire
-        if (rdv.getPatient() == null || rdv.getPatient().getId() == null) {
+        if (rdv.getIdPatient() == null) {
             throw new RendezVousException("Le patient est obligatoire");
         }
         

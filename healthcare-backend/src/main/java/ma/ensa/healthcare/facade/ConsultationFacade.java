@@ -53,7 +53,7 @@ public class ConsultationFacade {
         
         // 3. Générer automatiquement la facture
         Facture facture = facturationService.genererFacture(
-            consultationSauvegardee, 
+            consultationSauvegardee.getId(), 
             montantMedicaments
         );
         
@@ -68,7 +68,7 @@ public class ConsultationFacade {
         Consultation consultationSauvegardee = consultationService.enregistrerConsultation(consultation);
         
         // Générer la facture (sans médicaments)
-        facturationService.genererFacture(consultationSauvegardee, BigDecimal.ZERO);
+        facturationService.genererFacture(consultationSauvegardee.getId(), BigDecimal.ZERO);
         
         return consultationSauvegardee;
     }

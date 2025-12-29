@@ -31,14 +31,14 @@ public class RendezVousDAOImpl implements IRendezVousDAO {
              PreparedStatement ps = conn.prepareStatement(sql, new String[]{"id_rdv"})) {
             
             // Validation
-            if (rdv.getPatient() == null || rdv.getPatient().getId() == null) {
+            if (rdv.getIdPatient() == null) {
                 throw new IllegalArgumentException("Patient ID ne peut pas être null");
             }
             if (rdv.getMedecin() == null || rdv.getMedecin().getId() == null) {
                 throw new IllegalArgumentException("Medecin ID ne peut pas être null");
             }
             
-            ps.setLong(1, rdv.getPatient().getId());
+            ps.setLong(1, rdv.getIdPatient());
             ps.setLong(2, rdv.getMedecin().getId());
             ps.setDate(3, Date.valueOf(rdv.getDateRdv()));
             ps.setTimestamp(4, Timestamp.valueOf(rdv.getHeureDebut()));
@@ -157,7 +157,8 @@ public class RendezVousDAOImpl implements IRendezVousDAO {
     private RendezVous mapResultSetToRendezVous(ResultSet rs) throws SQLException {
         // Reconstruction de l'objet Patient (minimal)
         Patient p = new Patient();
-        p.setId(rs.getLong("id_patient"));
+        Long idPatient = rs.getLong("id_patient");
+        p.setId(idPatient);
         p.setNom(rs.getString("patient_nom"));
         p.setPrenom(rs.getString("patient_prenom"));
 
@@ -170,7 +171,7 @@ public class RendezVousDAOImpl implements IRendezVousDAO {
 
         RendezVous.RendezVousBuilder builder = RendezVous.builder()
                 .id(rs.getLong("id_rdv"))
-                .patient(p)
+                .idPatient(idPatient)
                 .medecin(m)
                 .dateRdv(rs.getDate("date_rdv").toLocalDate())
                 .heureDebut(rs.getTimestamp("heure_debut").toLocalDateTime())

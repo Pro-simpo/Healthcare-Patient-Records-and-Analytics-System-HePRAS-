@@ -26,11 +26,11 @@ public class FactureDAOImpl implements IFactureDAO {
     @Override
     public Facture save(Facture f) {
         // ✅ AJOUT : Vérification anti-doublon pour id_consultation (UNIQUE)
-        if (f.getConsultation() != null && f.getConsultation().getId() != null) {
-            Facture existante = findByConsultationId(f.getConsultation().getId());
+        if (f.getIdConsultation() != 0) {
+            Facture existante = findByConsultationId(f.getIdConsultation());
             if (existante != null) {
                 logger.warn("Facture déjà existante pour consultation ID {}, retour facture existante ID {}", 
-                           f.getConsultation().getId(), existante.getId());
+                           f.getIdConsultation(), existante.getId());
                 return existante;  // ✅ Retourner l'existante au lieu de créer un doublon
             }
         }
@@ -45,8 +45,8 @@ public class FactureDAOImpl implements IFactureDAO {
              PreparedStatement ps = conn.prepareStatement(sql, new String[]{"id_facture"})) {
             
             ps.setString(1, f.getNumeroFacture());
-            ps.setLong(2, f.getPatient().getId());
-            ps.setLong(3, f.getConsultation().getId());
+            ps.setLong(2, f.getIdPatient());
+            ps.setLong(3, f.getIdConsultation());
             ps.setDate(4, Date.valueOf(f.getDateFacture()));
             ps.setBigDecimal(5, f.getMontantConsultation());
             ps.setBigDecimal(6, f.getMontantMedicaments());
@@ -377,17 +377,15 @@ public class FactureDAOImpl implements IFactureDAO {
      */
     private Facture mapResultSetToFacture(ResultSet rs) throws SQLException {
         // Créer des objets minimaux pour les relations
-        Patient patient = new Patient();
-        patient.setId(rs.getLong("id_patient"));
-        
-        Consultation consultation = new Consultation();
-        consultation.setId(rs.getLong("id_consultation"));
-        
+
+        Long patientId = rs.getLong("id_patient");
+        Long consultationId = rs.getLong("id_consultation");
+
         Facture.FactureBuilder builder = Facture.builder()
                 .id(rs.getLong("id_facture"))
                 .numeroFacture(rs.getString("numero_facture"))
-                .patient(patient)
-                .consultation(consultation)
+                .idPatient(patientId)
+                .idConsultation(consultationId)
                 .dateFacture(rs.getDate("date_facture").toLocalDate())
                 .montantConsultation(rs.getBigDecimal("montant_consultation"))
                 .montantMedicaments(rs.getBigDecimal("montant_medicaments"))

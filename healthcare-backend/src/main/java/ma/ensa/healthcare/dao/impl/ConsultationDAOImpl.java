@@ -25,7 +25,7 @@ public class ConsultationDAOImpl implements IConsultationDAO {
              PreparedStatement ps = conn.prepareStatement(sql, new String[]{"id_consultation"})) {
             
             // ✅ 8 PARAMÈTRES CORRECTEMENT ORDONNÉS
-            ps.setLong(1, c.getRendezVous().getId());                    // 1: id_rdv
+            ps.setLong(1, c.getIdRendezVous());                    // 1: id_rdv
             ps.setDate(2, Date.valueOf(c.getDateConsultation()));        // 2: date_consultation
             ps.setString(3, c.getSymptomes());                           // 3: symptomes
             ps.setString(4, c.getDiagnostic());                          // 4: diagnostic
@@ -187,11 +187,12 @@ public class ConsultationDAOImpl implements IConsultationDAO {
      */
     private Consultation mapResultSetToConsultation(ResultSet rs) throws SQLException {
         // Créer un objet RendezVous minimal (juste avec l'ID)
-        RendezVous rdv = new RendezVous();
-        rdv.setId(rs.getLong("id_rdv"));
+        //RendezVous rdv = new RendezVous();
+        //rdv.setId(rs.getLong("id_rdv"));
         
         return Consultation.builder()
                 .id(rs.getLong("id_consultation"))
+                .idRendezVous(rs.getLong("id_rdv"))
                 .dateConsultation(rs.getDate("date_consultation").toLocalDate())
                 .symptomes(rs.getString("symptomes"))
                 .diagnostic(rs.getString("diagnostic"))
@@ -199,7 +200,6 @@ public class ConsultationDAOImpl implements IConsultationDAO {
                 .prescription(rs.getString("prescription"))
                 .examenesDemandes(rs.getString("examens_demandes"))
                 .tarifConsultation(rs.getBigDecimal("tarif_consultation"))
-                .rendezVous(rdv)
                 .build();
     }
 }

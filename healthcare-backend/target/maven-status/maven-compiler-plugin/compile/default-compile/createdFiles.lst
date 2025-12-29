@@ -35,7 +35,6 @@ ma\ensa\healthcare\exception\UtilisateurException.class
 ma\ensa\healthcare\dao\interfaces\IMedicamentDAO.class
 ma\ensa\healthcare\exception\RendezVousException.class
 ma\ensa\healthcare\model\Medicament.class
-ma\ensa\healthcare\Main.class
 ma\ensa\healthcare\transaction\TransactionManager.class
 ma\ensa\healthcare\util\TestDataCleaner.class
 ma\ensa\healthcare\model\Facture$FactureBuilder.class
@@ -64,6 +63,7 @@ ma\ensa\healthcare\dto\RendezVousDTO$RendezVousDTOBuilder.class
 ma\ensa\healthcare\model\RendezVous.class
 ma\ensa\healthcare\exception\MedecinException.class
 ma\ensa\healthcare\config\DatabaseConfig.class
+ma\ensa\healthcare\util\PdfExportService.class
 ma\ensa\healthcare\model\Medecin$MedecinBuilder.class
 ma\ensa\healthcare\config\PropertyManager.class
 ma\ensa\healthcare\dto\TraitementDTO.class

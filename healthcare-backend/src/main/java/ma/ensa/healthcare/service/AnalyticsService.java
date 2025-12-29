@@ -1,5 +1,6 @@
 package ma.ensa.healthcare.service;
 
+import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.dao.impl.*;
 import ma.ensa.healthcare.dao.interfaces.*;
 import ma.ensa.healthcare.dto.StatisticsDTO;
@@ -23,6 +24,7 @@ public class AnalyticsService {
     private final IRendezVousDAO rendezVousDAO;
     private final IConsultationDAO consultationDAO;
     private final IFactureDAO factureDAO;
+    private final RendezVousService rendezVousService = new RendezVousService();
 
     public AnalyticsService() {
         this.patientDAO = new PatientDAOImpl();
@@ -126,10 +128,10 @@ public class AnalyticsService {
         Map<String, Integer> stats = new HashMap<>();
         
         consultationDAO.findAll().forEach(consultation -> {
-            if (consultation.getRendezVous() != null && 
-                consultation.getRendezVous().getMedecin() != null) {
+            if (consultation.getIdRendezVous() != 0 && 
+                rendezVousService.getRendezVousById(consultation.getIdRendezVous()).getMedecin() != null) {
                 
-                String specialite = consultation.getRendezVous()
+                String specialite = rendezVousService.getRendezVousById(consultation.getIdRendezVous())
                     .getMedecin()
                     .getSpecialite();
                 

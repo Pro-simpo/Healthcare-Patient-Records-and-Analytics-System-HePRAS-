@@ -21,7 +21,7 @@ public class RendezVousValidator {
         }
         
         // 1. Patient obligatoire
-        if (rdv.getPatient() == null || rdv.getPatient().getId() == null) {
+        if (rdv.getIdPatient() == null) {
             throw new RendezVousException("Un patient valide est requis");
         }
         
@@ -124,7 +124,7 @@ public class RendezVousValidator {
             throw new RendezVousException("Le rendez-vous ne peut pas être null");
         }
         
-        if (rdv.getPatient() == null || rdv.getPatient().getId() == null) {
+        if (rdv.getIdPatient() == null) {
             throw new RendezVousException("Un patient valide est requis");
         }
         

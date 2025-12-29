@@ -8,7 +8,7 @@ import java.time.LocalDate;
  */
 public class Consultation {
     private Long id;                        // id_consultation
-    private RendezVous rendezVous;          // id_rdv (FK UNIQUE NOT NULL)
+    private Long idRendezVous;          // id_rdv (FK UNIQUE NOT NULL)
     private LocalDate dateConsultation;     // date_consultation (DEFAULT SYSDATE)
     private String symptomes;               // symptomes
     private String diagnostic;              // diagnostic
@@ -20,11 +20,11 @@ public class Consultation {
     // --- Constructeurs ---
     public Consultation() {}
 
-    public Consultation(Long id, RendezVous rendezVous, LocalDate dateConsultation, 
+    public Consultation(Long id, Long idRendezVous, LocalDate dateConsultation, 
                        String symptomes, String diagnostic, String observations, 
                        String prescription, String examenesDemandes, BigDecimal tarifConsultation) {
         this.id = id;
-        this.rendezVous = rendezVous;
+        this.idRendezVous = idRendezVous;
         this.dateConsultation = dateConsultation;
         this.symptomes = symptomes;
         this.diagnostic = diagnostic;
@@ -41,7 +41,7 @@ public class Consultation {
 
     public static class ConsultationBuilder {
         private Long id;
-        private RendezVous rendezVous;
+        private Long idRendezVous;
         private LocalDate dateConsultation;
         private String symptomes;
         private String diagnostic;
@@ -51,7 +51,7 @@ public class Consultation {
         private BigDecimal tarifConsultation;
 
         public ConsultationBuilder id(Long id) { this.id = id; return this; }
-        public ConsultationBuilder rendezVous(RendezVous rendezVous) { this.rendezVous = rendezVous; return this; }
+        public ConsultationBuilder idRendezVous(Long idRendezVous) { this.idRendezVous = idRendezVous; return this; }
         public ConsultationBuilder dateConsultation(LocalDate dateConsultation) { this.dateConsultation = dateConsultation; return this; }
         public ConsultationBuilder symptomes(String symptomes) { this.symptomes = symptomes; return this; }
         public ConsultationBuilder diagnostic(String diagnostic) { this.diagnostic = diagnostic; return this; }
@@ -61,7 +61,7 @@ public class Consultation {
         public ConsultationBuilder tarifConsultation(BigDecimal tarifConsultation) { this.tarifConsultation = tarifConsultation; return this; }
 
         public Consultation build() {
-            return new Consultation(id, rendezVous, dateConsultation, symptomes, diagnostic, 
+            return new Consultation(id, idRendezVous, dateConsultation, symptomes, diagnostic, 
                                   observations, prescription, examenesDemandes, tarifConsultation);
         }
     }
@@ -70,8 +70,8 @@ public class Consultation {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public RendezVous getRendezVous() { return rendezVous; }
-    public void setRendezVous(RendezVous rendezVous) { this.rendezVous = rendezVous; }
+    public Long getIdRendezVous() { return idRendezVous; }
+    public void setIdRendezVous(Long idRendezVous) { this.idRendezVous = idRendezVous; }
 
     public LocalDate getDateConsultation() { return dateConsultation; }
     public void setDateConsultation(LocalDate dateConsultation) { this.dateConsultation = dateConsultation; }

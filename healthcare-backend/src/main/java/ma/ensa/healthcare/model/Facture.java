@@ -11,8 +11,8 @@ import java.time.LocalDate;
 public class Facture {
     private Long id;                        // id_facture
     private String numeroFacture;           // numero_facture (UNIQUE NOT NULL)
-    private Patient patient;                // id_patient (FK NOT NULL)
-    private Consultation consultation;      // id_consultation (FK UNIQUE NOT NULL)
+    private long idPatient;                // id_patient (FK NOT NULL)
+    private long idConsultation;            // id_consultation (FK UNIQUE NOT NULL)
     private LocalDate dateFacture;          // date_facture (DEFAULT SYSDATE)
     private BigDecimal montantConsultation; // montant_consultation (DEFAULT 0)
     private BigDecimal montantMedicaments;  // montant_medicaments (DEFAULT 0)
@@ -25,14 +25,14 @@ public class Facture {
     // --- Constructeurs ---
     public Facture() {}
 
-    public Facture(Long id, String numeroFacture, Patient patient, Consultation consultation, 
+    public Facture(Long id, String numeroFacture, long idPatient, long idConsultation, 
                   LocalDate dateFacture, BigDecimal montantConsultation, BigDecimal montantMedicaments, 
                   BigDecimal montantTotal, BigDecimal montantPaye, StatutPaiement statutPaiement, 
                   ModePaiement modePaiement, LocalDate datePaiement) {
         this.id = id;
         this.numeroFacture = numeroFacture;
-        this.patient = patient;
-        this.consultation = consultation;
+        this.idPatient = idPatient;
+        this.idConsultation = idConsultation;
         this.dateFacture = dateFacture;
         this.montantConsultation = montantConsultation;
         this.montantMedicaments = montantMedicaments;
@@ -51,8 +51,8 @@ public class Facture {
     public static class FactureBuilder {
         private Long id;
         private String numeroFacture;
-        private Patient patient;
-        private Consultation consultation;
+        private Long idPatient;
+        private Long idConsultation;
         private LocalDate dateFacture;
         private BigDecimal montantConsultation;
         private BigDecimal montantMedicaments;
@@ -64,8 +64,8 @@ public class Facture {
 
         public FactureBuilder id(Long id) { this.id = id; return this; }
         public FactureBuilder numeroFacture(String numeroFacture) { this.numeroFacture = numeroFacture; return this; }
-        public FactureBuilder patient(Patient patient) { this.patient = patient; return this; }
-        public FactureBuilder consultation(Consultation consultation) { this.consultation = consultation; return this; }
+        public FactureBuilder idPatient(Long idPatient) { this.idPatient = idPatient; return this; }
+        public FactureBuilder idConsultation(Long idConsultation) { this.idConsultation = idConsultation; return this; }
         public FactureBuilder dateFacture(LocalDate dateFacture) { this.dateFacture = dateFacture; return this; }
         public FactureBuilder montantConsultation(BigDecimal montantConsultation) { this.montantConsultation = montantConsultation; return this; }
         public FactureBuilder montantMedicaments(BigDecimal montantMedicaments) { this.montantMedicaments = montantMedicaments; return this; }
@@ -76,7 +76,7 @@ public class Facture {
         public FactureBuilder datePaiement(LocalDate datePaiement) { this.datePaiement = datePaiement; return this; }
 
         public Facture build() {
-            return new Facture(id, numeroFacture, patient, consultation, dateFacture, 
+            return new Facture(id, numeroFacture, idPatient, idConsultation, dateFacture, 
                              montantConsultation, montantMedicaments, montantTotal, montantPaye, 
                              statutPaiement, modePaiement, datePaiement);
         }
@@ -89,12 +89,11 @@ public class Facture {
     public String getNumeroFacture() { return numeroFacture; }
     public void setNumeroFacture(String numeroFacture) { this.numeroFacture = numeroFacture; }
 
-    public Patient getPatient() { return patient; }
-    public void setPatient(Patient patient) { this.patient = patient; }
+    public long getIdPatient() { return idPatient; }
+    public void setIdPatient(long idPatient) { this.idPatient = idPatient; }
 
-    public Consultation getConsultation() { return consultation; }
-    public void setConsultation(Consultation consultation) { this.consultation = consultation; }
-
+    public long getIdConsultation() { return idConsultation; }
+    public void setIdConsultation(long idConsultation) { this.idConsultation = idConsultation; }
     public LocalDate getDateFacture() { return dateFacture; }
     public void setDateFacture(LocalDate dateFacture) { this.dateFacture = dateFacture; }
 

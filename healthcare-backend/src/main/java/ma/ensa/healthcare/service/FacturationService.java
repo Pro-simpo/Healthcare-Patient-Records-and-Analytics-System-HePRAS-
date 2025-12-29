@@ -5,6 +5,8 @@ import ma.ensa.healthcare.dao.interfaces.IFactureDAO;
 import ma.ensa.healthcare.model.Consultation;
 import ma.ensa.healthcare.model.Facture;
 import ma.ensa.healthcare.model.Patient;
+import ma.ensa.healthcare.model.RendezVous;
+import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.model.enums.ModePaiement;
 import ma.ensa.healthcare.model.enums.StatutPaiement;
 import org.slf4j.Logger;
@@ -20,6 +22,7 @@ import java.util.List;
 public class FacturationService {
     private static final Logger logger = LoggerFactory.getLogger(FacturationService.class);
     private final IFactureDAO factureDAO;
+    private final RendezVousService rendezVousService = new RendezVousService();
 
     public FacturationService() {
         this.factureDAO = new FactureDAOImpl();
@@ -32,20 +35,21 @@ public class FacturationService {
      * @param montantMedicaments Le montant total des médicaments prescrits
      * @return La facture créée
      */
-    public Facture genererFacture(Consultation consultation, BigDecimal montantMedicaments) {
+    public Facture genererFacture(Long idConsultation, BigDecimal montantMedicaments) {
         // Validation
+        ConsultationService consultationService = new ConsultationService();
+        Consultation consultation = consultationService.getConsultationById(idConsultation);
         if (consultation == null || consultation.getId() == null) {
             throw new IllegalArgumentException("Consultation invalide");
         }
         
-        if (consultation.getRendezVous() == null || 
-            consultation.getRendezVous().getPatient() == null) {
+        if (consultation.getIdRendezVous() == 0) {
             throw new IllegalArgumentException("Patient introuvable dans la consultation");
         }
         
         // Récupérer le patient
-        Patient patient = consultation.getRendezVous().getPatient();
-        
+        RendezVous rdvAssocie = rendezVousService.getRendezVousById(consultation.getIdRendezVous());
+        Long idPatient = rdvAssocie.getIdPatient();
         // Montants
         BigDecimal montantConsultation = consultation.getTarifConsultation() != null 
             ? consultation.getTarifConsultation() 
@@ -63,8 +67,8 @@ public class FacturationService {
         // Créer la facture
         Facture facture = Facture.builder()
                 .numeroFacture(numeroFacture)
-                .patient(patient)
-                .consultation(consultation)
+                .idPatient(idPatient)
+                .idConsultation(consultation.getId())
                 .dateFacture(LocalDate.now())
                 .montantConsultation(montantConsultation)
                 .montantMedicaments(montantMed)

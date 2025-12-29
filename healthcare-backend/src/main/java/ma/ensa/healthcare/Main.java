@@ -25,6 +25,8 @@ import java.util.UUID;
  * 
  * ⚠️ Les IDs sont gérés par les séquences Oracle - Ne PAS les définir manuellement
  */
+
+/*
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     
@@ -481,3 +483,4 @@ public class Main {
         System.out.println("  ℹ️  " + label + ": " + message);
     }
 }
+*/

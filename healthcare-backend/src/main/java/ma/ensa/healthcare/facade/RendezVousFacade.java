@@ -2,7 +2,7 @@ package ma.ensa.healthcare.facade;
 
 import ma.ensa.healthcare.dto.RendezVousDTO;
 import ma.ensa.healthcare.model.RendezVous;
-import ma.ensa.healthcare.service.RendezVousService;
+import ma.ensa.healthcare.service.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  */
 public class RendezVousFacade {
     private final RendezVousService rdvService;
+    private final PatientService patientService = new PatientService();
     
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
@@ -90,7 +91,7 @@ public class RendezVousFacade {
         String dateHeureLabel = dateLabel + " à " + heureLabel;
         
         // Nom complet du patient
-        String patientNom = rdv.getPatient().getNom() + " " + rdv.getPatient().getPrenom();
+        String patientNom = patientService.getPatientById(rdv.getIdPatient()).getNom() + " " + patientService.getPatientById(rdv.getIdPatient()).getPrenom();
         
         // Nom complet du médecin avec titre
         String medecinNom = "Dr. " + rdv.getMedecin().getNom() + " " + rdv.getMedecin().getPrenom();

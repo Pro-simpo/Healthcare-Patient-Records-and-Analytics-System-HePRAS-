@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  */
 public class RendezVous {
     private Long id;                        // id_rdv
-    private Patient patient;                // id_patient (FK NOT NULL)
+    private Long idPatient;                // id_patient (FK NOT NULL)
     private Medecin medecin;                // id_medecin (FK NOT NULL)
     private LocalDate dateRdv;              // date_rdv (NOT NULL)
     private LocalDateTime heureDebut;       // heure_debut (TIMESTAMP NOT NULL)
@@ -22,11 +22,11 @@ public class RendezVous {
     // --- Constructeurs ---
     public RendezVous() {}
 
-    public RendezVous(Long id, Patient patient, Medecin medecin, LocalDate dateRdv, 
+    public RendezVous(Long id, Long idPatient, Medecin medecin, LocalDate dateRdv, 
                      LocalDateTime heureDebut, LocalDateTime heureFin, String motif, 
                      StatutRendezVous statut, String salle, LocalDate dateCreation) {
         this.id = id;
-        this.patient = patient;
+        this.idPatient = idPatient;
         this.medecin = medecin;
         this.dateRdv = dateRdv;
         this.heureDebut = heureDebut;
@@ -44,7 +44,7 @@ public class RendezVous {
 
     public static class RendezVousBuilder {
         private Long id;
-        private Patient patient;
+        private Long idPatient;
         private Medecin medecin;
         private LocalDate dateRdv;
         private LocalDateTime heureDebut;
@@ -55,7 +55,7 @@ public class RendezVous {
         private LocalDate dateCreation;
 
         public RendezVousBuilder id(Long id) { this.id = id; return this; }
-        public RendezVousBuilder patient(Patient patient) { this.patient = patient; return this; }
+        public RendezVousBuilder idPatient(Long idPatient) { this.idPatient = idPatient; return this; }
         public RendezVousBuilder medecin(Medecin medecin) { this.medecin = medecin; return this; }
         public RendezVousBuilder dateRdv(LocalDate dateRdv) { this.dateRdv = dateRdv; return this; }
         public RendezVousBuilder heureDebut(LocalDateTime heureDebut) { this.heureDebut = heureDebut; return this; }
@@ -66,7 +66,7 @@ public class RendezVous {
         public RendezVousBuilder dateCreation(LocalDate dateCreation) { this.dateCreation = dateCreation; return this; }
 
         public RendezVous build() {
-            return new RendezVous(id, patient, medecin, dateRdv, heureDebut, heureFin, 
+            return new RendezVous(id, idPatient, medecin, dateRdv, heureDebut, heureFin, 
                                 motif, statut, salle, dateCreation);
         }
     }
@@ -75,8 +75,8 @@ public class RendezVous {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Patient getPatient() { return patient; }
-    public void setPatient(Patient patient) { this.patient = patient; }
+    public Long getIdPatient() { return idPatient; }
+    public void setIdPatient(Long idPatient) { this.idPatient = idPatient; }
 
     public Medecin getMedecin() { return medecin; }
     public void setMedecin(Medecin medecin) { this.medecin = medecin; }

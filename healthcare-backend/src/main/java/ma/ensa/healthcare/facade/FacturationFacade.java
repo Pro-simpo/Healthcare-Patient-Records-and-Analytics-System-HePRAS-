@@ -2,8 +2,10 @@ package ma.ensa.healthcare.facade;
 
 import ma.ensa.healthcare.dto.FactureDTO;
 import ma.ensa.healthcare.model.Facture;
+import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.model.enums.ModePaiement;
 import ma.ensa.healthcare.model.enums.StatutPaiement;
+import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.service.FacturationService;
 
 import java.math.BigDecimal;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
  */
 public class FacturationFacade {
     private final FacturationService facturationService;
+    private final PatientService patientService = new PatientService();
     
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -132,10 +135,11 @@ public class FacturationFacade {
         dto.setNumeroFacture(facture.getNumeroFacture());
         
         // Nom complet du patient
-        if (facture.getPatient() != null) {
-            String nomComplet = facture.getPatient().getNom() + " " + facture.getPatient().getPrenom();
+        if (facture.getIdPatient() != 0) {
+            Patient patient = patientService.getPatientById(facture.getIdPatient());
+            String nomComplet = patient.getNom() + " " + patient.getPrenom();
             dto.setPatientNom(nomComplet);
-            dto.setPatientCin(facture.getPatient().getCin());
+            dto.setPatientCin(patient.getCin());
         }
         
         // Dates formatées

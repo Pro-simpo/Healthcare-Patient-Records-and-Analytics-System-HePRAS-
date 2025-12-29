@@ -1,5 +1,6 @@
 package ma.ensa.healthcare.service;
 
+import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.dao.impl.ConsultationDAOImpl;
 import ma.ensa.healthcare.dao.interfaces.IConsultationDAO;
 import ma.ensa.healthcare.model.Consultation;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ConsultationService {
     private static final Logger logger = LoggerFactory.getLogger(ConsultationService.class);
     private final IConsultationDAO consultationDAO;
+    private final RendezVousService rendezVousService = new RendezVousService();
 
     public ConsultationService() {
         this.consultationDAO = new ConsultationDAOImpl();
@@ -45,7 +47,7 @@ public class ConsultationService {
      */
     private void validerConsultation(Consultation c) {
         // 1. Rendez-vous obligatoire
-        if (c.getRendezVous() == null || c.getRendezVous().getId() == null) {
+        if (rendezVousService.getRendezVousById(c.getIdRendezVous()) == null || c.getIdRendezVous() == 0) {
             throw new IllegalArgumentException("Le rendez-vous est obligatoire pour une consultation");
         }
         
