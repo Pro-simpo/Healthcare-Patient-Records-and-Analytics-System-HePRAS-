@@ -9,7 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import ma.ensa.healthcare.model.RendezVous;
 import ma.ensa.healthcare.model.enums.StatutRendezVous;
-import ma.ensa.healthcare.service.RendezVousService;
+import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.ui.dialogs.RendezVousDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +46,7 @@ public class RendezVousController {
     @FXML private Label lblTotal;
 
     private final RendezVousService rdvService = new RendezVousService();
+    private final PatientService patientService = new PatientService();
     private ObservableList<RendezVous> rdvList = FXCollections.observableArrayList();
     
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -87,17 +88,17 @@ public class RendezVousController {
         
         colPatient.setCellValueFactory(cellData -> {
             RendezVous rdv = cellData.getValue();
-            if (rdv.getPatient() != null) {
+            if (rdv.getIdPatient() != 0) {
                 return new javafx.beans.property.SimpleStringProperty(
-                    rdv.getPatient().getNom() + " " + rdv.getPatient().getPrenom());
+                    patientService.getPatientById(rdv.getIdPatient()).getNom() + " " + patientService.getPatientById(rdv.getIdPatient()).getPrenom());
             }
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });
         
         colCin.setCellValueFactory(cellData -> {
             RendezVous rdv = cellData.getValue();
-            if (rdv.getPatient() != null) {
-                return new javafx.beans.property.SimpleStringProperty(rdv.getPatient().getCin());
+            if (rdv.getIdPatient() != 0) {
+                return new javafx.beans.property.SimpleStringProperty(patientService.getPatientById(rdv.getIdPatient()).getCin());
             }
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });

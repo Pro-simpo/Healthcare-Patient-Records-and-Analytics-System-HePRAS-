@@ -26,6 +26,8 @@ public class ConsultationDialog extends Dialog<Consultation> {
     // Services
     private final RendezVousService rdvService;
     private final ConsultationService consultationService;
+    private final PatientService patientService = new PatientService();
+    private final RendezVousService rendezVousService = new RendezVousService();
     
     // Composants UI
     private ComboBox<RendezVous> rdvComboBox;
@@ -115,7 +117,7 @@ public class ConsultationDialog extends Dialog<Consultation> {
                     setText(null);
                 } else {
                     String text = String.format("%s - Dr. %s %s (%s)",
-                        rdv.getPatient().getNom() + " " + rdv.getPatient().getPrenom(),
+                        patientService.getPatientById(rdv.getIdPatient()).getNom() + " " + patientService.getPatientById(rdv.getIdPatient()).getPrenom(),
                         rdv.getMedecin().getNom(),
                         rdv.getMedecin().getPrenom(),
                         rdv.getDateRdv()
@@ -254,7 +256,7 @@ public class ConsultationDialog extends Dialog<Consultation> {
         if (consultation == null) return;
         
         // RDV (désactivé en mode édition)
-        rdvComboBox.setValue(consultation.getRendezVous());
+        rdvComboBox.setValue(rendezVousService.getRendezVousById(consultation.getIdRendezVous()));
         rdvComboBox.setDisable(true);
         
         // Données
@@ -326,7 +328,7 @@ public class ConsultationDialog extends Dialog<Consultation> {
         
         // RDV (seulement en création)
         if (!isEditMode) {
-            c.setRendezVous(rdvComboBox.getValue());
+            c.setIdRendezVous(rdvComboBox.getValue().getId());
         }
         
         c.setDateConsultation(dateConsultationPicker.getValue());

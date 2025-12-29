@@ -10,8 +10,7 @@ import javafx.scene.layout.HBox;
 import ma.ensa.healthcare.model.Consultation;
 import ma.ensa.healthcare.model.Medecin;
 import ma.ensa.healthcare.model.Patient;
-import ma.ensa.healthcare.service.ConsultationService;
-import ma.ensa.healthcare.service.MedecinService;
+import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.ui.dialogs.ConsultationDetailsDialog;
 import ma.ensa.healthcare.ui.dialogs.ConsultationDialog;
 import ma.ensa.healthcare.ui.dialogs.PatientDialog;
@@ -52,6 +51,8 @@ public class ConsultationsController {
 
     private final ConsultationService consultationService = new ConsultationService();
     private final MedecinService medecinService = new MedecinService();
+    private final PatientService patientService = new PatientService();
+    private final RendezVousService rendezVousService = new RendezVousService();
     private ObservableList<Consultation> consultationsList = FXCollections.observableArrayList();
     
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -100,37 +101,37 @@ public class ConsultationsController {
         
         colPatient.setCellValueFactory(cellData -> {
             Consultation c = cellData.getValue();
-            if (c.getRendezVous() != null && c.getRendezVous().getPatient() != null) {
+            if (rendezVousService.getRendezVousById(c.getIdRendezVous()) != null && rendezVousService.getRendezVousById(c.getIdRendezVous()).getIdPatient() != null) {
                 return new javafx.beans.property.SimpleStringProperty(
-                    c.getRendezVous().getPatient().getNom() + " " + 
-                    c.getRendezVous().getPatient().getPrenom());
+                    patientService.getPatientById(rendezVousService.getRendezVousById(c.getIdRendezVous()).getIdPatient()).getNom() + " " + 
+                    patientService.getPatientById(rendezVousService.getRendezVousById(c.getIdRendezVous()).getIdPatient()).getPrenom());
             }
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });
         
         colCin.setCellValueFactory(cellData -> {
             Consultation c = cellData.getValue();
-            if (c.getRendezVous() != null && c.getRendezVous().getPatient() != null) {
+            if (rendezVousService.getRendezVousById(c.getIdRendezVous()) != null && rendezVousService.getRendezVousById(c.getIdRendezVous()).getIdPatient() != null) {
                 return new javafx.beans.property.SimpleStringProperty(
-                    c.getRendezVous().getPatient().getCin());
+                    patientService.getPatientById(rendezVousService.getRendezVousById(c.getIdRendezVous()).getIdPatient()).getCin());
             }
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });
         
         colMedecin.setCellValueFactory(cellData -> {
             Consultation c = cellData.getValue();
-            if (c.getRendezVous() != null && c.getRendezVous().getMedecin() != null) {
+            if (rendezVousService.getRendezVousById(c.getIdRendezVous()) != null && rendezVousService.getRendezVousById(c.getIdRendezVous()).getMedecin() != null) {
                 return new javafx.beans.property.SimpleStringProperty(
-                    "Dr. " + c.getRendezVous().getMedecin().getNom());
+                    "Dr. " + rendezVousService.getRendezVousById(c.getIdRendezVous()).getMedecin().getNom());
             }
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });
         
         colSpecialite.setCellValueFactory(cellData -> {
             Consultation c = cellData.getValue();
-            if (c.getRendezVous() != null && c.getRendezVous().getMedecin() != null) {
+            if (rendezVousService.getRendezVousById(c.getIdRendezVous()) != null && rendezVousService.getRendezVousById(c.getIdRendezVous()).getMedecin() != null) {
                 return new javafx.beans.property.SimpleStringProperty(
-                    c.getRendezVous().getMedecin().getSpecialite());
+                    rendezVousService.getRendezVousById(c.getIdRendezVous()).getMedecin().getSpecialite());
             }
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });
@@ -249,13 +250,13 @@ public class ConsultationsController {
                     String patientNom = "";
                     String medecinNom = "";
                     
-                    if (c.getRendezVous() != null) {
-                        if (c.getRendezVous().getPatient() != null) {
-                            patientNom = (c.getRendezVous().getPatient().getNom() + " " + 
-                                         c.getRendezVous().getPatient().getPrenom()).toLowerCase();
+                    if (rendezVousService.getRendezVousById(c.getIdRendezVous()) != null) {
+                        if (rendezVousService.getRendezVousById(c.getIdRendezVous()).getIdPatient() != null) {
+                            patientNom = (patientService.getPatientById(rendezVousService.getRendezVousById(c.getIdRendezVous()).getIdPatient()).getNom() + " " + 
+                                         patientService.getPatientById(rendezVousService.getRendezVousById(c.getIdRendezVous()).getIdPatient()).getPrenom()).toLowerCase();
                         }
-                        if (c.getRendezVous().getMedecin() != null) {
-                            medecinNom = c.getRendezVous().getMedecin().getNom().toLowerCase();
+                        if (rendezVousService.getRendezVousById(c.getIdRendezVous()).getMedecin() != null) {
+                            medecinNom = rendezVousService.getRendezVousById(c.getIdRendezVous()).getMedecin().getNom().toLowerCase();
                         }
                     }
                     
@@ -286,9 +287,10 @@ public class ConsultationsController {
                         (c.getDateConsultation() != null && c.getDateConsultation().equals(filterDate));
                     
                     boolean medecinMatch = filterMedecin == null || 
-                        (c.getRendezVous() != null && c.getRendezVous().getMedecin() != null &&
-                         c.getRendezVous().getMedecin().getId().equals(filterMedecin.getId()));
-                    
+                        (rendezVousService.getRendezVousById(c.getIdRendezVous()) != null && 
+                         rendezVousService.getRendezVousById(c.getIdRendezVous()).getMedecin() != null &&
+                         rendezVousService.getRendezVousById(c.getIdRendezVous()).getMedecin().getId().equals(filterMedecin.getId()));
+
                     return dateMatch && medecinMatch;
                 })
                 .toList();

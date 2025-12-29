@@ -6,7 +6,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import ma.ensa.healthcare.model.Consultation;
 import ma.ensa.healthcare.model.Traitement;
-import ma.ensa.healthcare.service.TraitementService;
+import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.ui.MainApp;
 
 import java.time.format.DateTimeFormatter;
@@ -19,6 +19,8 @@ public class ConsultationDetailsDialog extends Dialog<Void> {
     
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final TraitementService traitementService = new TraitementService();
+    private final PatientService patientService = new PatientService();
+    private final RendezVousService rendezVousService = new RendezVousService();
 
     public ConsultationDetailsDialog(Consultation consultation) {
         setTitle("Détails de la Consultation");
@@ -105,23 +107,23 @@ public class ConsultationDetailsDialog extends Dialog<Void> {
             consultation.getDateConsultation().format(DATE_FORMATTER) : "N/A");
 
         // Patient
-        if (consultation.getRendezVous() != null && 
-            consultation.getRendezVous().getPatient() != null) {
-            String patient = consultation.getRendezVous().getPatient().getNom() + " " +
-                           consultation.getRendezVous().getPatient().getPrenom();
+        if (rendezVousService.getRendezVousById(consultation.getIdRendezVous()) != null && 
+            rendezVousService.getRendezVousById(consultation.getIdRendezVous()).getIdPatient() != null) {
+            String patient = patientService.getPatientById(rendezVousService.getRendezVousById(consultation.getIdRendezVous()).getIdPatient()).getNom() + " " +
+                           patientService.getPatientById(rendezVousService.getRendezVousById(consultation.getIdRendezVous()).getIdPatient()).getPrenom();
             addInfoRow(grid, row++, "Patient:", patient);
             addInfoRow(grid, row++, "CIN:", 
-                consultation.getRendezVous().getPatient().getCin());
+                patientService.getPatientById(rendezVousService.getRendezVousById(consultation.getIdRendezVous()).getIdPatient()).getCin());
         }
 
         // Médecin
-        if (consultation.getRendezVous() != null && 
-            consultation.getRendezVous().getMedecin() != null) {
-            String medecin = "Dr. " + consultation.getRendezVous().getMedecin().getNom() +
-                           " " + consultation.getRendezVous().getMedecin().getPrenom();
+        if (rendezVousService.getRendezVousById(consultation.getIdRendezVous()) != null && 
+            rendezVousService.getRendezVousById(consultation.getIdRendezVous()).getMedecin() != null) {
+            String medecin = "Dr. " + rendezVousService.getRendezVousById(consultation.getIdRendezVous()).getMedecin().getNom() +
+                           " " + rendezVousService.getRendezVousById(consultation.getIdRendezVous()).getMedecin().getPrenom();
             addInfoRow(grid, row++, "Médecin:", medecin);
             addInfoRow(grid, row++, "Spécialité:", 
-                consultation.getRendezVous().getMedecin().getSpecialite());
+                rendezVousService.getRendezVousById(consultation.getIdRendezVous()).getMedecin().getSpecialite());
         }
 
         // Tarif

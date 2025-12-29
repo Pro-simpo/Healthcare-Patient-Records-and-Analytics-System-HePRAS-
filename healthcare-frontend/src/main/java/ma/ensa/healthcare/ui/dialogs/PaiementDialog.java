@@ -5,6 +5,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import ma.ensa.healthcare.model.Facture;
 import ma.ensa.healthcare.model.enums.ModePaiement;
+import ma.ensa.healthcare.service.PatientService;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +15,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class PaiementDialog extends Dialog<PaiementDialog.PaiementData> {
     
+    private final PatientService patientService = new PatientService();
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     
     private TextField txtMontant;
@@ -125,8 +127,8 @@ public class PaiementDialog extends Dialog<PaiementDialog.PaiementData> {
 
     private void updateInfoLabel() {
         String patient = "N/A";
-        if (facture.getPatient() != null) {
-            patient = facture.getPatient().getNom() + " " + facture.getPatient().getPrenom();
+        if (facture.getIdPatient() != 0) {
+            patient = patientService.getPatientById(facture.getIdPatient()).getNom() + " " + patientService.getPatientById(facture.getIdPatient()).getPrenom();
         }
         
         String info = String.format(

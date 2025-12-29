@@ -191,7 +191,7 @@ public class RendezVousDialog extends Dialog<RendezVous> {
     }
 
     private void fillForm(RendezVous rdv) {
-        cmbPatient.setValue(rdv.getPatient());
+        cmbPatient.setValue(patientService.getPatientById(rdv.getIdPatient()));
         cmbMedecin.setValue(rdv.getMedecin());
         
         // ✅ CORRECTION : Utiliser dateRdv et heureDebut
@@ -256,7 +256,7 @@ public class RendezVousDialog extends Dialog<RendezVous> {
         LocalDateTime heureFin = heureDebut.plusMinutes(spinnerDuree.getValue());
 
         RendezVous.RendezVousBuilder builder = RendezVous.builder()
-                .patient(cmbPatient.getValue())
+                .idPatient(cmbPatient.getValue().getId())
                 .medecin(cmbMedecin.getValue())
                 .dateRdv(dpDate.getValue())          // ✅ LocalDate
                 .heureDebut(heureDebut)              // ✅ LocalDateTime

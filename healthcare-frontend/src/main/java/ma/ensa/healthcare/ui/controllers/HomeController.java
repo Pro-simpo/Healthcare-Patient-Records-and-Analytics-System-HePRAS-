@@ -76,8 +76,8 @@ public class HomeController {
 
         colPatient.setCellValueFactory(cellData -> {
             RendezVous rdv = cellData.getValue();
-            if (rdv.getPatient() != null) {
-                String nom = rdv.getPatient().getNom() + " " + rdv.getPatient().getPrenom();
+            if (rdv.getIdPatient() != 0) {
+                String nom = patientService.getPatientById(rdv.getIdPatient()).getNom() + " " + patientService.getPatientById(rdv.getIdPatient()).getPrenom();
                 return new javafx.beans.property.SimpleStringProperty(nom);
             }
             return new javafx.beans.property.SimpleStringProperty("N/A");
@@ -250,7 +250,7 @@ public class HomeController {
                 })
                 .toList();
             factures.setAll(filtered.stream()
-                .map(f -> "Facture " + f.getNumeroFacture() + " - Patient: " + f.getPatient().getNom() + " " + f.getPatient().getPrenom() + " - Montant: " + f.getMontantTotal() + " MAD")
+                .map(f -> "Facture " + f.getNumeroFacture() + " - Patient: " + patientService.getPatientById(f.getIdPatient()).getNom() + " " + patientService.getPatientById(f.getIdPatient()).getPrenom() + " - Montant: " + f.getMontantTotal() + " MAD")
                 .toList());
             listFacturesImpayees.setItems(factures);
             

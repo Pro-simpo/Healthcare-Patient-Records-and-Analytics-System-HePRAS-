@@ -43,7 +43,7 @@
             </graphic>
         </Button>
         
-        <Button text="Exporter" styleClass="action-button" prefHeight="40">
+        <Button text="Exporter PDF" onAction="#handleExportPdf" styleClass="action-button" prefHeight="40">
             <graphic>
                 <FontAwesomeIconView glyphName="FILE_EXCEL" size="14" fill="WHITE"/>
             </graphic>

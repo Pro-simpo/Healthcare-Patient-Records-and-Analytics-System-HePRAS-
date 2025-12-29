@@ -7,23 +7,34 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ma.ensa.healthcare.model.Facture;
 import ma.ensa.healthcare.model.RendezVous;
 import ma.ensa.healthcare.model.enums.ModePaiement;
 import ma.ensa.healthcare.model.enums.StatutPaiement;
-import ma.ensa.healthcare.service.FacturationService;
+import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.ui.dialogs.PaiementDialog;
 import ma.ensa.healthcare.ui.dialogs.RendezVousDialog;
+import ma.ensa.healthcare.util.PdfExportService;
 import ma.ensa.healthcare.ui.dialogs.FactureDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javafx.stage.FileChooser;
+import ma.ensa.healthcare.util.PdfExportService;
+import java.awt.Desktop;
+import java.io.File;
+import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 
 public class FacturesController {
 
@@ -55,6 +66,7 @@ public class FacturesController {
     @FXML private Label lblTotal;
 
     private final FacturationService facturationService = new FacturationService();
+    private final PatientService patientService = new PatientService();
     private ObservableList<Facture> facturesList = FXCollections.observableArrayList();
     
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -89,17 +101,17 @@ public class FacturesController {
         
         colPatient.setCellValueFactory(cellData -> {
             Facture f = cellData.getValue();
-            if (f.getPatient() != null) {
+            if (f.getIdPatient() != 0) {
                 return new javafx.beans.property.SimpleStringProperty(
-                    f.getPatient().getNom() + " " + f.getPatient().getPrenom());
+                    patientService.getPatientById(f.getIdPatient()).getNom() + " " + patientService.getPatientById(f.getIdPatient()).getPrenom());
             }
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });
         
         colCin.setCellValueFactory(cellData -> {
             Facture f = cellData.getValue();
-            if (f.getPatient() != null) {
-                return new javafx.beans.property.SimpleStringProperty(f.getPatient().getCin());
+            if (f.getIdPatient() != 0) {
+                return new javafx.beans.property.SimpleStringProperty(patientService.getPatientById(f.getIdPatient()).getCin());
             }
             return new javafx.beans.property.SimpleStringProperty("N/A");
         });
@@ -263,10 +275,10 @@ public class FacturesController {
                     String patientNom = "";
                     String cin = "";
                     
-                    if (f.getPatient() != null) {
-                        patientNom = (f.getPatient().getNom() + " " + 
-                                     f.getPatient().getPrenom()).toLowerCase();
-                        cin = f.getPatient().getCin() != null ? f.getPatient().getCin().toLowerCase() : "";
+                    if (f.getIdPatient() != 0) {
+                        patientNom = (patientService.getPatientById(f.getIdPatient()).getNom() + " " + 
+                                     patientService.getPatientById(f.getIdPatient()).getPrenom()).toLowerCase();
+                        cin = patientService.getPatientById(f.getIdPatient()).getCin() != null ? patientService.getPatientById(f.getIdPatient()).getCin().toLowerCase() : "";
                     }
                     
                     return numero.contains(searchText) || 
@@ -354,7 +366,7 @@ public class FacturesController {
 
             result.ifPresent(facture -> {
                 try {
-                    facturationService.genererFacture(facture.getConsultation(), facture.getMontantMedicaments());
+                    facturationService.genererFacture(facture.getIdConsultation(), facture.getMontantMedicaments());
                     showSuccess("Succès", "Facture créée avec succès !");
                     loadFactures();
                     updateStatistics();
@@ -388,6 +400,134 @@ public class FacturesController {
 
     private void showInfo(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
+    /**
+     * Exporte toutes les factures visibles dans la table en PDF
+     */
+    @FXML
+    private void handleExportPdf() {
+        try {
+            // Ouvrir un FileChooser pour choisir où sauvegarder
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Exporter les factures en PDF");
+            fileChooser.setInitialFileName("factures_" + 
+                LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + ".pdf");
+            fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("PDF Files", "*.pdf")
+            );
+            
+            File file = fileChooser.showSaveDialog(tableFactures.getScene().getWindow());
+            
+            if (file != null) {
+                // Récupérer les factures actuellement affichées dans la table
+                List<Facture> facturesToExport = new ArrayList<>(tableFactures.getItems());
+                
+                if (facturesToExport.isEmpty()) {
+                    showWarning("Aucune donnée", "Il n'y a aucune facture à exporter");
+                    return;
+                }
+                
+                // Générer le PDF
+                String outputPath = PdfExportService.exportFacturesListToPdf(
+                    facturesToExport, 
+                    file.getAbsolutePath()
+                );
+                
+                // Demander si on veut ouvrir le fichier
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Export réussi");
+                alert.setHeaderText("PDF généré avec succès !");
+                alert.setContentText(facturesToExport.size() + " facture(s) exportée(s).\n\n" +
+                                    "Fichier: " + file.getName());
+                
+                ButtonType btnOpen = new ButtonType("Ouvrir");
+                ButtonType btnClose = new ButtonType("Fermer", ButtonBar.ButtonData.CANCEL_CLOSE);
+                alert.getButtonTypes().setAll(btnOpen, btnClose);
+                
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == btnOpen) {
+                    openFile(file);
+                }
+                
+                logger.info("Export PDF réussi : {}", outputPath);
+                
+            }
+            
+        } catch (Exception e) {
+            logger.error("Erreur lors de l'export PDF", e);
+            showError("Erreur d'export", 
+                "Impossible de générer le PDF : " + e.getMessage());
+        }
+    }
+
+    /**
+     * Exporte UNE facture spécifique en PDF
+     */
+    private void handleExportSingleFacture(Facture facture) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Exporter la facture en PDF");
+            fileChooser.setInitialFileName(facture.getNumeroFacture() + ".pdf");
+            fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("PDF Files", "*.pdf")
+            );
+            
+            File file = fileChooser.showSaveDialog(tableFactures.getScene().getWindow());
+            
+            if (file != null) {
+                String outputPath = PdfExportService.exportFactureToPdf(
+                    facture, 
+                    file.getAbsolutePath()
+                );
+                
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Export réussi");
+                alert.setHeaderText("Facture exportée !");
+                alert.setContentText("Fichier: " + file.getName());
+                
+                ButtonType btnOpen = new ButtonType("Ouvrir");
+                ButtonType btnClose = new ButtonType("Fermer", ButtonBar.ButtonData.CANCEL_CLOSE);
+                alert.getButtonTypes().setAll(btnOpen, btnClose);
+                
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == btnOpen) {
+                    openFile(file);
+                }
+            }
+            
+        } catch (Exception e) {
+            logger.error("Erreur export facture PDF", e);
+            showError("Erreur", "Impossible d'exporter la facture : " + e.getMessage());
+        }
+    }
+
+    /**
+     * Ouvre un fichier avec l'application par défaut du système
+     */
+    private void openFile(File file) {
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(file);
+            }
+        } catch (Exception e) {
+            logger.error("Impossible d'ouvrir le fichier", e);
+            showWarning("Ouverture impossible", 
+                "Le fichier a été créé mais impossible de l'ouvrir automatiquement.\n" +
+                "Ouvrez-le manuellement depuis : " + file.getAbsolutePath());
+        }
+    }
+
+    /**
+     * Affiche un avertissement
+     */
+    private void showWarning(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

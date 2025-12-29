@@ -27,6 +27,7 @@ public class FactureDialog extends Dialog<Facture> {
     // Services
     private final ConsultationService consultationService;
     private final PatientService patientService;
+    private final RendezVousService rendezVousService = new RendezVousService();
     
     // Composants UI
     private ComboBox<Consultation> consultationComboBox;
@@ -77,9 +78,9 @@ public class FactureDialog extends Dialog<Facture> {
         getDialogPane().setPrefWidth(600);
         
         // Chargement des données si mode édition
-        if (isEditMode) {
-            loadFactureData();
-        }
+        //if (isEditMode) {
+        //    loadFactureData();
+        //}
         
         // Validation
         Button saveButton = (Button) getDialogPane().lookupButton(saveButtonType);
@@ -121,10 +122,13 @@ public class FactureDialog extends Dialog<Facture> {
                     // Sécurisation contre les valeurs nulles
                     String dateStr = (c.getDateConsultation() != null) ? c.getDateConsultation().toString() : "Date inconnue";
                     String patientStr = "Patient inconnu";
+                    Long idRendezVous = c.getIdRendezVous();
+                    RendezVous rdv = rendezVousService.getRendezVousById(idRendezVous);
+                    Patient patient = patientService.getPatientById(rdv.getIdPatient());
                     
-                    if (c.getRendezVous() != null && c.getRendezVous().getPatient() != null) {
-                        patientStr = c.getRendezVous().getPatient().getNom() + " " + 
-                                    c.getRendezVous().getPatient().getPrenom();
+                    
+                    if (rendezVousService.getRendezVousById(c.getIdRendezVous()) != null && patient != null) {
+                        patientStr = patient.getNom() + " " + patient.getPrenom();
                     }
                     
                     setText(String.format("Consultation du %s - %s", dateStr, patientStr));
@@ -289,9 +293,11 @@ public class FactureDialog extends Dialog<Facture> {
     private void loadConsultationDetails() {
         Consultation c = consultationComboBox.getValue();
         if (c == null) return;
-        
-        // Patient
-        Patient patient = c.getRendezVous().getPatient();
+
+        Long idRdv = c.getIdRendezVous();
+        RendezVous rdv = rendezVousService.getRendezVousById(idRdv);
+        Patient patient = patientService.getPatientById(rdv.getIdPatient());
+
         patientLabel.setText(patient.getNom() + " " + patient.getPrenom());
         
         // Montant consultation
@@ -339,6 +345,7 @@ public class FactureDialog extends Dialog<Facture> {
     /**
      * Charge les données de la facture (mode édition)
      */
+    /*
     private void loadFactureData() {
         if (facture == null) return;
         
@@ -366,6 +373,7 @@ public class FactureDialog extends Dialog<Facture> {
             datePaiementPicker.setValue(facture.getDatePaiement());
         }
     }
+    */
 
     /**
      * Valide les champs
@@ -428,8 +436,11 @@ public class FactureDialog extends Dialog<Facture> {
         // Consultation (seulement en création)
         if (!isEditMode) {
             Consultation c = consultationComboBox.getValue();
-            f.setConsultation(c);
-            f.setPatient(c.getRendezVous().getPatient());
+            Long idRdv = c.getIdRendezVous();
+            RendezVous rdv = rendezVousService.getRendezVousById(idRdv);
+            Patient patient = patientService.getPatientById(rdv.getIdPatient());
+            f.setIdConsultation(c.getId());
+            f.setIdPatient(patient.getId());
         }
         
         f.setDateFacture(dateFacturePicker.getValue());
