@@ -3,6 +3,8 @@ package ma.ensa.healthcare.ui.dialogs;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import ma.ensa.healthcare.model.*;
 import ma.ensa.healthcare.model.enums.StatutRendezVous;
 import ma.ensa.healthcare.service.*;
@@ -26,13 +28,15 @@ public class RendezVousDialog extends Dialog<RendezVous> {
     private final MedecinService medecinService = new MedecinService();
     private RendezVous rdvToEdit;
 
-    public RendezVousDialog() {
-        this(null);
+    public RendezVousDialog(Stage owner) {
+        this(owner, null);
     }
 
-    public RendezVousDialog(RendezVous rdv) {
+    public RendezVousDialog(Stage owner, RendezVous rdv) {
         this.rdvToEdit = rdv;
         
+        initOwner(owner);
+        initModality(Modality.APPLICATION_MODAL);
         setTitle(rdv == null ? "Nouveau Rendez-vous" : "Modifier Rendez-vous");
         setHeaderText("Planifier un rendez-vous médical");
 

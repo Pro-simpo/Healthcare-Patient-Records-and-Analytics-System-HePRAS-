@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.model.RendezVous;
 import ma.ensa.healthcare.model.enums.StatutRendezVous;
@@ -331,7 +332,8 @@ public class HomeController {
 
     @FXML
     private void handleAddPatient() {
-        PatientDialog dialog = new PatientDialog();
+        Stage stage = (Stage) tableProchainRdv.getScene().getWindow();
+        PatientDialog dialog = new PatientDialog(stage);
         Optional<Patient> result = dialog.showAndWait();
 
         result.ifPresent(patient -> {
@@ -347,7 +349,8 @@ public class HomeController {
 
     @FXML
     private void handleAddRendezVous() {
-        RendezVousDialog dialog = new RendezVousDialog();
+        Stage stage = (Stage) tableProchainRdv.getScene().getWindow();
+        RendezVousDialog dialog = new RendezVousDialog(stage);
         Optional<RendezVous> result = dialog.showAndWait();
 
         result.ifPresent(rdv -> {
@@ -366,7 +369,8 @@ public class HomeController {
      */
     @FXML
     private void handleAddConsultation() {
-        ConsultationDialog dialog = new ConsultationDialog(null);
+        Stage stage = (Stage) tableProchainRdv.getScene().getWindow();
+        ConsultationDialog dialog = new ConsultationDialog(stage);
         Optional<Consultation> result = dialog.showAndWait();
 
         result.ifPresent(consultation -> {

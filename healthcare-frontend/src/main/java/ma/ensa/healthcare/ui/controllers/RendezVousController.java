@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import ma.ensa.healthcare.model.RendezVous;
 import ma.ensa.healthcare.model.enums.StatutRendezVous;
 import ma.ensa.healthcare.service.*;
@@ -330,7 +331,8 @@ public class RendezVousController {
 
     @FXML
     private void handleAddRendezVous() {
-        RendezVousDialog dialog = new RendezVousDialog();
+        Stage stage = (Stage) tableRendezVous.getScene().getWindow();
+        RendezVousDialog dialog = new RendezVousDialog(stage);
         Optional<RendezVous> result = dialog.showAndWait();
 
         result.ifPresent(rdv -> {
@@ -382,7 +384,8 @@ public class RendezVousController {
     }
 
     private void handleModifier(RendezVous rdv) {
-        RendezVousDialog dialog = new RendezVousDialog(rdv);
+        Stage stage = (Stage) tableRendezVous.getScene().getWindow();
+        RendezVousDialog dialog = new RendezVousDialog(stage, rdv);
         Optional<RendezVous> result = dialog.showAndWait();
 
         result.ifPresent(updatedRdv -> {

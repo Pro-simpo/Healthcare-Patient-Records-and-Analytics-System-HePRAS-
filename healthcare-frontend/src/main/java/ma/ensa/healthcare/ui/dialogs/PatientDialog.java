@@ -4,6 +4,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.model.enums.Sexe;
 
@@ -26,16 +28,18 @@ public class PatientDialog extends Dialog<Patient> {
     /**
      * Constructeur pour ajouter un nouveau patient
      */
-    public PatientDialog() {
-        this(null);
+    public PatientDialog(Stage owner) {
+        this(owner, null);
     }
 
     /**
      * Constructeur pour modifier un patient existant
      */
-    public PatientDialog(Patient patient) {
+    public PatientDialog(Stage owner, Patient patient) {
         this.patientToEdit = patient;
         
+        initOwner(owner);
+        initModality(Modality.APPLICATION_MODAL);
         setTitle(patient == null ? "Nouveau Patient" : "Modifier Patient");
         setHeaderText(patient == null ? "Remplissez les informations du patient" : 
                                        "Modifiez les informations du patient");

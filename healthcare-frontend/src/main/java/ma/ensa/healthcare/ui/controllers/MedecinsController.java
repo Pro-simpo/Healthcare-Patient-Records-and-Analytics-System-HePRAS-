@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import ma.ensa.healthcare.model.Medecin;
 import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.service.MedecinService;
@@ -286,7 +287,8 @@ public class MedecinsController {
      */
     @FXML
     private void handleAddMedecin() {
-        MedecinDialog dialog = new MedecinDialog(null);
+        Stage stage = (Stage) tableMedecins.getScene().getWindow();
+        MedecinDialog dialog = new MedecinDialog(stage);
         Optional<Medecin> result = dialog.showAndWait();
 
         result.ifPresent(medecin -> {
@@ -305,7 +307,8 @@ public class MedecinsController {
      * Modifier un médecin existant
      */
     private void handleEditMedecin(Medecin medecin) {
-        MedecinDialog dialog = new MedecinDialog(null, medecin);
+        Stage stage = (Stage) tableMedecins.getScene().getWindow();
+        MedecinDialog dialog = new MedecinDialog(stage, medecin);
         Optional<Medecin> result = dialog.showAndWait();
         result.ifPresent(updatedMedecin -> {
             try {

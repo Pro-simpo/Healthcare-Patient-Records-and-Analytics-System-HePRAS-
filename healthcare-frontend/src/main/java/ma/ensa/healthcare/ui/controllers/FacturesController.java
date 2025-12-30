@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -392,7 +393,8 @@ public class FacturesController {
     @FXML
     private void handleAddFacture() {
         try {
-            FactureDialog dialog = new FactureDialog(null);
+            Stage stage = (Stage) tableFactures.getScene().getWindow();
+            FactureDialog dialog = new FactureDialog(stage);
             Optional<Facture> result = dialog.showAndWait();
 
             result.ifPresent(facture -> {
@@ -434,6 +436,15 @@ public class FacturesController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        // Récupérer le Stage interne de l'Alert
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+
+        // Charger ton icône
+        Image icon = new Image(getClass().getResourceAsStream("/images/icon.png"));
+
+        // Appliquer l'icône au Stage de l'alerte
+        alertStage.getIcons().add(icon);
+
         alert.showAndWait();
     }
 

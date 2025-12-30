@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.image.Image;
+
 /**
  * Dialogue de création/modification d'une consultation
  */

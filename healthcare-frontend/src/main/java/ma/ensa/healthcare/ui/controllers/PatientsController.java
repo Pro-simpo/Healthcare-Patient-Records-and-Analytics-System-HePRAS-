@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.service.PatientService;
 import ma.ensa.healthcare.ui.dialogs.PatientDialog;
@@ -165,7 +166,8 @@ public class PatientsController {
      */
     @FXML
     private void handleAddPatient() {
-        PatientDialog dialog = new PatientDialog();
+        Stage stage = (Stage) tablePatients.getScene().getWindow();
+        PatientDialog dialog = new PatientDialog(stage);
         Optional<Patient> result = dialog.showAndWait();
 
         result.ifPresent(patient -> {
@@ -184,7 +186,8 @@ public class PatientsController {
      * Modifier un patient existant
      */
     private void handleEditPatient(Patient patient) {
-        PatientDialog dialog = new PatientDialog(patient);
+        Stage stage = (Stage) tablePatients.getScene().getWindow();
+        PatientDialog dialog = new PatientDialog(stage, patient);
         Optional<Patient> result = dialog.showAndWait();
 
         result.ifPresent(updatedPatient -> {

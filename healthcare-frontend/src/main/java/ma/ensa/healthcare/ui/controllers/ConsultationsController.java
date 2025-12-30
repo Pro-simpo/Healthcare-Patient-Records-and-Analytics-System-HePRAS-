@@ -28,6 +28,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import javafx.stage.Stage;
+
 public class ConsultationsController {
 
     private static final Logger logger = LoggerFactory.getLogger(ConsultationsController.class);
@@ -336,7 +338,8 @@ public class ConsultationsController {
      */
     @FXML
     private void handleAddConsultation() {
-        ConsultationDialog dialog = new ConsultationDialog(null);
+        Stage stage = (Stage) tableConsultations.getScene().getWindow();
+        ConsultationDialog dialog = new ConsultationDialog(stage);
         Optional<Consultation> result = dialog.showAndWait();
 
         result.ifPresent(consultation -> {
@@ -355,7 +358,8 @@ public class ConsultationsController {
      * Modifier une consultation existante
      */
     private void handleModifier(Consultation consultation) {
-        ConsultationDialog dialog = new ConsultationDialog(null, consultation);
+        Stage stage = (Stage) tableConsultations.getScene().getWindow();
+        ConsultationDialog dialog = new ConsultationDialog(stage, consultation);
         Optional<Consultation> result = dialog.showAndWait();
         result.ifPresent(updatedConsultation -> {
             try {

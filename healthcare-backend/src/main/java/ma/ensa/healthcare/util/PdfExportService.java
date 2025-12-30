@@ -144,7 +144,7 @@ public class PdfExportService {
 
                 
                 String patientNom = f.getIdPatient() != 0 ? 
-                    patientService.getPatientById(f.getIdPatient()) + " " + patientService.getPatientById(f.getIdPatient()) : "N/A";
+                    patientService.getPatientById(f.getIdPatient()).getNom() + " " + patientService.getPatientById(f.getIdPatient()).getPrenom() : "N/A";
                 table.addCell(createCell(patientNom));
                 
                 table.addCell(createCell(formatMontant(f.getMontantTotal())));
