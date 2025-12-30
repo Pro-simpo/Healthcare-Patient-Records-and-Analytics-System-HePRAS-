@@ -7,6 +7,7 @@ ma\ensa\healthcare\service\ConsultationService.class
 com\healthcare\Main.class
 ma\ensa\healthcare\model\Patient.class
 ma\ensa\healthcare\service\NotificationService.class
+ma\ensa\healthcare\util\DatabaseExportService.class
 ma\ensa\healthcare\model\Medecin.class
 ma\ensa\healthcare\exception\ConsultationException.class
 ma\ensa\healthcare\service\PatientService.class

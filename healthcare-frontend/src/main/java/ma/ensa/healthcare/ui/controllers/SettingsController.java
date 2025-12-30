@@ -27,6 +27,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import ma.ensa.healthcare.util.DatabaseExportService;
+import javafx.concurrent.Task;
+import org.controlsfx.dialog.ProgressDialog;
+import java.io.File;
+
 
 /**
  * Contrôleur pour la page des paramètres
@@ -416,14 +421,6 @@ public class SettingsController {
     }
 
     @FXML
-    private void handleExportDatabase() {
-        showInfo("Export Base de Données", 
-            "Fonctionnalité en cours de développement\n\n" +
-            "Cette fonction permettra d'exporter la structure et les données\n" +
-            "de la base de données vers un fichier SQL.");
-    }
-
-    @FXML
     private void handleBackupDatabase() {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Sauvegarde Base de Données");
@@ -775,5 +772,89 @@ public class SettingsController {
             memoryMonitorTimeline.stop();
             logger.debug("Monitoring mémoire arrêté");
         }
+    }
+
+    @FXML
+    private void handleExportDatabase() {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Export Base de Données");
+        confirmation.setHeaderText("Exporter la base de données?");
+        confirmation.setContentText(
+            "Cette opération va créer un fichier SQL contenant:\n" +
+            "• La structure de toutes les tables\n" +
+            "• Toutes les données actuelles\n\n" +
+            "Voulez-vous continuer?");
+        confirmation.initOwner(MainApp.getPrimaryStage());
+        
+        confirmation.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // Dialog pour choisir le type d'export
+                ChoiceDialog<String> typeDialog = new ChoiceDialog<>("Complet (Structure + Données)", 
+                    "Complet (Structure + Données)", 
+                    "Données uniquement");
+                typeDialog.setTitle("Type d'Export");
+                typeDialog.setHeaderText("Choisir le type d'export");
+                typeDialog.setContentText("Type:");
+                typeDialog.initOwner(MainApp.getPrimaryStage());
+                
+                typeDialog.showAndWait().ifPresent(type -> {
+                    // Exécuter l'export dans un thread séparé
+                    Task<String> exportTask = new Task<String>() {
+                        @Override
+                        protected String call() throws Exception {
+                            updateMessage("Export en cours...");
+                            
+                            String exportDir = "C:/Users/hp/Downloads";
+                            
+                            if (type.contains("Données uniquement")) {
+                                return DatabaseExportService.exportDataOnly(exportDir);
+                            } else {
+                                return DatabaseExportService.exportDatabase(exportDir);
+                            }
+                        }
+                    };
+                    
+                    // Afficher une ProgressDialog
+                    ProgressDialog progressDialog = new ProgressDialog(exportTask);
+                    progressDialog.setTitle("Export Base de Données");
+                    progressDialog.setHeaderText("Export en cours...");
+                    progressDialog.setContentText("Veuillez patienter");
+                    progressDialog.initOwner(MainApp.getPrimaryStage());
+                    
+                    exportTask.setOnSucceeded(event -> {
+                        String filepath = exportTask.getValue();
+                        File exportFile = new File(filepath);
+                        long fileSizeKB = exportFile.length() / 1024;
+                        
+                        // Obtenir les statistiques
+                        String stats;
+                        try {
+                            stats = DatabaseExportService.getDatabaseStats();
+                        } catch (Exception e) {
+                            stats = "Statistiques non disponibles";
+                        }
+                        
+                        showSuccess("Export Réussi", 
+                            String.format("Export terminé avec succès!\n\n" +
+                                        "Fichier: %s\n" +
+                                        "Taille: %d KB\n\n" +
+                                        "%s",
+                                        exportFile.getName(), fileSizeKB, stats));
+                        
+                        logger.info("Export BDD réussi: {}", filepath);
+                    });
+                    
+                    exportTask.setOnFailed(event -> {
+                        Throwable e = exportTask.getException();
+                        logger.error("Erreur lors de l'export", e);
+                        showError("Erreur d'Export", 
+                            "Impossible d'exporter la base de données:\n\n" + e.getMessage());
+                    });
+                    
+                    // Lancer le thread
+                    new Thread(exportTask).start();
+                });
+            }
+        });
     }
 }

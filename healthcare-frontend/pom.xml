@@ -39,6 +39,12 @@
             <version>${javafx.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>${controlsfx.version}</version>
+        </dependency>
+
         <!-- ========== COMPOSANTS AVANCÉS (ControlsFX) ========== -->
         <dependency>
             <groupId>org.controlsfx</groupId>
