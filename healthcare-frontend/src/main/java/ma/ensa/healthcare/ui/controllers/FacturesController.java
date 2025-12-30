@@ -36,6 +36,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 
+import javafx.animation.ScaleTransition;
+import javafx.fxml.FXML;
+import javafx.scene.layout.HBox;
+import javafx.scene.Node;
+import javafx.util.Duration;
+import javafx.animation.Interpolator;
+
 public class FacturesController {
 
     private static final Logger logger = LoggerFactory.getLogger(FacturesController.class);
@@ -64,6 +71,7 @@ public class FacturesController {
     @FXML private TableColumn<Facture, String> colStatut;
     @FXML private TableColumn<Facture, Void> colActions;
     @FXML private Label lblTotal;
+    @FXML private HBox hboxStats;
 
     private final FacturationService facturationService = new FacturationService();
     private final PatientService patientService = new PatientService();
@@ -77,6 +85,29 @@ public class FacturesController {
         setupTableColumns();
         loadFactures();
         updateStatistics();
+
+        // Parcourir tous les enfants du VBox
+        for (Node node : hboxStats.getChildren()) {
+            if (node.getStyleClass().contains("homeCard")) {
+                // Créer une transition de scale
+                ScaleTransition st = new ScaleTransition(Duration.seconds(0.2), node);
+                st.setToX(1.05);
+                st.setToY(1.05);
+                st.setInterpolator(Interpolator.EASE_BOTH);
+
+                // Survol -> agrandir
+                node.setOnMouseEntered(e -> st.playFromStart());
+
+                // Sortie -> revenir normal
+                node.setOnMouseExited(e -> {
+                    ScaleTransition back = new ScaleTransition(Duration.seconds(0.2), node);
+                    back.setToX(1.0);
+                    back.setToY(1.0);
+                    back.setInterpolator(Interpolator.EASE_BOTH);
+                    back.play();
+                });
+            }
+        }
     }
 
     private void setupComboBox() {
@@ -190,7 +221,7 @@ public class FacturesController {
                 btnImprimer.setStyle("-fx-font-size: 10px; -fx-padding: 3 8;");
                 btnImprimer.setOnAction(event -> {
                     Facture f = getTableView().getItems().get(getIndex());
-                    handleImprimer(f);
+                    handleExportSingleFacture(f);
                 });
 
                 hbox.setAlignment(Pos.CENTER);

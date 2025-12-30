@@ -47,29 +47,29 @@
     </HBox>
 
     <!-- STATISTIQUES -->
-    <HBox spacing="15">
-        <VBox styleClass="card" spacing="5" prefWidth="280">
-            <Label text="Total Médecins" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+    <HBox  fx:id="hboxStats" spacing="15">
+        <VBox styleClass="homeCard" spacing="5" prefWidth="280">
+            <Label text="Total Médecins" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #ffffffff;  -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
             <Label fx:id="lblTotalMedecins" text="0" 
                    style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
         </VBox>
         
-        <VBox styleClass="card" spacing="5" prefWidth="280">
-            <Label text="Spécialités" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+        <VBox styleClass="homeCard" spacing="5" prefWidth="280">
+            <Label text="Spécialités" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #ffffffff; -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
             <Label fx:id="lblNbSpecialites" text="0" 
                    style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #4CAF50;"/>
         </VBox>
         
-        <VBox styleClass="card" spacing="5" prefWidth="280">
-            <Label text="Départements" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+        <VBox styleClass="homeCard" spacing="5" prefWidth="280">
+            <Label text="Départements" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #ffffffff; -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
             <Label fx:id="lblNbDepartements" text="0" 
                    style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #9C27B0;"/>
         </VBox>
         
-        <VBox styleClass="card" spacing="5" prefWidth="280">
-            <Label text="Consultations/Jour" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+        <VBox styleClass="homeCard" spacing="5" prefWidth="280">
+            <Label text="Consultations/Jour" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #ffffffff; -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
             <Label fx:id="lblConsultationsMoyennes" text="0" 
-                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #FF9800;"/>
+                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #965a00ff;"/>
         </VBox>
     </HBox>
 

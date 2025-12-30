@@ -51,27 +51,27 @@
     </HBox>
 
     <!-- STATISTIQUES FINANCIÈRES -->
-    <HBox spacing="15">
-        <VBox styleClass="card" spacing="5" prefWidth="280">
-            <Label text="Total Facturé (Mois)" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+    <HBox  fx:id="hboxStats" spacing="15">
+        <VBox styleClass="homeCard" spacing="5" prefWidth="280">
+            <Label text="Total Facturé (Mois)" style="-fx-font-size: 12px; -fx-text-fill: #ffffffff; -fx-font-weight: bold;  -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
             <Label fx:id="lblTotalFacture" text="0 MAD" 
                    style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
         </VBox>
         
-        <VBox styleClass="card" spacing="5" prefWidth="280">
-            <Label text="Total Encaissé" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+        <VBox styleClass="homeCard" spacing="5" prefWidth="280">
+            <Label text="Total Encaissé" style="-fx-font-size: 12px; -fx-text-fill: #ffffffff; -fx-font-weight: bold; -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
             <Label fx:id="lblTotalPaye" text="0 MAD" 
                    style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #4CAF50;"/>
         </VBox>
         
-        <VBox styleClass="card" spacing="5" prefWidth="280">
-            <Label text="Impayés" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+        <VBox styleClass="homeCard" spacing="5" prefWidth="280">
+            <Label text="Impayés" style="-fx-font-size: 12px; -fx-text-fill: #ffffffff; -fx-font-weight: bold; -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
             <Label fx:id="lblTotalImpaye" text="0 MAD" 
-                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #F44336;"/>
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #790a02ff;"/>
         </VBox>
         
-        <VBox styleClass="card" spacing="5" prefWidth="280">
-            <Label text="Taux de Recouvrement" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+        <VBox styleClass="homeCard" spacing="5" prefWidth="280">
+            <Label text="Taux de Recouvrement" style="-fx-font-size: 12px; -fx-text-fill: #ffffffff; -fx-font-weight: bold; -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
             <Label fx:id="lblTauxRecouvrement" text="0%" 
                    style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #9C27B0;"/>
         </VBox>

@@ -22,7 +22,13 @@ public class MainApp extends Application {
     public void start(Stage stage) {
         try {
             primaryStage = stage;
-            
+
+            // Charger l'icône (PNG, ICO, JPG…)
+            Image icon = new Image(getClass().getResourceAsStream("/images/icon.png"));
+
+            // Appliquer l'icône au Stage
+            stage.getIcons().add(icon);
+
             // Configuration de la fenêtre principale
             primaryStage.setTitle("Healthcare System - Connexion");
             primaryStage.setWidth(1200);
@@ -57,6 +63,7 @@ public class MainApp extends Application {
             
             primaryStage.setScene(scene);
             primaryStage.setTitle("Healthcare System - Connexion");
+            primaryStage.setMaximized(true);
             
         } catch (Exception e) {
             logger.error("Erreur lors du chargement de l'écran de connexion", e);

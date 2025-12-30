@@ -33,12 +33,6 @@
                 <FontAwesomeIconView glyphName="USER_PLUS" size="14" fill="WHITE"/>
             </graphic>
         </Button>
-        
-        <Button text="Exporter" styleClass="action-button" prefHeight="40">
-            <graphic>
-                <FontAwesomeIconView glyphName="DOWNLOAD" size="14" fill="WHITE"/>
-            </graphic>
-        </Button>
     </HBox>
 
     <!-- TABLE DES PATIENTS -->

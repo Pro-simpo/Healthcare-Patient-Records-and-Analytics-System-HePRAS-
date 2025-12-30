@@ -23,9 +23,9 @@
                 <padding>
                     <Insets bottom="30"/>
                 </padding>
-                
-                <FontAwesomeIconView glyphName="HEARTBEAT" size="50" fill="WHITE"/>
-                
+
+                <FontAwesomeIconView fx:id="logoIcon" glyphName="HEARTBEAT" size="50" fill="WHITE"/>
+
                 <Label text="Healthcare System" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
                 
                 <Separator prefWidth="200" style="-fx-background-color: rgba(255,255,255,0.2);"/>
@@ -100,7 +100,7 @@
 
     <!-- MAIN CONTENT AREA -->
     <center>
-        <VBox spacing="0" style="-fx-background-color: #F5F5F5;">
+        <VBox styleClass="main-content" spacing="0" style="-fx-background-color: #F5F5F5;">
             
             <!-- TOP BAR -->
             <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: white; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);">

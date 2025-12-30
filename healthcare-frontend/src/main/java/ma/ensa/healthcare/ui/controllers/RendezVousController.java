@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import ma.ensa.healthcare.model.RendezVous;
 import ma.ensa.healthcare.model.enums.StatutRendezVous;
@@ -19,6 +20,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+
+import javafx.animation.ScaleTransition;
+import javafx.fxml.FXML;
+import javafx.scene.layout.HBox;
+import javafx.scene.Node;
+import javafx.util.Duration;
+import javafx.animation.Interpolator;
 
 
 public class RendezVousController {
@@ -44,6 +52,7 @@ public class RendezVousController {
     @FXML private TableColumn<RendezVous, String> colStatut;
     @FXML private TableColumn<RendezVous, Void> colActions;
     @FXML private Label lblTotal;
+    @FXML private HBox hboxStats;
 
     private final RendezVousService rdvService = new RendezVousService();
     private final PatientService patientService = new PatientService();
@@ -57,6 +66,29 @@ public class RendezVousController {
         setupTableColumns();
         loadRendezVous();
         updateStatistics();
+
+        // Parcourir tous les enfants du VBox
+        for (Node node : hboxStats.getChildren()) {
+            if (node.getStyleClass().contains("homeCard")) {
+                // Créer une transition de scale
+                ScaleTransition st = new ScaleTransition(Duration.seconds(0.2), node);
+                st.setToX(1.05);
+                st.setToY(1.05);
+                st.setInterpolator(Interpolator.EASE_BOTH);
+
+                // Survol -> agrandir
+                node.setOnMouseEntered(e -> st.playFromStart());
+
+                // Sortie -> revenir normal
+                node.setOnMouseExited(e -> {
+                    ScaleTransition back = new ScaleTransition(Duration.seconds(0.2), node);
+                    back.setToX(1.0);
+                    back.setToY(1.0);
+                    back.setInterpolator(Interpolator.EASE_BOTH);
+                    back.play();
+                });
+            }
+        }
     }
 
     /**

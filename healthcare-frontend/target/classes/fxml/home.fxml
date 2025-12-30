@@ -6,24 +6,24 @@
 <?import javafx.scene.text.Font?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/23"
+<ScrollPane style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/23"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ma.ensa.healthcare.ui.controllers.HomeController"
-            fitToWidth="true" style="-fx-background-color: transparent;">
+            fitToWidth="true">
 
-    <VBox spacing="30">
+    <VBox styleClass="content-area" spacing="30">
         
         <!-- KPI CARDS -->
-        <GridPane hgap="20" vgap="20">
+        <GridPane fx:id="gridKpiCards" hgap="20" vgap="20">
             
             <!-- Card 1: Total Patients -->
-            <VBox styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="15" prefWidth="280" prefHeight="140">
+            <VBox styleClass="homeCard" GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="15" prefWidth="280" prefHeight="140">
                 <HBox alignment="CENTER_LEFT" spacing="15">
                     <StackPane style="-fx-background-color: #E3F2FD; -fx-background-radius: 12; -fx-pref-width: 60; -fx-pref-height: 60;">
                         <FontAwesomeIconView glyphName="USERS" size="30" fill="#2196F3"/>
                     </StackPane>
                     <VBox spacing="5">
-                        <Label text="Total Patients" styleClass="card-title"/>
+                        <Label text="Total Patients" styleClass="card-title" style="-fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
                         <Label fx:id="lblTotalPatients" text="0" styleClass="card-value"/>
                     </VBox>
                 </HBox>
@@ -31,13 +31,13 @@
             </VBox>
 
             <!-- Card 2: Rendez-vous Aujourd'hui -->
-            <VBox styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="15" prefWidth="280" prefHeight="140">
+            <VBox styleClass="homeCard" GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="15" prefWidth="280" prefHeight="140">
                 <HBox alignment="CENTER_LEFT" spacing="15">
                     <StackPane style="-fx-background-color: #FFF3E0; -fx-background-radius: 12; -fx-pref-width: 60; -fx-pref-height: 60;">
                         <FontAwesomeIconView glyphName="CALENDAR_CHECK_ALT" size="30" fill="#FF9800"/>
                     </StackPane>
                     <VBox spacing="5">
-                        <Label text="RDV Aujourd'hui" styleClass="card-title"/>
+                        <Label text="RDV Aujourd'hui" styleClass="card-title" style="-fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
                         <Label fx:id="lblRdvToday" text="0" styleClass="card-value"/>
                     </VBox>
                 </HBox>
@@ -45,13 +45,13 @@
             </VBox>
 
             <!-- Card 3: Consultations ce Mois -->
-            <VBox styleClass="card" GridPane.columnIndex="2" GridPane.rowIndex="0" spacing="15" prefWidth="280" prefHeight="140">
+            <VBox styleClass="homeCard" GridPane.columnIndex="2" GridPane.rowIndex="0" spacing="15" prefWidth="280" prefHeight="140">
                 <HBox alignment="CENTER_LEFT" spacing="15">
                     <StackPane style="-fx-background-color: #E8F5E9; -fx-background-radius: 12; -fx-pref-width: 60; -fx-pref-height: 60;">
                         <FontAwesomeIconView glyphName="STETHOSCOPE" size="30" fill="#4CAF50"/>
                     </StackPane>
                     <VBox spacing="5">
-                        <Label text="Consultations" styleClass="card-title"/>
+                        <Label text="Consultations" styleClass="card-title" style="-fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
                         <Label fx:id="lblConsultations" text="0" styleClass="card-value"/>
                     </VBox>
                 </HBox>
@@ -59,13 +59,13 @@
             </VBox>
 
             <!-- Card 4: Revenus du Mois -->
-            <VBox styleClass="card" GridPane.columnIndex="3" GridPane.rowIndex="0" spacing="15" prefWidth="280" prefHeight="140">
+            <VBox styleClass="homeCard" GridPane.columnIndex="3" GridPane.rowIndex="0" spacing="15" prefWidth="280" prefHeight="140">
                 <HBox alignment="CENTER_LEFT" spacing="15">
                     <StackPane style="-fx-background-color: #F3E5F5; -fx-background-radius: 12; -fx-pref-width: 60; -fx-pref-height: 60;">
                         <FontAwesomeIconView glyphName="MONEY" size="30" fill="#9C27B0"/>
                     </StackPane>
                     <VBox spacing="5">
-                        <Label text="Revenus" styleClass="card-title"/>
+                        <Label text="Revenus" styleClass="card-title" style="-fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
                         <Label fx:id="lblRevenus" text="0 MAD" styleClass="card-value" style="-fx-font-size: 18px;"/>
                     </VBox>
                 </HBox>
@@ -135,7 +135,7 @@
                 </graphic>
             </Button>
             
-            <Button text="Nouvelle Consultation" styleClass="action-button" prefHeight="45" prefWidth="200">
+            <Button text="Nouvelle Consultation" styleClass="action-button" onAction="#handleAddConsultation" prefHeight="45" prefWidth="200">
                 <graphic>
                     <FontAwesomeIconView glyphName="STETHOSCOPE" size="16" fill="WHITE"/>
                 </graphic>

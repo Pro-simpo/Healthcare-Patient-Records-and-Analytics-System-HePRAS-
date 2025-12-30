@@ -47,25 +47,25 @@
     </HBox>
 
     <!-- STATISTIQUES RAPIDES -->
-    <HBox spacing="15">
-        <VBox styleClass="card" spacing="5" prefWidth="220">
-            <Label text="Aujourd'hui" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+    <HBox fx:id="hboxStats" spacing="15">
+        <VBox styleClass="homeCard" spacing="5" prefWidth="220">
+            <Label text="Aujourd'hui" style="-fx-font-size: 12px; -fx-text-fill: #ffffffff; -fx-font-weight: bold; -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
             <Label fx:id="lblToday" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
         </VBox>
         
-        <VBox styleClass="card" spacing="5" prefWidth="220">
-            <Label text="Ce Mois" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+        <VBox styleClass="homeCard" spacing="5" prefWidth="220">
+            <Label text="Ce Mois" style="-fx-font-size: 12px; -fx-text-fill: #ffffffff; -fx-font-weight: bold; -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
             <Label fx:id="lblMonth" text="0" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #4CAF50;"/>
         </VBox>
         
-        <VBox styleClass="card" spacing="5" prefWidth="220">
-            <Label text="Revenu Moyen" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
+        <VBox styleClass="homeCard" spacing="5" prefWidth="220">
+            <Label text="Revenu Moyen" style="-fx-font-size: 12px; -fx-text-fill: #ffffffff; -fx-font-weight: bold; -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
             <Label fx:id="lblRevenuMoyen" text="0 MAD" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #9C27B0;"/>
         </VBox>
         
-        <VBox styleClass="card" spacing="5" prefWidth="220">
-            <Label text="Durée Moyenne" style="-fx-font-size: 12px; -fx-text-fill: #757575;"/>
-            <Label fx:id="lblDureeMoyenne" text="30 min" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #FF9800;"/>
+        <VBox styleClass="homeCard" spacing="5" prefWidth="220">
+            <Label text="Durée Moyenne" style="-fx-font-size: 12px; -fx-text-fill: #ffffffff; -fx-font-weight: bold; -fx-border-color: transparent transparent #e8e5fe transparent; -fx-border-width: 0 0 2 0; -fx-border-radius: 1; -fx-border-insets: 0; -fx-padding: 0 0 5 0;"/>
+            <Label fx:id="lblDureeMoyenne" text="30 min" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #965a00ff;"/>
         </VBox>
     </HBox>
 

@@ -10,6 +10,13 @@ import ma.ensa.healthcare.ui.utils.SessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javafx.animation.ScaleTransition;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.util.Duration;
+import javafx.animation.Interpolator;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+
 import java.io.IOException;
 
 public class DashboardController {
@@ -29,6 +36,7 @@ public class DashboardController {
     @FXML private Button btnFactures;
     @FXML private Button btnMedecins;
     @FXML private Button btnSettings;
+    @FXML private FontAwesomeIconView logoIcon;
 
     @FXML
     public void initialize() {
@@ -40,6 +48,24 @@ public class DashboardController {
         
         // Appliquer le style "selected" au bouton Home
         setActiveButton(btnHome);
+
+        // Créer une transition de scale
+        ScaleTransition st = new ScaleTransition(Duration.seconds(0.8), logoIcon);
+        st.setToX(1.5);
+        st.setToY(1.5);
+        st.setInterpolator(Interpolator.EASE_BOTH);
+
+        // Survol -> agrandir
+        logoIcon.setOnMouseEntered(e -> st.playFromStart());
+
+        // Sortie -> revenir normal
+        logoIcon.setOnMouseExited(e -> {
+            ScaleTransition back = new ScaleTransition(Duration.seconds(0.8), logoIcon);
+            back.setToX(1.0);
+            back.setToY(1.0);
+            back.setInterpolator(Interpolator.EASE_BOTH);
+            back.play();
+        });
     }
 
     /**

@@ -5,6 +5,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ma.ensa.healthcare.dao.impl.FactureDAOImpl;
+import ma.ensa.healthcare.dao.interfaces.IFactureDAO;
 import ma.ensa.healthcare.model.*;
 import ma.ensa.healthcare.model.enums.ModePaiement;
 import ma.ensa.healthcare.model.enums.StatutPaiement;
@@ -16,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Dialogue de création/modification d'une facture
@@ -272,12 +275,29 @@ public class FactureDialog extends Dialog<Facture> {
      */
     private void loadConsultations() {
         try {
-            // En réalité, il faudrait filtrer pour n'afficher que celles sans facture
-            List<Consultation> consultations = consultationService.listerToutesConsultations();
-            consultationComboBox.getItems().setAll(consultations);
+            // Récupérer toutes les consultations
+            List<Consultation> toutesConsultations = consultationService.listerToutesConsultations();
             
-            if (consultations.isEmpty()) {
-                consultationComboBox.setPromptText("Aucune consultation disponible");
+            // Créer une instance du DAO pour vérifier les factures
+            IFactureDAO factureDAO = new FactureDAOImpl();
+            
+            // Filtrer pour ne garder que les consultations sans facture
+            List<Consultation> consultationsSansFac = toutesConsultations.stream()
+                .filter(c -> {
+                    try {
+                        Facture factureExistante = factureDAO.findByConsultationId(c.getId());
+                        return factureExistante == null; // Garder si pas de facture
+                    } catch (Exception e) {
+                        logger.warn("Erreur vérification facture pour consultation {}", c.getId(), e);
+                        return true; // En cas d'erreur, on garde la consultation
+                    }
+                })
+                .collect(Collectors.toList());
+            
+            consultationComboBox.getItems().setAll(consultationsSansFac);
+            
+            if (consultationsSansFac.isEmpty()) {
+                consultationComboBox.setPromptText("Aucune consultation sans facture");
                 consultationComboBox.setDisable(true);
             }
             

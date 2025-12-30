@@ -1,16 +1,21 @@
 package ma.ensa.healthcare.ui.controllers;
 
+import javafx.animation.Interpolator;
+import javafx.animation.ScaleTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.model.RendezVous;
 import ma.ensa.healthcare.model.enums.StatutRendezVous;
 import ma.ensa.healthcare.model.Consultation;
 import ma.ensa.healthcare.model.Facture;
 import ma.ensa.healthcare.service.*;
+import ma.ensa.healthcare.ui.dialogs.ConsultationDialog;
 import ma.ensa.healthcare.ui.dialogs.PatientDialog;
 import ma.ensa.healthcare.ui.dialogs.RendezVousDialog;
 
@@ -24,6 +29,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import javafx.animation.ScaleTransition;
+import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
+import javafx.scene.Node;
+import javafx.util.Duration;
+import javafx.animation.Interpolator;
+
+
 public class HomeController {
 
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -36,6 +49,7 @@ public class HomeController {
     @FXML private Label lblConsultationsDetails;
     @FXML private Label lblRevenus;
     @FXML private Label lblRevenusDetails;
+    @FXML private GridPane gridKpiCards;
 
     // Table Prochains RDV
     @FXML private TableView<RendezVous> tableProchainRdv;
@@ -61,6 +75,30 @@ public class HomeController {
     public void initialize() {
         setupTableColumns();
         loadDashboardData();
+
+        // Parcourir tous les enfants du VBox
+        for (Node node : gridKpiCards.getChildren()) {
+            if (node.getStyleClass().contains("homeCard")) {
+                // Créer une transition de scale
+                ScaleTransition st = new ScaleTransition(Duration.seconds(0.2), node);
+                st.setToX(1.02);
+                st.setToY(1.02);
+                st.setInterpolator(Interpolator.EASE_BOTH);
+
+                // Survol -> agrandir
+                node.setOnMouseEntered(e -> st.playFromStart());
+
+                // Sortie -> revenir normal
+                node.setOnMouseExited(e -> {
+                    ScaleTransition back = new ScaleTransition(Duration.seconds(0.2), node);
+                    back.setToX(1.0);
+                    back.setToY(1.0);
+                    back.setInterpolator(Interpolator.EASE_BOTH);
+                    back.play();
+                });
+            }
+        }
+
     }
 
     /**
@@ -319,6 +357,25 @@ public class HomeController {
             } catch (Exception e) {
                 logger.error("Erreur lors de la création du RDV", e);
                 showError("Erreur", "Impossible de créer le rendez-vous : " + e.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Ajouter une nouvelle consultation
+     */
+    @FXML
+    private void handleAddConsultation() {
+        ConsultationDialog dialog = new ConsultationDialog(null);
+        Optional<Consultation> result = dialog.showAndWait();
+
+        result.ifPresent(consultation -> {
+            try {
+                consultationService.enregistrerConsultation(consultation);
+                showSuccess("Succès", "Consultation ajoutée avec succès !");
+            } catch (Exception e) {
+                logger.error("Erreur lors de l'ajout de la consultation", e);
+                showError("Erreur", "Impossible d'ajouter la consultation : " + e.getMessage());
             }
         });
     }
