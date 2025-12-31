@@ -74,7 +74,7 @@
         </GridPane>
 
         <!-- SECTION: Rendez-vous Prochains -->
-        <VBox spacing="15" styleClass="card">
+        <VBox fx:id="vboxProchainRdv" spacing="15" styleClass="card">
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <FontAwesomeIconView glyphName="CLOCK_ALT" size="20" fill="#2196F3"/>
                 <Label text="Rendez-vous Prochains" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
@@ -97,7 +97,7 @@
         <HBox spacing="20">
             
             <!-- Factures Impayées -->
-            <VBox spacing="15" styleClass="card" HBox.hgrow="ALWAYS">
+            <VBox fx:id="vboxFacturesImpayees" spacing="15" styleClass="card" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <FontAwesomeIconView glyphName="EXCLAMATION_TRIANGLE" size="20" fill="#F44336"/>
                     <Label text="Factures Impayées" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
@@ -109,7 +109,7 @@
             </VBox>
 
             <!-- Alertes Médicaments -->
-            <VBox spacing="15" styleClass="card" HBox.hgrow="ALWAYS">
+            <VBox fx:id="vboxAlertesMedicaments" spacing="15" styleClass="card" HBox.hgrow="ALWAYS">
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <FontAwesomeIconView glyphName="MEDKIT" size="20" fill="#FF9800"/>
                     <Label text="Alertes Stock" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>

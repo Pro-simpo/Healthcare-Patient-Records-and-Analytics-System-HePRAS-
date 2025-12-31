@@ -39,6 +39,7 @@ import javafx.util.Duration;
 import javafx.animation.Interpolator;
 
 import ma.ensa.healthcare.ui.utils.PermissionManager;
+import java.util.stream.Collectors;
 
 
 public class HomeController {
@@ -70,6 +71,11 @@ public class HomeController {
     @FXML private ListView<String> listFacturesImpayees;
     @FXML private ListView<String> listAlertesMedicaments;
 
+    // Sections à masquer conditionnellement
+    @FXML private VBox vboxProchainRdv;
+    @FXML private VBox vboxFacturesImpayees;
+    @FXML private VBox vboxAlertesMedicaments;
+
     // Services
     private final PatientService patientService = new PatientService();
     private final RendezVousService rdvService = new RendezVousService();
@@ -82,6 +88,7 @@ public class HomeController {
     public void initialize() {
         setupTableColumns();
         loadDashboardData();
+        configurePermissions();
 
         // Parcourir tous les enfants du VBox
         for (Node node : gridKpiCards.getChildren()) {
@@ -105,8 +112,6 @@ public class HomeController {
                 });
             }
         }
-        configurePermissions();
-
     }
 
     /**
@@ -254,14 +259,24 @@ public class HomeController {
     }
 
     /**
-     * Charge les prochains rendez-vous
+     * Charge les prochains rendez-vous (filtrés pour les patients)
      */
     private void loadProchainRdv() {
         try {
-            List<RendezVous> rdvList = rdvService.getAllRendezVous(); // ou findAll() ou listerRendezVous()
+            List<RendezVous> rdvList = rdvService.getAllRendezVous();
             LocalDateTime now = LocalDateTime.now();
             
-            // ✅ CORRECTION : Utiliser heureDebut au lieu de getDateHeure()
+            // Filtrer par patient si nécessaire
+            if (PermissionManager.shouldFilterByPatient()) {
+                Long patientId = PermissionManager.getConnectedPatientId();
+                if (patientId != null) {
+                    rdvList = rdvList.stream()
+                        .filter(rdv -> rdv.getIdPatient() != null && 
+                                    rdv.getIdPatient().equals(patientId))
+                        .collect(Collectors.toList());
+                }
+            }
+            
             List<RendezVous> prochainRdv = rdvList.stream()
                 .filter(rdv -> rdv.getHeureDebut() != null && !rdv.getHeureDebut().isBefore(now))
                 .sorted((r1, r2) -> r1.getHeureDebut().compareTo(r2.getHeureDebut()))
@@ -277,26 +292,36 @@ public class HomeController {
     }
 
     /**
-     * Charge la liste des factures impayées
+     * Charge la liste des factures impayées (filtrées pour les patients)
      */
     private void loadFacturesImpayees() {
         try {
-            // TODO: Récupérer les vraies factures depuis le service
-            // List<Facture> facturesImpayees = facturationService.findFacturesImpayees();
-            
-            // Pour l'instant, données fictives
             ObservableList<String> factures = FXCollections.observableArrayList();
             List<Facture> facturesList = facturationService.getToutesLesFactures();
+            
+            // Filtrer par patient si nécessaire
+            if (PermissionManager.shouldFilterByPatient()) {
+                Long patientId = PermissionManager.getConnectedPatientId();
+                if (patientId != null) {
+                    facturesList = facturesList.stream()
+                        .filter(f -> f.getIdPatient() == patientId)
+                        .collect(Collectors.toList());
+                }
+            }
+            
             List<Facture> filtered = facturesList.stream()
                 .filter(f -> {
-                    boolean statutMatch = "Tous".equals("EN_ATTENTE") || 
-                        (f.getStatutPaiement() != null && f.getStatutPaiement().name().equals("EN_ATTENTE"));
-                    
+                    boolean statutMatch = f.getStatutPaiement() != null && 
+                                        f.getStatutPaiement().name().equals("EN_ATTENTE");
                     return statutMatch;
                 })
                 .toList();
+                
             factures.setAll(filtered.stream()
-                .map(f -> "Facture " + f.getNumeroFacture() + " - Patient: " + patientService.getPatientById(f.getIdPatient()).getNom() + " " + patientService.getPatientById(f.getIdPatient()).getPrenom() + " - Montant: " + f.getMontantTotal() + " MAD")
+                .map(f -> "Facture " + f.getNumeroFacture() + 
+                        " - Patient: " + patientService.getPatientById(f.getIdPatient()).getNom() + 
+                        " " + patientService.getPatientById(f.getIdPatient()).getPrenom() + 
+                        " - Montant: " + f.getMontantTotal() + " MAD")
                 .toList());
             listFacturesImpayees.setItems(factures);
             
@@ -411,7 +436,27 @@ public class HomeController {
         loadDashboardData();
     }
 
+    /**
+     * Configure la visibilité des sections selon les permissions
+     */
     private void configurePermissions() {
+        // Statistiques KPI - visibles seulement pour Admin et Réceptionniste
+        boolean canViewStats = PermissionManager.canViewAllStatistics() || 
+                            PermissionManager.canAccessFactures();
+        if (gridKpiCards != null) {
+            gridKpiCards.setVisible(canViewStats);
+            gridKpiCards.setManaged(canViewStats);
+        }
+        
+        // Alertes médicaments - visibles seulement pour Admin et Réceptionniste
+        boolean canViewAlerts = PermissionManager.canAccessMedecins() || 
+                            PermissionManager.canAccessFactures();
+        if (vboxAlertesMedicaments != null) {
+            vboxAlertesMedicaments.setVisible(canViewAlerts);
+            vboxAlertesMedicaments.setManaged(canViewAlerts);
+        }
+        
+        // Quick Actions déjà gérés
         if (btnQuickAddPatient != null) {
             btnQuickAddPatient.setVisible(PermissionManager.canModifyPatient());
             btnQuickAddPatient.setManaged(PermissionManager.canModifyPatient());
