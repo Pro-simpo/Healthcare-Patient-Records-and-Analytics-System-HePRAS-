@@ -64,6 +64,13 @@
                         <FontAwesomeIconView glyphName="LOCK" size="14" fill="WHITE"/>
                     </graphic>
                 </Button>
+
+                <Button text="Ajouter un utilisateur" styleClass="action-button-success" prefHeight="35"
+                        onAction="#handleAddUser">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="USER_PLUS" size="14" fill="WHITE"/>
+                    </graphic>
+                </Button>
             </HBox>
         </VBox>
 
