@@ -28,7 +28,9 @@
         
         <Region HBox.hgrow="ALWAYS"/>
         
-        <Button text="Nouveau Patient" onAction="#handleAddPatient" styleClass="action-button-success" prefHeight="40">
+        <!-- Bouton visible seulement si permission -->
+        <Button fx:id="btnAddPatient" text="Nouveau Patient" onAction="#handleAddPatient" 
+                styleClass="action-button-success" prefHeight="40">
             <graphic>
                 <FontAwesomeIconView glyphName="USER_PLUS" size="14" fill="WHITE"/>
             </graphic>

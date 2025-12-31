@@ -19,6 +19,7 @@ import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.ui.dialogs.ConsultationDialog;
 import ma.ensa.healthcare.ui.dialogs.PatientDialog;
 import ma.ensa.healthcare.ui.dialogs.RendezVousDialog;
+import ma.ensa.healthcare.ui.utils.PermissionManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,8 @@ import javafx.scene.Node;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 
+import ma.ensa.healthcare.ui.utils.PermissionManager;
+
 
 public class HomeController {
 
@@ -51,6 +54,9 @@ public class HomeController {
     @FXML private Label lblRevenus;
     @FXML private Label lblRevenusDetails;
     @FXML private GridPane gridKpiCards;
+    @FXML private Button btnQuickAddPatient;
+    @FXML private Button btnQuickAddRdv;
+    @FXML private Button btnQuickAddConsultation;
 
     // Table Prochains RDV
     @FXML private TableView<RendezVous> tableProchainRdv;
@@ -99,6 +105,7 @@ public class HomeController {
                 });
             }
         }
+        configurePermissions();
 
     }
 
@@ -402,5 +409,22 @@ public class HomeController {
     @FXML
     public void handleRefresh() {
         loadDashboardData();
+    }
+
+    private void configurePermissions() {
+        if (btnQuickAddPatient != null) {
+            btnQuickAddPatient.setVisible(PermissionManager.canModifyPatient());
+            btnQuickAddPatient.setManaged(PermissionManager.canModifyPatient());
+        }
+        
+        if (btnQuickAddRdv != null) {
+            btnQuickAddRdv.setVisible(PermissionManager.canCreateRendezVous());
+            btnQuickAddRdv.setManaged(PermissionManager.canCreateRendezVous());
+        }
+        
+        if (btnQuickAddConsultation != null) {
+            btnQuickAddConsultation.setVisible(PermissionManager.canCreateConsultation());
+            btnQuickAddConsultation.setManaged(PermissionManager.canCreateConsultation());
+        }
     }
 }

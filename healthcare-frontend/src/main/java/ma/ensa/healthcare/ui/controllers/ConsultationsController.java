@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import ma.ensa.healthcare.model.Consultation;
 import ma.ensa.healthcare.model.Medecin;
 import ma.ensa.healthcare.model.Patient;
+import ma.ensa.healthcare.model.RendezVous;
 import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.ui.dialogs.ConsultationDetailsDialog;
 import ma.ensa.healthcare.ui.dialogs.ConsultationDialog;
@@ -27,6 +28,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+
+import ma.ensa.healthcare.ui.utils.PermissionManager;
+import java.util.stream.Collectors;
 
 import javafx.stage.Stage;
 
@@ -55,6 +59,7 @@ public class ConsultationsController {
     @FXML private TableColumn<Consultation, Void> colActions;
     @FXML private Label lblTotal;
     @FXML private HBox hboxStats;
+    @FXML private Button btnAddConsultation;
 
     private final ConsultationService consultationService = new ConsultationService();
     private final MedecinService medecinService = new MedecinService();
@@ -66,6 +71,7 @@ public class ConsultationsController {
 
     @FXML
     public void initialize() {
+        configurePermissions();
         setupComboBox();
         setupTableColumns();
         loadConsultations();
@@ -197,6 +203,8 @@ public class ConsultationsController {
                     Consultation c = getTableView().getItems().get(getIndex());
                     handleModifier(c);
                 });
+                btnModifier.setVisible(PermissionManager.canModifyConsultation());
+                btnModifier.setManaged(PermissionManager.canModifyConsultation());
 
                 btnOrdonnance.getStyleClass().add("action-button-success");
                 btnOrdonnance.setStyle("-fx-font-size: 10px; -fx-padding: 3 8;");
@@ -219,6 +227,21 @@ public class ConsultationsController {
     private void loadConsultations() {
         try {
             List<Consultation> consultations = consultationService.listerToutesConsultations();
+            
+            // Filtrer selon le rôle
+            if (PermissionManager.shouldFilterByMedecin()) {
+                Long medecinId = PermissionManager.getConnectedMedecinId();
+                if (medecinId != null) {
+                    consultations = consultations.stream()
+                        .filter(c -> {
+                            RendezVous rdv = rendezVousService.getRendezVousById(c.getIdRendezVous());
+                            return rdv != null && rdv.getMedecin() != null && 
+                                rdv.getMedecin().getId().equals(medecinId);
+                        })
+                        .collect(Collectors.toList());
+                }
+            }
+            
             consultationsList.setAll(consultations);
             tableConsultations.setItems(consultationsList);
             lblTotal.setText(String.valueOf(consultations.size()));
@@ -397,5 +420,10 @@ public class ConsultationsController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void configurePermissions() {
+        btnAddConsultation.setVisible(PermissionManager.canCreateConsultation());
+        btnAddConsultation.setManaged(PermissionManager.canCreateConsultation());
     }
 }

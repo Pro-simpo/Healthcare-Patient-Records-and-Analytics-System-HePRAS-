@@ -28,6 +28,7 @@ ma\ensa\healthcare\ui\controllers\FacturesController.class
 ma\ensa\healthcare\ui\controllers\FacturesController$1.class
 ma\ensa\healthcare\ui\dialogs\RendezVousDialog$1.class
 ma\ensa\healthcare\ui\controllers\ConsultationsController$1.class
+ma\ensa\healthcare\ui\utils\PermissionManager.class
 ma\ensa\healthcare\ui\controllers\PatientsController$1.class
 ma\ensa\healthcare\ui\controllers\HomeController$1.class
 ma\ensa\healthcare\ui\controllers\AddUserDialogController.class

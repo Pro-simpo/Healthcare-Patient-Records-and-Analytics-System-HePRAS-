@@ -17,6 +17,7 @@ import ma.ensa.healthcare.model.enums.StatutPaiement;
 import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.ui.dialogs.PaiementDialog;
 import ma.ensa.healthcare.ui.dialogs.RendezVousDialog;
+import ma.ensa.healthcare.ui.utils.PermissionManager;
 import ma.ensa.healthcare.util.PdfExportService;
 import ma.ensa.healthcare.ui.dialogs.FactureDialog;
 import org.slf4j.Logger;
@@ -43,6 +44,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.Node;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
+
+import ma.ensa.healthcare.ui.utils.PermissionManager;
 
 public class FacturesController {
 
@@ -73,6 +76,8 @@ public class FacturesController {
     @FXML private TableColumn<Facture, Void> colActions;
     @FXML private Label lblTotal;
     @FXML private HBox hboxStats;
+    @FXML private Button btnAddFacture;
+    @FXML private Button btnExportPdf;
 
     private final FacturationService facturationService = new FacturationService();
     private final PatientService patientService = new PatientService();
@@ -82,6 +87,7 @@ public class FacturesController {
 
     @FXML
     public void initialize() {
+        configurePermissions();
         setupComboBox();
         setupTableColumns();
         loadFactures();
@@ -235,13 +241,14 @@ public class FacturesController {
                     setGraphic(null);
                 } else {
                     Facture f = getTableView().getItems().get(getIndex());
-                    btnPayer.setVisible(f.getStatutPaiement() != StatutPaiement.PAYE);
+                    boolean showPayer = f.getStatutPaiement() != StatutPaiement.PAYE &&
+                                    PermissionManager.canRegisterPayment();
+                    btnPayer.setVisible(showPayer);
                     setGraphic(hbox);
                 }
             }
         });
     }
-
     private void loadFactures() {
         try {
             List<Facture> factures = facturationService.getToutesLesFactures();
@@ -574,5 +581,13 @@ public class FacturesController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void configurePermissions() {
+        btnAddFacture.setVisible(PermissionManager.canCreateFacture());
+        btnAddFacture.setManaged(PermissionManager.canCreateFacture());
+        
+        btnExportPdf.setVisible(PermissionManager.canExportData());
+        btnExportPdf.setManaged(PermissionManager.canExportData());
     }
 }

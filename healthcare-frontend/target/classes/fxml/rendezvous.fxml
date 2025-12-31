@@ -30,7 +30,7 @@
         
         <Region HBox.hgrow="ALWAYS"/>
         
-        <Button text="Nouveau RDV" onAction="#handleAddRendezVous" styleClass="action-button-success" prefHeight="40">
+        <Button fx:id="btnAddRendezVous" text="Nouveau RDV" onAction="#handleAddRendezVous" styleClass="action-button-success" prefHeight="40">
             <graphic>
                 <FontAwesomeIconView glyphName="CALENDAR_PLUS_ALT" size="14" fill="WHITE"/>
             </graphic>

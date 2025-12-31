@@ -13,6 +13,7 @@ import ma.ensa.healthcare.model.Patient;
 import ma.ensa.healthcare.service.MedecinService;
 import ma.ensa.healthcare.ui.dialogs.MedecinDialog;
 import ma.ensa.healthcare.ui.dialogs.PatientDialog;
+import ma.ensa.healthcare.ui.utils.PermissionManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.Node;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
+
+import ma.ensa.healthcare.ui.utils.PermissionManager;
 
 public class MedecinsController {
 
@@ -56,6 +59,7 @@ public class MedecinsController {
     @FXML private TableColumn<Medecin, Void> colActions;
     @FXML private Label lblTotal;
     @FXML private HBox hboxStats;
+    @FXML private Button btnAddMedecin;
 
     private final MedecinService medecinService = new MedecinService();
     private ObservableList<Medecin> medecinsList = FXCollections.observableArrayList();
@@ -64,6 +68,7 @@ public class MedecinsController {
 
     @FXML
     public void initialize() {
+        configurePermissions();
         setupComboBoxes();
         setupTableColumns();
         loadMedecins();
@@ -178,10 +183,15 @@ public class MedecinsController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : hbox);
+                if (empty || !PermissionManager.canModifyMedecin()) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(hbox);
+                }
             }
         });
     }
+
 
     private void loadMedecins() {
         try {
@@ -366,5 +376,10 @@ public class MedecinsController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void configurePermissions() {
+        btnAddMedecin.setVisible(PermissionManager.canModifyMedecin());
+        btnAddMedecin.setManaged(PermissionManager.canModifyMedecin());
     }
 }

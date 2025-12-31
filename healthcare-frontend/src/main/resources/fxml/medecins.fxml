@@ -38,8 +38,7 @@
         
         <Region HBox.hgrow="ALWAYS"/>
         
-        <Button text="Nouveau Médecin" onAction="#handleAddMedecin" 
-                styleClass="action-button-success" prefHeight="40">
+        <Button fx:id="btnAddMedecin" text="Nouveau Médecin" onAction="#handleAddMedecin" styleClass="action-button-success" prefHeight="40">
             <graphic>
                 <FontAwesomeIconView glyphName="USER_MD" size="14" fill="WHITE"/>
             </graphic>

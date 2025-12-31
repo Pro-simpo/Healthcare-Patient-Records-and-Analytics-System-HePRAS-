@@ -29,6 +29,9 @@ import javafx.scene.Node;
 import javafx.util.Duration;
 import javafx.animation.Interpolator;
 
+import ma.ensa.healthcare.ui.utils.PermissionManager;
+import java.util.stream.Collectors;
+
 
 public class RendezVousController {
 
@@ -54,6 +57,7 @@ public class RendezVousController {
     @FXML private TableColumn<RendezVous, Void> colActions;
     @FXML private Label lblTotal;
     @FXML private HBox hboxStats;
+    @FXML private Button btnAddRendezVous;
 
     private final RendezVousService rdvService = new RendezVousService();
     private final PatientService patientService = new PatientService();
@@ -63,6 +67,7 @@ public class RendezVousController {
 
     @FXML
     public void initialize() {
+        configurePermissions();
         setupComboBox();
         setupTableColumns();
         loadRendezVous();
@@ -226,10 +231,12 @@ public class RendezVousController {
                     setGraphic(null);
                 } else {
                     RendezVous rdv = getTableView().getItems().get(getIndex());
-                    // Masquer bouton Confirmer si déjà confirmé
                     btnConfirmer.setVisible(rdv.getStatut() != StatutRendezVous.CONFIRME && 
-                                           rdv.getStatut() != StatutRendezVous.TERMINE);
-                    btnAnnuler.setVisible(rdv.getStatut() != StatutRendezVous.ANNULE);
+                                        rdv.getStatut() != StatutRendezVous.TERMINE &&
+                                        PermissionManager.canConfirmRendezVous());
+                    btnAnnuler.setVisible(rdv.getStatut() != StatutRendezVous.ANNULE &&
+                                        PermissionManager.canModifyRendezVous());
+                    btnModifier.setVisible(PermissionManager.canModifyRendezVous());
                     setGraphic(hbox);
                 }
             }
@@ -415,5 +422,10 @@ public class RendezVousController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void configurePermissions() {
+        btnAddRendezVous.setVisible(PermissionManager.canCreateRendezVous());
+        btnAddRendezVous.setManaged(PermissionManager.canCreateRendezVous());
     }
 }

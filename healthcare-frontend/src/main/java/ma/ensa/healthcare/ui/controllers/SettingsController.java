@@ -12,6 +12,7 @@ import ma.ensa.healthcare.config.PropertyManager;
 import ma.ensa.healthcare.model.Utilisateur;
 import ma.ensa.healthcare.service.UtilisateurService;
 import ma.ensa.healthcare.ui.MainApp;
+import ma.ensa.healthcare.ui.utils.PermissionManager;
 import ma.ensa.healthcare.ui.utils.SessionManager;
 import ma.ensa.healthcare.util.CacheManager;
 import org.slf4j.Logger;
@@ -37,6 +38,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import ma.ensa.healthcare.model.enums.Role;
+
+import ma.ensa.healthcare.ui.utils.PermissionManager;
 
 
 /**
@@ -79,6 +82,10 @@ public class SettingsController {
 
     @FXML
     public void initialize() {
+        if (!PermissionManager.canAccessSettings()) {
+            showError("Accès refusé", PermissionManager.getAccessDeniedMessage());
+            return;
+        }
         logger.info("Initialisation de l'onglet Paramètres");
         
         try {

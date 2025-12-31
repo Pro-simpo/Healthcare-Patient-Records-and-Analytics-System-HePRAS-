@@ -37,13 +37,13 @@
         
         <Region HBox.hgrow="ALWAYS"/>
 
-        <Button text="Nouvelle Facture" onAction="#handleAddFacture" styleClass="action-button-success" prefHeight="40">
+        <Button fx:id="btnAddFacture" text="Nouvelle Facture" onAction="#handleAddFacture" styleClass="action-button-success" prefHeight="40">
             <graphic>
                 <FontAwesomeIconView glyphName="FILE_ALT" size="14" fill="WHITE"/>
             </graphic>
         </Button>
         
-        <Button text="Exporter PDF" onAction="#handleExportPdf" styleClass="action-button" prefHeight="40">
+        <Button fx:id="btnExportPdf" text="Exporter PDF" onAction="#handleExportPdf" styleClass="action-button" prefHeight="40">
             <graphic>
                 <FontAwesomeIconView glyphName="FILE_EXCEL" size="14" fill="WHITE"/>
             </graphic>

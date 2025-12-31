@@ -17,6 +17,8 @@ import javafx.util.Duration;
 import javafx.animation.Interpolator;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
+import ma.ensa.healthcare.ui.utils.PermissionManager;
+
 import java.io.IOException;
 
 public class DashboardController {
@@ -42,6 +44,8 @@ public class DashboardController {
     public void initialize() {
         // Afficher les informations de l'utilisateur connecté
         loadUserInfo();
+
+        configurePermissions();
         
         // Charger la page d'accueil par défaut
         showHome();
@@ -184,5 +188,28 @@ public class DashboardController {
         alert.setContentText(message);
         alert.initOwner(MainApp.getPrimaryStage());
         alert.showAndWait();
+    }
+
+    private void configurePermissions() {
+        btnPatients.setVisible(PermissionManager.canAccessPatients());
+        btnPatients.setManaged(PermissionManager.canAccessPatients());
+        
+        btnRendezVous.setVisible(PermissionManager.canAccessRendezVous());
+        btnRendezVous.setManaged(PermissionManager.canAccessRendezVous());
+        
+        btnConsultations.setVisible(PermissionManager.canAccessConsultations());
+        btnConsultations.setManaged(PermissionManager.canAccessConsultations());
+        
+        btnFactures.setVisible(PermissionManager.canAccessFactures());
+        btnFactures.setManaged(PermissionManager.canAccessFactures());
+        
+        btnMedecins.setVisible(PermissionManager.canAccessMedecins());
+        btnMedecins.setManaged(PermissionManager.canAccessMedecins());
+        
+        btnSettings.setVisible(PermissionManager.canAccessSettings());
+        btnSettings.setManaged(PermissionManager.canAccessSettings());
+        
+        logger.info("Permissions configurées pour le rôle : {}", 
+                SessionManager.getCurrentUserRole());
     }
 }

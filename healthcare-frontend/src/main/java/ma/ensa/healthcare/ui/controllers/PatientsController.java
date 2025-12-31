@@ -18,6 +18,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import ma.ensa.healthcare.ui.utils.PermissionManager;
+
 public class PatientsController {
 
     private static final Logger logger = LoggerFactory.getLogger(PatientsController.class);
@@ -34,6 +36,7 @@ public class PatientsController {
     @FXML private TableColumn<Patient, String> colEmail;
     @FXML private TableColumn<Patient, Void> colActions;
     @FXML private Label lblTotal;
+    @FXML private Button btnAddPatient;
 
     private final PatientService patientService = new PatientService();
     private ObservableList<Patient> patientsList = FXCollections.observableArrayList();
@@ -42,6 +45,7 @@ public class PatientsController {
 
     @FXML
     public void initialize() {
+        configurePermissions();
         setupTableColumns();
         loadPatients();
     }
@@ -246,5 +250,10 @@ public class PatientsController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void configurePermissions() {
+        btnAddPatient.setVisible(PermissionManager.canModifyPatient());
+        btnAddPatient.setManaged(PermissionManager.canModifyPatient());
     }
 }
