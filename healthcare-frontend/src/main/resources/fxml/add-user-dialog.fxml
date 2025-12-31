@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
+<VBox xmlns="http://javafx.com/javafx/23"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ma.ensa.healthcare.ui.controllers.AddUserDialogController"
+      spacing="20" style="-fx-padding: 20;">
+
+    <!-- En-tête -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <FontAwesomeIconView glyphName="USER_PLUS" size="24" fill="#2196F3"/>
+        <Label text="Nouvel Utilisateur" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    </HBox>
+
+    <Separator/>
+
+    <!-- Formulaire -->
+    <GridPane hgap="15" vgap="15">
+        <!-- Username -->
+        <Label text="Nom d'utilisateur *" GridPane.columnIndex="0" GridPane.rowIndex="0"
+               style="-fx-font-weight: bold;"/>
+        <TextField fx:id="txtUsername" promptText="ex: jdupont"
+                  GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="250"/>
+
+        <!-- Email -->
+        <Label text="Email *" GridPane.columnIndex="0" GridPane.rowIndex="1"
+               style="-fx-font-weight: bold;"/>
+        <TextField fx:id="txtEmail" promptText="ex: j.dupont@hospital.ma"
+                  GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="250"/>
+
+        <!-- Mot de passe -->
+        <Label text="Mot de passe *" GridPane.columnIndex="0" GridPane.rowIndex="2"
+               style="-fx-font-weight: bold;"/>
+        <PasswordField fx:id="txtPassword" promptText="Min. 6 caractères"
+                      GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="250"/>
+
+        <!-- Confirmer mot de passe -->
+        <Label text="Confirmer *" GridPane.columnIndex="0" GridPane.rowIndex="3"
+               style="-fx-font-weight: bold;"/>
+        <PasswordField fx:id="txtConfirmPassword" promptText="Retaper le mot de passe"
+                      GridPane.columnIndex="1" GridPane.rowIndex="3" prefWidth="250"/>
+
+        <!-- Rôle -->
+        <Label text="Rôle *" GridPane.columnIndex="0" GridPane.rowIndex="4"
+               style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="cmbRole" promptText="Sélectionner un rôle"
+                 GridPane.columnIndex="1" GridPane.rowIndex="4" prefWidth="250"/>
+
+        <!-- Patient (si rôle PATIENT) -->
+        <Label fx:id="lblPatient" text="Patient" GridPane.columnIndex="0" GridPane.rowIndex="5"
+               style="-fx-font-weight: bold;" visible="false" managed="false"/>
+        <ComboBox fx:id="cmbPatient" promptText="Sélectionner un patient"
+                 GridPane.columnIndex="1" GridPane.rowIndex="5" prefWidth="250"
+                 visible="false" managed="false"/>
+
+        <!-- Médecin (si rôle MEDECIN) -->
+        <Label fx:id="lblMedecin" text="Médecin" GridPane.columnIndex="0" GridPane.rowIndex="6"
+               style="-fx-font-weight: bold;" visible="false" managed="false"/>
+        <ComboBox fx:id="cmbMedecin" promptText="Sélectionner un médecin"
+                 GridPane.columnIndex="1" GridPane.rowIndex="6" prefWidth="250"
+                 visible="false" managed="false"/>
+
+        <!-- Statut -->
+        <Label text="Statut" GridPane.columnIndex="0" GridPane.rowIndex="7"
+               style="-fx-font-weight: bold;"/>
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="7" spacing="10">
+            <RadioButton fx:id="rbActif" text="Actif" selected="true">
+                <toggleGroup>
+                    <ToggleGroup fx:id="statutGroup"/>
+                </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="rbInactif" text="Inactif" toggleGroup="$statutGroup"/>
+        </HBox>
+    </GridPane>
+
+    <!-- Message d'information -->
+    <Label text="* Champs obligatoires" style="-fx-text-fill: #757575; -fx-font-size: 11px;"/>
+
+    <!-- Boutons -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Annuler" prefWidth="100" prefHeight="35"
+                style="-fx-background-color: #E0E0E0; -fx-text-fill: #424242;"
+                onAction="#handleCancel"/>
+        <Button text="Créer" prefWidth="100" prefHeight="35"
+                styleClass="action-button-success"
+                onAction="#handleCreate">
+            <graphic>
+                <FontAwesomeIconView glyphName="CHECK" size="14" fill="WHITE"/>
+            </graphic>
+        </Button>
+    </HBox>
+
+</VBox>
