@@ -37,7 +37,8 @@ public class PermissionManager {
         if (!SessionManager.isLoggedIn()) return false;
         
         Role role = SessionManager.getCurrentUser().getRole();
-        return role == Role.ADMIN;
+        return role == Role.ADMIN || 
+               role == Role.RECEPTIONNISTE;
     }
 
     /**
@@ -82,8 +83,7 @@ public class PermissionManager {
         
         Role role = SessionManager.getCurrentUser().getRole();
         return role == Role.ADMIN || 
-               role == Role.RECEPTIONNISTE ||
-               role == Role.MEDECIN;
+               role == Role.RECEPTIONNISTE;
     }
 
     /**
@@ -173,9 +173,16 @@ public class PermissionManager {
     }
 
     /**
-     * Vérifie si l'utilisateur peut accéder aux paramètres système
+     * Vérifie si l'utilisateur peut accéder aux paramètres (tous les rôles)
      */
     public static boolean canAccessSettings() {
+        return SessionManager.isLoggedIn();
+    }
+
+    /**
+     * Vérifie si l'utilisateur peut accéder aux paramètres avancés (BDD, système)
+     */
+    public static boolean canAccessAdvancedSettings() {
         if (!SessionManager.isLoggedIn()) return false;
         
         Role role = SessionManager.getCurrentUser().getRole();

@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import ma.ensa.healthcare.config.HikariCPConfig;
 import ma.ensa.healthcare.config.PropertyManager;
@@ -80,6 +81,9 @@ public class SettingsController {
     @FXML private Label lblOs;
     @FXML private Label lblMemory;
 
+    @FXML private VBox sectionDatabase;        // Section Base de Données
+    @FXML private VBox sectionSystemActions;
+
     @FXML
     public void initialize() {
         if (!PermissionManager.canAccessSettings()) {
@@ -94,6 +98,7 @@ public class SettingsController {
             loadDatabaseInfo();
             loadSystemInfo();
             startMemoryMonitoring();
+            configureAdvancedSettings();
             
             logger.info("Paramètres chargés avec succès");
         } catch (Exception e) {
@@ -928,5 +933,25 @@ public class SettingsController {
             showError("Erreur", 
                 "Impossible d'ouvrir le formulaire d'ajout:\n\n" + e.getMessage());
         }
+    }
+
+    /**
+     * Configure la visibilité des sections selon les permissions
+     */
+    private void configureAdvancedSettings() {
+        // Sections visibles uniquement pour ADMIN
+        boolean isAdmin = PermissionManager.canAccessAdvancedSettings();
+        
+        if (sectionDatabase != null) {
+            sectionDatabase.setVisible(isAdmin);
+            sectionDatabase.setManaged(isAdmin);
+        }
+        
+        if (sectionSystemActions != null) {
+            sectionSystemActions.setVisible(isAdmin);
+            sectionSystemActions.setManaged(isAdmin);
+        }
+        
+        logger.info("Sections avancées configurées - Admin: {}", isAdmin);
     }
 }

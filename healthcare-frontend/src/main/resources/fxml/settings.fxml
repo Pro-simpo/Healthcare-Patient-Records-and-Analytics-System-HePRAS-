@@ -12,7 +12,7 @@
 
     <VBox spacing="20">
         
-        <!-- SECTION: Profil Utilisateur -->
+        <!-- SECTION: Profil Utilisateur (VISIBLE POUR TOUS) -->
         <VBox styleClass="card" spacing="15">
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <FontAwesomeIconView glyphName="USER" size="20" fill="#2196F3"/>
@@ -74,7 +74,7 @@
             </HBox>
         </VBox>
 
-        <!-- SECTION: Paramètres de l'Application -->
+        <!-- SECTION: Paramètres de l'Application (VISIBLE POUR TOUS) -->
         <VBox styleClass="card" spacing="15">
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <FontAwesomeIconView glyphName="COG" size="20" fill="#4CAF50"/>
@@ -88,7 +88,6 @@
                     <Insets left="20"/>
                 </padding>
                 
-                <!-- ✅ CORRECTION: Syntaxe correcte pour ComboBox -->
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <Label text="Langue:" style="-fx-font-weight: bold; -fx-min-width: 150;"/>
                     <ComboBox fx:id="cmbLanguage" prefWidth="200"/>
@@ -128,8 +127,8 @@
             </HBox>
         </VBox>
 
-        <!-- SECTION: Base de Données -->
-        <VBox styleClass="card" spacing="15">
+        <!-- SECTION: Base de Données (ADMIN UNIQUEMENT) ⚡ fx:id AJOUTÉ -->
+        <VBox fx:id="sectionDatabase" styleClass="card" spacing="15">
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <FontAwesomeIconView glyphName="DATABASE" size="20" fill="#FF9800"/>
                 <Label text="Base de Données" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
@@ -188,7 +187,7 @@
             </HBox>
         </VBox>
 
-        <!-- SECTION: Système -->
+        <!-- SECTION: Système (VISIBLE POUR TOUS) -->
         <VBox styleClass="card" spacing="15">
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <FontAwesomeIconView glyphName="INFO_CIRCLE" size="20" fill="#9C27B0"/>
@@ -243,8 +242,8 @@
             </HBox>
         </VBox>
 
-        <!-- SECTION: Actions Système -->
-        <VBox styleClass="card" spacing="15">
+        <!-- SECTION: Actions Système (ADMIN UNIQUEMENT) ⚡ fx:id AJOUTÉ -->
+        <VBox fx:id="sectionSystemActions" styleClass="card" spacing="15">
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <FontAwesomeIconView glyphName="EXCLAMATION_TRIANGLE" size="20" fill="#F44336"/>
                 <Label text="Actions Système" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
@@ -288,7 +287,7 @@
             </HBox>
         </VBox>
 
-        <!-- SECTION: À Propos -->
+        <!-- SECTION: À Propos (VISIBLE POUR TOUS) -->
         <VBox styleClass="card" spacing="15" alignment="CENTER">
             <FontAwesomeIconView glyphName="HEARTBEAT" size="60" fill="#2196F3"/>
             
