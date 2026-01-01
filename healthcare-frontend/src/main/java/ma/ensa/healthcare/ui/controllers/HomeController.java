@@ -15,6 +15,7 @@ import ma.ensa.healthcare.model.RendezVous;
 import ma.ensa.healthcare.model.enums.StatutRendezVous;
 import ma.ensa.healthcare.model.Consultation;
 import ma.ensa.healthcare.model.Facture;
+import ma.ensa.healthcare.model.Medicament;
 import ma.ensa.healthcare.service.*;
 import ma.ensa.healthcare.ui.dialogs.ConsultationDialog;
 import ma.ensa.healthcare.ui.dialogs.PatientDialog;
@@ -81,6 +82,7 @@ public class HomeController {
     private final RendezVousService rdvService = new RendezVousService();
     private final ConsultationService consultationService = new ConsultationService();
     private final FacturationService facturationService = new FacturationService();
+    private final MedicamentService medicamentService = new MedicamentService();
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -335,19 +337,65 @@ public class HomeController {
      */
     private void loadAlertesMedicaments() {
         try {
-            // TODO: Récupérer les vrais médicaments en alerte depuis le service
-            // List<Medicament> medicamentsAlerte = medicamentService.getMedicamentsEnAlerte();
+            List<Medicament> medicamentsAlerte = medicamentService.getMedicamentsEnAlerte();
             
-            // Pour l'instant, données fictives
-            ObservableList<String> alertes = FXCollections.observableArrayList(
-                "Paracétamol - Stock: 45 (Seuil: 100)",
-                "Amoxicilline - Stock: 12 (Seuil: 50)",
-                "Ibuprofène - Stock: 8 (Seuil: 30)"
-            );
-            listAlertesMedicaments.setItems(alertes);
+            if (medicamentsAlerte.isEmpty()) {
+                // Aucune alerte
+                ObservableList<String> noAlerte = FXCollections.observableArrayList(
+                    "✓ Aucune alerte de stock",
+                    "Tous les médicaments sont en stock suffisant"
+                );
+                listAlertesMedicaments.setItems(noAlerte);
+                listAlertesMedicaments.setStyle("-fx-text-fill: #4CAF50;");
+            } else {
+                // Formater les alertes
+                ObservableList<String> alertes = FXCollections.observableArrayList();
+                
+                for (Medicament m : medicamentsAlerte) {
+                    String niveau = getNiveauAlerteIcon(m);
+                    String alerte = String.format(
+                        "%s %s - Stock: %d (Seuil: %d) - %s",
+                        niveau,
+                        m.getNomCommercial(),
+                        m.getStockDisponible(),
+                        m.getStockAlerte(),
+                        m.getForme() != null ? m.getForme() : ""
+                    );
+                    alertes.add(alerte);
+                }
+                
+                listAlertesMedicaments.setItems(alertes);
+                listAlertesMedicaments.setStyle("-fx-text-fill: #F44336;");
+                
+                logger.info("{} alerte(s) de médicament(s) affichée(s)", medicamentsAlerte.size());
+            }
             
         } catch (Exception e) {
             logger.error("Erreur lors du chargement des alertes médicaments", e);
+            
+            // Afficher un message d'erreur
+            ObservableList<String> errorMsg = FXCollections.observableArrayList(
+                "⚠ Erreur de chargement des alertes",
+                "Impossible de récupérer les données"
+            );
+            listAlertesMedicaments.setItems(errorMsg);
+            listAlertesMedicaments.setStyle("-fx-text-fill: #FF9800;");
+        }
+    }
+
+    /**
+     * Retourne l'icône appropriée selon le niveau de criticité
+     */
+    private String getNiveauAlerteIcon(Medicament m) {
+        int stock = m.getStockDisponible();
+        int alerte = m.getStockAlerte();
+        
+        if (stock == 0) {
+            return "🔴"; // Rupture de stock
+        } else if (stock <= alerte / 2) {
+            return "🟠"; // Critique
+        } else {
+            return "🟡"; // Attention
         }
     }
 

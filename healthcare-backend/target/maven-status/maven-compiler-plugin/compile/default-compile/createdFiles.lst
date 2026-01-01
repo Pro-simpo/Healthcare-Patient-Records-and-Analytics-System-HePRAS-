@@ -80,6 +80,7 @@ ma\ensa\healthcare\model\enums\Role.class
 ma\ensa\healthcare\model\enums\StatutPaiement.class
 ma\ensa\healthcare\dao\impl\FactureDAOImpl.class
 ma\ensa\healthcare\validation\ValidationUtils.class
+ma\ensa\healthcare\service\MedicamentService.class
 ma\ensa\healthcare\dao\impl\UtilisateurDAOImpl.class
 ma\ensa\healthcare\exception\HealthcareException.class
 ma\ensa\healthcare\dto\FactureDTO.class
