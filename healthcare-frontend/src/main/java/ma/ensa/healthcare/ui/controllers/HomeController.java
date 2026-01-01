@@ -271,10 +271,21 @@ public class HomeController {
             // Filtrer par patient si nécessaire
             if (PermissionManager.shouldFilterByPatient()) {
                 Long patientId = PermissionManager.getConnectedPatientId();
-                if (patientId != null) {
+                if (patientId != 0) {
                     rdvList = rdvList.stream()
                         .filter(rdv -> rdv.getIdPatient() != null && 
                                     rdv.getIdPatient().equals(patientId))
+                        .collect(Collectors.toList());
+                }
+            }
+            
+            // ✅ Filtrer par médecin si nécessaire
+            if (PermissionManager.shouldFilterByMedecin()) {
+                Long medecinId = PermissionManager.getConnectedMedecinId();
+                if (medecinId != 0) {
+                    rdvList = rdvList.stream()
+                        .filter(rdv -> rdv.getMedecin() != null && 
+                                    rdv.getMedecin().getId().equals(medecinId))
                         .collect(Collectors.toList());
                 }
             }
@@ -304,7 +315,7 @@ public class HomeController {
             // Filtrer par patient si nécessaire
             if (PermissionManager.shouldFilterByPatient()) {
                 Long patientId = PermissionManager.getConnectedPatientId();
-                if (patientId != null) {
+                if (patientId != 0) {
                     facturesList = facturesList.stream()
                         .filter(f -> f.getIdPatient() == patientId)
                         .collect(Collectors.toList());
@@ -497,7 +508,8 @@ public class HomeController {
         }
         
         // Alertes médicaments - visibles seulement pour Admin et Réceptionniste
-        boolean canViewAlerts = PermissionManager.canAccessMedecins() || 
+        boolean canViewAlerts = PermissionManager.canAccessMedecins() ||
+                            PermissionManager.canModifyConsultation() ||
                             PermissionManager.canAccessFactures();
         if (vboxAlertesMedicaments != null) {
             vboxAlertesMedicaments.setVisible(canViewAlerts);

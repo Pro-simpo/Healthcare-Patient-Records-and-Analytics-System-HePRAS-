@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.io.FileOutputStream;
 
 /**
  * Gestionnaire centralisé des propriétés de configuration.
@@ -110,5 +111,27 @@ public class PropertyManager {
     
     public boolean isProduction() {
         return "prod".equalsIgnoreCase(environment);
+    }
+
+    /**
+     * Définit une propriété
+     * @param key Clé de la propriété
+     * @param value Valeur de la propriété
+     */
+    public void setProperty(String key, String value) {
+        properties.setProperty(key, value);
+        saveProperties();
+    }
+
+    /**
+     * Sauvegarde les propriétés dans le fichier
+     */
+    private void saveProperties() {
+        try (FileOutputStream fos = new FileOutputStream(CONFIG_FILE)) {
+            properties.store(fos, "Healthcare System Configuration");
+            logger.info("Propriétés sauvegardées avec succès");
+        } catch (IOException e) {
+            logger.error("Erreur lors de la sauvegarde des propriétés", e);
+        }
     }
 }
