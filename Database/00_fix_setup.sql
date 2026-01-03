@@ -1,12 +1,19 @@
 -- ============================================
--- SCRIPT DE CORRECTION - Connexion Backend
+-- SCRIPT DE CONFIGURATION - Nouvelle Base Locale
 -- Healthcare Patient Records System
 -- ============================================
 
--- Se connecter en tant que SYS
+-- Se connecter en tant que SYS dans XE
 -- sqlplus sys as sysdba
 
 ALTER SESSION SET "_ORACLE_SCRIPT"=true;
+
+-- ============================================
+-- 0. UTILISER LA BASE XE
+-- ============================================
+-- Pas besoin de créer une PDB, Oracle XE utilise directement le SID XE
+
+PROMPT Base XE sélectionnée
 
 -- ============================================
 -- 1. CRÉER L'UTILISATEUR healthcare_admin
@@ -20,29 +27,22 @@ EXCEPTION
 END;
 /
 
--- Créer l'utilisateur
+-- Créer l'utilisateur dans XE
 CREATE USER healthcare_admin IDENTIFIED BY admin123
     DEFAULT TABLESPACE USERS
-    TEMPORARY TABLESPACE temp
+    TEMPORARY TABLESPACE TEMP
     QUOTA UNLIMITED ON USERS;
 
-PROMPT Utilisateur healthcare_admin créé
+PROMPT Utilisateur healthcare_admin créé dans XE
 
 -- ============================================
 -- 2. ATTRIBUER LES PRIVILÈGES
 -- ============================================
 
-GRANT CONNECT TO healthcare_admin;
-GRANT RESOURCE TO healthcare_admin;
-GRANT CREATE SESSION TO healthcare_admin;
-GRANT CREATE TABLE TO healthcare_admin;
-GRANT CREATE VIEW TO healthcare_admin;
-GRANT CREATE SEQUENCE TO healthcare_admin;
-GRANT CREATE PROCEDURE TO healthcare_admin;
-GRANT CREATE TRIGGER TO healthcare_admin;
-GRANT CREATE SYNONYM TO healthcare_admin;
+GRANT CONNECT, RESOURCE TO healthcare_admin;
+GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW, CREATE SEQUENCE,
+      CREATE PROCEDURE, CREATE TRIGGER, CREATE SYNONYM TO healthcare_admin;
 
--- Privilèges DBMS packages
 GRANT EXECUTE ON DBMS_LOCK TO healthcare_admin;
 GRANT EXECUTE ON DBMS_OUTPUT TO healthcare_admin;
 GRANT EXECUTE ON DBMS_CRYPTO TO healthcare_admin;
@@ -59,12 +59,12 @@ FROM dba_users
 WHERE username = 'HEALTHCARE_ADMIN';
 
 PROMPT ============================================
-PROMPT Configuration corrigée !
+PROMPT Base utilisée : XE
 PROMPT Utilisateur : healthcare_admin
 PROMPT Mot de passe : admin123
 PROMPT ============================================
 PROMPT
 PROMPT Prochaines étapes :
-PROMPT 1. Se connecter : sqlplus healthcare_admin/admin123@localhost:1521/XEPDB1
-PROMPT 2. Exécuter les scripts : 01_CREATE_TABLES.sql à 07_DATA.sql
+PROMPT 1. Se connecter : sqlplus healthcare_admin/admin123@localhost:1521/XE
+PROMPT 2. Exécuter les scripts applicatifs : 01_CREATE_TABLES.sql à 07_DATA.sql
 PROMPT ============================================
