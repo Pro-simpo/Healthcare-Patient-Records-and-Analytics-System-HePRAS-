@@ -31,6 +31,7 @@ ma\ensa\healthcare\ui\controllers\ConsultationsController$1.class
 ma\ensa\healthcare\ui\utils\PermissionManager.class
 ma\ensa\healthcare\ui\controllers\PatientsController$1.class
 ma\ensa\healthcare\ui\controllers\HomeController$1.class
+ma\ensa\healthcare\ui\AppLauncher.class
 ma\ensa\healthcare\ui\controllers\AddUserDialogController.class
 ma\ensa\healthcare\ui\controllers\MedecinsController.class
 ma\ensa\healthcare\ui\dialogs\MedecinDialog.class
