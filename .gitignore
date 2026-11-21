@@ -36,3 +36,6 @@ Thumbs.db
 # ════════════════════════════════════════════════════════════════
 application-prod.properties
 *-secret.properties
+
+# Fichier genere par maven-shade-plugin
+dependency-reduced-pom.xml
