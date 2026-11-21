@@ -10,6 +10,7 @@ Présentation du projet : https://pro-simpo.github.io/#pd-hepras
 ## Fonctionnalités
 
 - **Connexion par compte** avec droits selon le rôle : administrateur, médecin, réceptionniste.
+- **Mots de passe hachés** en SHA-256 avec un sel aléatoire par utilisateur ; le mot de passe en clair n'est jamais enregistré. Le compteur de tentatives échouées et les statuts de compte (actif, inactif, suspendu) complètent le contrôle d'accès.
 - **Patients** : enregistrement, recherche, modification.
 - **Médecins et départements** : fiches, spécialités, rattachement à un département.
 - **Rendez-vous** : planification avec contrôle de la disponibilité du médecin, suivi du statut.
@@ -112,6 +113,17 @@ Les comptes ci-dessous sont créés par `07_DATA.sql` pour une base locale de d�
 | Administrateur | `admin` | `123456` |
 | Médecin | `dr.alami` | `123456` |
 | Réceptionniste | `receptionniste` | `123456` |
+
+Dans la base, la colonne `PASSWORD_HASH` contient le sel et l'empreinte SHA-256 sous la forme `sel:empreinte` (voir `PasswordUtils.java`).
+
+Si votre base a été créée avec une version antérieure, où les mots de passe de test étaient enregistrés tels quels, mettez-les à jour avant de vous connecter :
+
+```sql
+UPDATE UTILISATEUR
+SET PASSWORD_HASH = 'b4ff7124abbdbfff8ad8df55730c11ba:0699037891243c44a40dac75c8903bbf49ec96c6f78ec0b8bf85cedf70bfc75c'
+WHERE PASSWORD_HASH = '123456';
+COMMIT;
+```
 
 ## Équipe
 

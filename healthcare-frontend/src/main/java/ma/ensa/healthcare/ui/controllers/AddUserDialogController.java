@@ -165,7 +165,7 @@ public class AddUserDialogController {
             Utilisateur user = new Utilisateur();
             user.setUsername(txtUsername.getText().trim());
             user.setEmail(txtEmail.getText().trim());
-            user.setPasswordHash(txtPassword.getText()); // En prod: hasher avec BCrypt
+            user.setPasswordHash(txtPassword.getText()); // haché en SHA-256 par UtilisateurService.inscrire
             user.setRole(Role.valueOf(cmbRole.getValue()));
             user.setStatut(rbActif.isSelected() ? "ACTIF" : "INACTIF");
             user.setDateCreation(LocalDate.now());

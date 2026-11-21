@@ -138,7 +138,7 @@ VALUES (9, 'O012345', 'LAHLOU', 'Meriem', TO_DATE('2015-08-20', 'YYYY-MM-DD'), '
 INSERT INTO PATIENT (ID_PATIENT, CIN, NOM, PRENOM, DATE_NAISSANCE, SEXE, ADRESSE, VILLE, CODE_POSTAL, 
                      TELEPHONE, EMAIL, GROUPE_SANGUIN, ALLERGIES, DATE_INSCRIPTION) 
 VALUES (10, 'X432356', 'SABADOU', 'Ali', TO_DATE('2008-12-12', 'YYYY-MM-DD'), 'M', 
-        'Quartier Al Houda', 'Tetouan', '93000', '+212705146541', 'sabadou@gmail.com', 
+        'Quartier Al Houda', 'Tetouan', '93000', '+212668888888', 'sabadou@gmail.com', 
         'O+', NULL, SYSDATE);
 
 PROMPT 10 patients inseres
@@ -147,34 +147,37 @@ PROMPT 10 patients inseres
 -- 4. UTILISATEURS
 -- ============================================
 
+-- Mot de passe de tous les comptes de test : 123456
+-- La colonne PASSWORD_HASH contient "sel:empreinte" (SHA-256 avec sel, voir PasswordUtils.java)
+
 -- Admin
 INSERT INTO UTILISATEUR (ID_UTILISATEUR, USERNAME, PASSWORD_HASH, EMAIL, ROLE, STATUT, 
                         ID_MEDECIN, ID_PATIENT, TENTATIVES_ECHEC) 
-VALUES (1, 'admin', '123456', 'admin@hospital.ma', 'ADMIN', 'ACTIF', 
+VALUES (1, 'admin', 'b4ff7124abbdbfff8ad8df55730c11ba:0699037891243c44a40dac75c8903bbf49ec96c6f78ec0b8bf85cedf70bfc75c', 'admin@hospital.ma', 'ADMIN', 'ACTIF', 
         NULL, NULL, 0);
 
 -- Medecin Dr. Alami
 INSERT INTO UTILISATEUR (ID_UTILISATEUR, USERNAME, PASSWORD_HASH, EMAIL, ROLE, STATUT, 
                         ID_MEDECIN, ID_PATIENT, TENTATIVES_ECHEC) 
-VALUES (2, 'dr.alami', '123456', 'y.alami@hospital.ma', 'MEDECIN', 'ACTIF', 
+VALUES (2, 'dr.alami', '11e2d6e022b3de6c7fec420ed90db8f9:62f1966831b420456731208e81747778a1af8da0ad8f7854d2dae3ac3a473278', 'y.alami@hospital.ma', 'MEDECIN', 'ACTIF', 
         1, NULL, 0);
 
 -- Receptionniste
 INSERT INTO UTILISATEUR (ID_UTILISATEUR, USERNAME, PASSWORD_HASH, EMAIL, ROLE, STATUT, 
                         ID_MEDECIN, ID_PATIENT, TENTATIVES_ECHEC) 
-VALUES (3, 'receptionniste', '123456', 'reception@hospital.ma', 'RECEPTIONNISTE', 'ACTIF', 
+VALUES (3, 'receptionniste', 'db040ff9074b822c2c898ae60d54209c:b771bb574f4cce374ac16c9c5fa87acef28fcefc867609443072388c0c034ca5', 'reception@hospital.ma', 'RECEPTIONNISTE', 'ACTIF', 
         NULL, NULL, 0);
 
 -- Patient Ahmed Hassani
 INSERT INTO UTILISATEUR (ID_UTILISATEUR, USERNAME, PASSWORD_HASH, EMAIL, ROLE, STATUT, 
                         ID_MEDECIN, ID_PATIENT, TENTATIVES_ECHEC) 
-VALUES (4, 'ahmed.hassani', '123456', 'ahmed.hassani@gmail.com', 'PATIENT', 'ACTIF', 
+VALUES (4, 'ahmed.hassani', '2e0bd258396164ab704e916e8343ee53:a18663d2c5f02c48728a510abf582189e20ad31f0ab9c71490817f9dec8b7f2d', 'ahmed.hassani@gmail.com', 'PATIENT', 'ACTIF', 
         NULL, 1, 0);
 
 -- Patient Fatima Mansouri
 INSERT INTO UTILISATEUR (ID_UTILISATEUR, USERNAME, PASSWORD_HASH, EMAIL, ROLE, STATUT, 
                         ID_MEDECIN, ID_PATIENT, TENTATIVES_ECHEC) 
-VALUES (5, 'fatima.mansouri', '123456', 'f.mansouri@gmail.com', 'PATIENT', 'ACTIF', 
+VALUES (5, 'fatima.mansouri', '860026007ba7ab4eeba26adfb8a408de:1327fc02da13692efbc3ab3df571a4c133a16faa23c33aaeeb798b4c372a8737', 'f.mansouri@gmail.com', 'PATIENT', 'ACTIF', 
         NULL, 2, 0);
 
 PROMPT 5 utilisateurs inseres

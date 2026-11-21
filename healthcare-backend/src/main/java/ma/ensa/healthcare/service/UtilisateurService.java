@@ -5,6 +5,7 @@ import ma.ensa.healthcare.dao.interfaces.IUtilisateurDAO;
 import ma.ensa.healthcare.exception.UtilisateurException;
 import ma.ensa.healthcare.model.Utilisateur;
 import ma.ensa.healthcare.model.enums.Role;
+import ma.ensa.healthcare.util.PasswordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,9 +57,8 @@ public class UtilisateurService {
             throw new UtilisateurException("Compte désactivé");
         }
         
-        // Vérifier le mot de passe
-        // ⚠️ En production, utiliser BCrypt : BCrypt.checkpw(password, u.getPasswordHash())
-        if (u.getPasswordHash().equals(password)) {
+        // Vérifier le mot de passe : comparaison avec l'empreinte SHA-256 salée enregistrée
+        if (PasswordUtils.verify(password, u.getPasswordHash())) {
             // Connexion réussie
             logger.info("Connexion réussie pour l'utilisateur : {}", username);
             
@@ -104,8 +104,8 @@ public class UtilisateurService {
             throw new UtilisateurException("L'email " + u.getEmail() + " est déjà utilisé");
         }
         
-        // ⚠️ En production, hasher le mot de passe avec BCrypt
-        // u.setPasswordHash(BCrypt.hashpw(u.getPasswordHash(), BCrypt.gensalt()));
+        // Le mot de passe saisi est remplacé par son empreinte SHA-256 salée
+        u.setPasswordHash(PasswordUtils.hash(u.getPasswordHash()));
         
         // Initialiser statut et date
         if (u.getStatut() == null || u.getStatut().trim().isEmpty()) {
@@ -178,17 +178,15 @@ public class UtilisateurService {
         Utilisateur u = getUtilisateurById(id);
         
         // Vérifier ancien mot de passe
-        // ⚠️ En production : BCrypt.checkpw(ancienPassword, u.getPasswordHash())
-        if (!u.getPasswordHash().equals(ancienPassword)) {
+        if (!PasswordUtils.verify(ancienPassword, u.getPasswordHash())) {
             throw new UtilisateurException("L'ancien mot de passe est incorrect");
         }
         
         // Valider nouveau mot de passe
         validerMotDePasse(nouveauPassword);
         
-        // ⚠️ En production : hasher avec BCrypt
-        // String hashedPassword = BCrypt.hashpw(nouveauPassword, BCrypt.gensalt());
-        utilisateurDAO.updatePassword(id, nouveauPassword);
+        // Seule l'empreinte SHA-256 salée est enregistrée
+        utilisateurDAO.updatePassword(id, PasswordUtils.hash(nouveauPassword));
         
         logger.info("Mot de passe changé pour utilisateur ID: {}", id);
     }
@@ -199,8 +197,8 @@ public class UtilisateurService {
     public void reinitialiserMotDePasse(Long id, String nouveauPassword) {
         validerMotDePasse(nouveauPassword);
         
-        // ⚠️ En production : hasher avec BCrypt
-        utilisateurDAO.updatePassword(id, nouveauPassword);
+        // Seule l'empreinte SHA-256 salée est enregistrée
+        utilisateurDAO.updatePassword(id, PasswordUtils.hash(nouveauPassword));
         
         logger.info("Mot de passe réinitialisé pour utilisateur ID: {}", id);
     }

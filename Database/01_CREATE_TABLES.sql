@@ -296,7 +296,7 @@ CREATE INDEX idx_utilisateur_email ON UTILISATEUR(email);
 CREATE INDEX idx_utilisateur_role ON UTILISATEUR(role);
 
 COMMENT ON TABLE UTILISATEUR IS 'Table des comptes utilisateurs';
-COMMENT ON COLUMN UTILISATEUR.password_hash IS 'Hash SHA-256 du mot de passe';
+COMMENT ON COLUMN UTILISATEUR.password_hash IS 'Sel et empreinte SHA-256 du mot de passe (sel:empreinte)';
 COMMENT ON COLUMN UTILISATEUR.tentatives_echec IS 'Compte des tentatives de connexion echouees';
 
 PROMPT Table UTILISATEUR creee
